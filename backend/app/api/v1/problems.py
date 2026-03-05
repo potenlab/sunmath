@@ -1,51 +1,195 @@
-from datetime import datetime, timezone
+import logging
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_db
+from app.models.edges import QuestionEvaluates, QuestionRequires, QuestionUnits
+from app.models.nodes import ExpectedForm, Question
 from app.schemas.problem import (
+    ConceptExtractionResult,
+    DuplicateCheckResponse,
     ProblemCreate,
+    ProblemRegistrationResponse,
     ProblemResponse,
+    SimilarProblemDetail,
     SimilarProblemResponse,
 )
+from app.services.graphrag import GraphRAGService
+from app.services.llm_router import LLMRouter
+from app.services.similarity import SimilarityService
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/problems", tags=["problems"])
 
 
-@router.post("", response_model=ProblemResponse, status_code=201)
+@router.post("", response_model=ProblemRegistrationResponse, status_code=201)
 async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db)):
-    """Create a new problem. (Stub)"""
-    now = datetime.now(timezone.utc)
-    return ProblemResponse(
-        id=1,
+    """Create a new problem with duplicate detection and optional concept extraction."""
+    concept_extraction = None
+    eval_concept_ids: list[int] = []
+    req_concept_ids: list[int] = []
+
+    # Auto-extract concepts via LLM if requested and no concepts provided
+    if body.auto_extract_concepts and not body.concept_ids:
+        llm = LLMRouter()
+        extracted = await llm.extract_concepts(body.content)
+        if extracted:
+            graphrag = GraphRAGService(db)
+            eval_names = extracted.get("evaluation_concepts", [])
+            req_names = extracted.get("required_concepts", [])
+            eval_concept_ids = await graphrag.match_concept_names(eval_names)
+            req_concept_ids = await graphrag.match_concept_names(req_names)
+
+            # Infer expected_form from LLM if not provided by user
+            inferred_form = None
+            raw_form = extracted.get("expected_form")
+            if raw_form:
+                try:
+                    inferred_form = ExpectedForm(raw_form)
+                except ValueError:
+                    logger.warning("LLM returned invalid expected_form: %s", raw_form)
+
+            concept_extraction = ConceptExtractionResult(
+                evaluation_concept_names=eval_names,
+                required_concept_names=req_names,
+                matched_evaluation_concept_ids=eval_concept_ids,
+                matched_required_concept_ids=req_concept_ids,
+                inferred_expected_form=inferred_form,
+                inferred_grading_hints=extracted.get("grading_hints"),
+            )
+
+    # Determine effective concept_ids for duplicate check
+    effective_concept_ids = set(body.concept_ids) if body.concept_ids else set(eval_concept_ids)
+
+    # Determine effective expected_form and grading_hints
+    effective_form = body.expected_form
+    effective_hints = body.grading_hints
+    if concept_extraction:
+        if effective_form is None and concept_extraction.inferred_expected_form:
+            effective_form = concept_extraction.inferred_expected_form
+        if effective_hints is None and concept_extraction.inferred_grading_hints:
+            effective_hints = concept_extraction.inferred_grading_hints
+    # Final default
+    if effective_form is None:
+        effective_form = ExpectedForm.simplified
+
+    similarity_svc = SimilarityService(db)
+    dup_result = await similarity_svc.check_duplicate(effective_concept_ids)
+
+    similar_details = [
+        SimilarProblemDetail(**s) for s in dup_result["similar_problems"]
+    ]
+
+    dup_check = DuplicateCheckResponse(
+        is_duplicate=dup_result["is_duplicate"],
+        mode=dup_result["mode"],
+        threshold=dup_result["threshold"],
+        similar_problem_id=(
+            dup_result["similar_problems"][0]["question_id"]
+            if dup_result["similar_problems"]
+            else None
+        ),
+        similarity_score=(
+            dup_result["similar_problems"][0]["similarity_score"]
+            if dup_result["similar_problems"]
+            else 0.0
+        ),
+    )
+
+    # Block mode: reject duplicates
+    if dup_result["is_duplicate"] and dup_result["mode"] == "block":
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": "Duplicate problem detected",
+                "duplicate_check": dup_check.model_dump(),
+                "similar_problems": [s.model_dump() for s in similar_details],
+            },
+        )
+
+    # Insert question
+    question = Question(
         content=body.content,
         correct_answer=body.correct_answer,
-        expected_form=body.expected_form,
+        expected_form=effective_form,
         target_grade=body.target_grade,
-        grading_hints=body.grading_hints,
-        created_at=now,
-        updated_at=now,
+        grading_hints=effective_hints,
+    )
+    db.add(question)
+    await db.flush()
+
+    # Insert edge records — evaluation concepts
+    if body.concept_ids:
+        # User-provided concept_ids go to QuestionEvaluates (existing behavior)
+        for concept_id in body.concept_ids:
+            db.add(QuestionEvaluates(question_id=question.id, concept_id=concept_id))
+    elif eval_concept_ids:
+        # LLM-extracted evaluation concepts
+        for concept_id in eval_concept_ids:
+            db.add(QuestionEvaluates(question_id=question.id, concept_id=concept_id))
+
+    # Insert required concept edges
+    for concept_id in req_concept_ids:
+        db.add(QuestionRequires(question_id=question.id, concept_id=concept_id))
+
+    # Insert unit edges
+    for unit_id in body.unit_ids:
+        db.add(QuestionUnits(question_id=question.id, unit_id=unit_id))
+
+    return ProblemRegistrationResponse(
+        problem=ProblemResponse.model_validate(question),
+        registered=True,
+        duplicate_check=dup_check,
+        similar_problems=similar_details,
+        concept_extraction=concept_extraction,
     )
 
 
 @router.get("/{problem_id}", response_model=ProblemResponse)
 async def get_problem(problem_id: int, db: AsyncSession = Depends(get_db)):
-    """Get a problem by ID. (Stub)"""
-    now = datetime.now(timezone.utc)
-    return ProblemResponse(
-        id=problem_id,
-        content="Solve: x^2 + 2x + 1 = 0",
-        correct_answer="x = -1",
-        expected_form="simplified",
-        target_grade=9,
-        grading_hints=None,
-        created_at=now,
-        updated_at=now,
+    """Get a problem by ID."""
+    result = await db.execute(
+        select(Question).where(Question.id == problem_id)
     )
+    question = result.scalar_one_or_none()
+    if not question:
+        raise HTTPException(status_code=404, detail="Problem not found")
+    return ProblemResponse.model_validate(question)
 
 
 @router.get("/{problem_id}/similar", response_model=SimilarProblemResponse)
 async def get_similar_problems(problem_id: int, db: AsyncSession = Depends(get_db)):
-    """Find similar problems. (Stub)"""
-    return SimilarProblemResponse(problems=[], similarity_scores=[])
+    """Find problems similar to the given problem."""
+    graphrag = GraphRAGService(db)
+    concept_ids = await graphrag.get_concepts_for_question(problem_id)
+    if not concept_ids:
+        raise HTTPException(status_code=404, detail="Problem not found or has no concepts")
+
+    similarity_svc = SimilarityService(db)
+    similar = await similarity_svc.find_similar(concept_ids, exclude_question_id=problem_id)
+
+    # Fetch the actual Question records for similar problems
+    similar_question_ids = [s["question_id"] for s in similar]
+    problems = []
+    scores = []
+    details = []
+
+    if similar_question_ids:
+        result = await db.execute(
+            select(Question).where(Question.id.in_(similar_question_ids))
+        )
+        question_map = {q.id: q for q in result.scalars().all()}
+
+        for s in similar:
+            q = question_map.get(s["question_id"])
+            if q:
+                problems.append(ProblemResponse.model_validate(q))
+                scores.append(s["similarity_score"])
+                details.append(SimilarProblemDetail(**s))
+
+    return SimilarProblemResponse(
+        problems=problems, similarity_scores=scores, details=details
+    )
