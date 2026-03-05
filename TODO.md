@@ -18,7 +18,7 @@
 ## Phase 0: Environment & Infrastructure Setup
 
 ### 0.1 Project Scaffolding
-- [ ] **P0** — Create monorepo structure:
+- [x] **P0** — Create monorepo structure:
   ```
   sunmath/
   ├── backend/                 # FastAPI app
@@ -63,20 +63,19 @@
   │   └── seed_students.sql
   └── infra/                   # AWS CDK or SAM templates
   ```
-- [ ] **P0** — Initialize git repository
+- [x] **P0** — Initialize git repository
 
 ### 0.2 Backend Setup
-- [ ] **P0** — Create Python virtual environment
-- [ ] **P0** — Install core dependencies:
-  - `fastapi`, `uvicorn`, `mangum` (Lambda adapter)
-  - `sqlalchemy`, `asyncpg`, `alembic` (DB)
-  - `sympy` (math engine)
-  - `pydantic`, `pydantic-settings` (config/validation)
-  - `httpx` (async HTTP for Maxima service + LLM calls)
-- [ ] **P0** — Create FastAPI app skeleton with health check endpoint
-- [ ] **P0** — Set up Mangum handler for Lambda deployment
+- [x] **P0** — Create Python 3.12 virtual environment (`backend/.venv`)
+- [x] **P0** — Install core dependencies (fastapi, uvicorn, mangum, sqlalchemy, asyncpg, alembic, sympy, pydantic, pydantic-settings, httpx, python-multipart)
+- [x] **P0** — Create FastAPI app skeleton with health check endpoint
+- [x] **P0** — Set up Mangum handler for Lambda deployment
 - [ ] **P0** — Set up LLM API keys: Gemini, Claude, GPT-4o, DeepSeek, OpenAI (o1)
-- [ ] **P0** — Verify local `uvicorn` dev server runs
+- [x] **P0** — Verify local `uvicorn` dev server runs
+- [x] **P0** — Create Pydantic schemas (problem, grading, student, admin, benchmark)
+- [x] **P0** — Create all 13 API endpoint stubs + working admin endpoints
+- [x] **P0** — Create service layer stubs (graphrag, grading_engine, similarity, diagnosis, sympy_engine, llm_router)
+- [x] **P0** — Create Lambda-ready Dockerfile
 
 ### 0.3 Frontend Setup
 - [ ] **P0** — Initialize Next.js project (App Router, TypeScript, Tailwind CSS)
@@ -85,11 +84,13 @@
 - [ ] **P0** — Create placeholder pages: Admin, Grading, Students, Benchmark
 
 ### 0.4 Database Setup
-- [ ] **P0** — Provision PostgreSQL (local Docker for dev, AWS RDS Aurora for prod)
-- [ ] **P0** — Run schema creation SQL (all node tables, edge tables, history tables, indexes)
-- [ ] **P0** — Insert `admin_settings` initial values (similarity_threshold: 0.85, confidence_threshold: 0.90)
-- [ ] **P0** — Set up SQLAlchemy models matching the schema
-- [ ] **P0** — Verify DB connection from FastAPI
+- [x] **P0** — Provision PostgreSQL (Docker, port 5433 — local PG occupies 5432)
+- [x] **P0** — Create full schema via Alembic migration (16 tables: 4 nodes, 6 edges, 6 history/support)
+- [x] **P0** — Insert `admin_settings` initial values (similarity_threshold: 0.85, confidence_threshold: 0.90, duplicate_detection_mode: warn)
+- [x] **P0** — Set up SQLAlchemy 2.0 async models matching the schema
+- [x] **P0** — Set up Alembic async migrations
+- [x] **P0** — Verify DB connection from FastAPI
+- [x] **P0** — Create reference `data/schema.sql` for documentation
 
 ### 0.5 Google Cloud Setup (for Task 2)
 - [ ] **P0** — Google Cloud project created or selected
@@ -102,51 +103,51 @@
 ## Phase 1: Sample Data Preparation
 
 ### 1.1 Curriculum Graph Data
-- [ ] **P0** — Create 15-20 units spanning elementary/middle/high school math
-  - [ ] Elementary: fractions, simplification, basic operations
-  - [ ] Middle school: factoring, expansion, quadratic equations, functions
-  - [ ] High school: trigonometry, calculus, vectors, circle equations
-- [ ] **P0** — Create 40-50 math concepts with descriptions and categories
-- [ ] **P0** — Create 60-80 prerequisite relationships (concept → prerequisite concept)
+- [x] **P0** — Create 15-20 units spanning elementary/middle/high school math
+  - [x] Elementary: fractions, simplification, basic operations
+  - [x] Middle school: factoring, expansion, quadratic equations, functions
+  - [x] High school: trigonometry, calculus, vectors, circle equations
+- [x] **P0** — Create 40-50 math concepts with descriptions and categories
+- [x] **P0** — Create 60-80 prerequisite relationships (concept → prerequisite concept)
   - Must include chains like: polynomial multiplication → multiplication formulas → completing the square
   - Must include chains like: angles → radian measure → trigonometric functions
-- [ ] **P1** — Create 20-30 lateral association relationships (cross-unit concept links)
+- [x] **P1** — Create 20-30 lateral association relationships (cross-unit concept links)
 
 ### 1.2 Problem Data
-- [ ] **P0** — Create 30-40 problems (2-3 per unit) with full metadata:
+- [x] **P0** — Create 30-40 problems (2-3 per unit) with full metadata:
   - `content` (problem text in LaTeX)
   - `correct_answer` (LaTeX)
   - `expected_form` (factored/expanded/simplified/numeric/proof/null)
   - `target_grade`
   - `grading_hints`
-- [ ] **P0** — Link problems to evaluation concepts (`question_evaluates`)
-- [ ] **P0** — Link problems to required concepts (`question_requires`)
-- [ ] **P0** — Link problems to units (`question_units`)
+- [x] **P0** — Link problems to evaluation concepts (`question_evaluates`)
+- [x] **P0** — Link problems to required concepts (`question_requires`)
+- [x] **P0** — Link problems to units (`question_units`)
 
 ### 1.3 Student Wrong Answer Data (for Demo 3)
-- [ ] **P0** — Create 2-3 student profiles
-- [ ] **P0** — Design Student A's wrong answers to show cross-unit pattern:
+- [x] **P0** — Create 2-3 student profiles
+- [x] **P0** — Design Student A's wrong answers to show cross-unit pattern:
   - Quadratic inequality → wrong (needs factoring + completing the square)
   - Quadratic function vertex → wrong (needs completing the square)
   - Circle equation → wrong (needs completing the square)
   - Root cause: multiplication formulas → completing the square chain
-- [ ] **P1** — Design Student B's wrong answers to show different cross-unit pattern:
+- [x] **P1** — Design Student B's wrong answers to show different cross-unit pattern:
   - Trig function synthesis → wrong (needs radian measure)
   - Vector dot product → wrong (needs radian measure)
   - Root cause: radian measure
-- [ ] **P0** — Insert student_answers records
-- [ ] **P0** — Calculate and insert student_concept_mastery records
-- [ ] **P0** — Insert wrong_answer_warehouse records
+- [x] **P0** — Insert student_answers records
+- [x] **P0** — Calculate and insert student_concept_mastery records
+- [x] **P0** — Insert wrong_answer_warehouse records
 
 ### 1.4 LLM Benchmark Data (for Task 3)
-- [ ] **P0** — Prepare 60-80 math problems across 6 subjects:
-  - [ ] Algebra (equations, inequalities): 10 problems (Easy 3 / Med 4 / Hard 3)
-  - [ ] Factoring/Expansion: 10 problems (Easy 3 / Med 4 / Hard 3)
-  - [ ] Geometry (shapes, proofs): 10 problems (Easy 3 / Med 4 / Hard 3)
-  - [ ] Calculus: 10 problems (Easy 3 / Med 4 / Hard 3)
-  - [ ] Probability/Statistics: 10 problems (Easy 3 / Med 4 / Hard 3)
-  - [ ] Mixed/Descriptive: 10 problems (Med 5 / Hard 5)
-- [ ] **P0** — Standardize format: problem text, LaTeX answer, concepts, difficulty
+- [x] **P0** — Prepare 60-80 math problems across 6 subjects:
+  - [x] Algebra (equations, inequalities): 10 problems (Easy 3 / Med 4 / Hard 3)
+  - [x] Factoring/Expansion: 10 problems (Easy 3 / Med 4 / Hard 3)
+  - [x] Geometry (shapes, proofs): 10 problems (Easy 3 / Med 4 / Hard 3)
+  - [x] Calculus: 10 problems (Easy 3 / Med 4 / Hard 3)
+  - [x] Probability/Statistics: 10 problems (Easy 3 / Med 4 / Hard 3)
+  - [x] Mixed/Descriptive: 10 problems (Med 5 / Hard 5)
+- [x] **P0** — Standardize format: problem text, LaTeX answer, concepts, difficulty
 
 ### 1.5 Handwriting OCR Data (for Task 2)
 - [ ] **P0** — Collect 50+ handwriting formula images
@@ -158,9 +159,9 @@
 - [ ] **P1** — Prepare 100-200 image+LaTeX pairs for LoRA training set
 
 ### 1.6 Data Loading
-- [ ] **P0** — Write Python script to load all sample data into PostgreSQL
-- [ ] **P0** — Run data loading script and verify data integrity
-- [ ] **P0** — Test core GraphRAG queries against loaded data
+- [x] **P0** — Write Python script to load all sample data into PostgreSQL
+- [x] **P0** — Run data loading script and verify data integrity
+- [x] **P0** — Test core GraphRAG queries against loaded data
 
 ---
 
@@ -487,4 +488,5 @@ Phase 5            │              │
 ---
 
 *Document created: 2026-03-05*
-*Updated: 2026-03-05 — Added FastAPI + Next.js + Lambda stack*
+*Updated: 2026-03-05 — Phase 0 backend + DB complete (scaffolding, models, migrations, API stubs, Docker PG)*
+*Updated: 2026-03-05 — Phase 1 sample data complete (18 units, 53 concepts, 79 prerequisites, 25 lateral relations, 37 problems, 3 students, 60 benchmark problems)*

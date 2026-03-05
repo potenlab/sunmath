@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sunmath-postgres
+    environment:
+      POSTGRES_USER: sunmath
+      POSTGRES_PASSWORD: sunmath
+      POSTGRES_DB: sunmath
+    ports:
+      - "5433:5432"
+    volumes:
+      - sunmath-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sunmath -d sunmath"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  sunmath-pgdata:
