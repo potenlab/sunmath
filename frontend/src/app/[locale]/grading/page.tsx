@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -18,7 +17,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ClipboardCheck, Zap, Database, Brain, CheckCircle2, XCircle } from "lucide-react";
+import {
+  ClipboardCheck,
+  Zap,
+  Database,
+  Brain,
+  CheckCircle2,
+  XCircle,
+  Upload,
+  Camera,
+  ImageIcon,
+  Loader2,
+  X,
+  ScanLine,
+  Check,
+} from "lucide-react";
 
 interface MockProblem {
   id: string;
@@ -34,6 +47,8 @@ interface GradingResult {
   judged_by: string;
   reasoning: string;
   problem: MockProblem;
+  ocr_text: string;
+  ocr_confidence: number;
 }
 
 const MOCK_PROBLEMS: MockProblem[] = [
@@ -63,13 +78,27 @@ const MOCK_PROBLEMS: MockProblem[] = [
   },
   {
     id: "4",
-    content: "Prove that the sum of interior angles of a triangle is 180\u00B0",
+    content:
+      "Prove that the sum of interior angles of a triangle is 180\u00B0",
     correct_answer: null,
     expected_form: "proof",
     grading_hints: "Must use alternate angle property of parallel lines",
     evaluation_concepts: ["Triangle angle sum", "Parallel line properties"],
   },
 ];
+
+// Mock OCR results keyed by problem id
+const MOCK_OCR: Record<string, { text: string; confidence: number }> = {
+  "1": { text: "x\u00B2+2x+1", confidence: 0.94 },
+  "2": { text: "x\u00B2+2x+1", confidence: 0.96 },
+  "3": { text: "\u221A25", confidence: 0.88 },
+  "4": {
+    text: "Draw a line through one vertex parallel to the opposite side. By alternate interior angles, the two angles at the vertex equal the two base angles. Together with the vertex angle, they form a straight line = 180\u00B0.",
+    confidence: 0.72,
+  },
+};
+
+type PipelineStep = "idle" | "ocr" | "grading" | "done";
 
 function normalize(s: string): string {
   return s.replace(/\s+/g, "").toLowerCase();
@@ -84,8 +113,7 @@ function gradeAnswer(
 
   switch (problem.id) {
     case "1": {
-      // Factor x²+2x+1
-      const factoredForms = ["(x+1)²", "(x+1)^2", "(x+1)(x+1)"];
+      const factoredForms = ["(x+1)\u00B2", "(x+1)^2", "(x+1)(x+1)"];
       if (factoredForms.some((f) => normalize(f) === norm)) {
         return {
           is_correct: true,
@@ -94,7 +122,7 @@ function gradeAnswer(
             "The answer is mathematically correct and is in factored form as required.",
         };
       }
-      const expandedForms = ["x²+2x+1", "x^2+2x+1"];
+      const expandedForms = ["x\u00B2+2x+1", "x^2+2x+1"];
       if (expandedForms.some((f) => normalize(f) === norm)) {
         return {
           is_correct: false,
@@ -106,18 +134,18 @@ function gradeAnswer(
       return {
         is_correct: false,
         judged_by: "sympy",
-        reasoning: "The answer is not mathematically equivalent to (x+1)\u00B2.",
+        reasoning:
+          "The answer is not mathematically equivalent to (x+1)\u00B2.",
       };
     }
     case "2": {
-      // Expand (x+1)²
       const validForms = [
-        "x²+2x+1",
+        "x\u00B2+2x+1",
         "x^2+2x+1",
-        "(x+1)²",
+        "(x+1)\u00B2",
         "(x+1)^2",
         "(x+1)(x+1)",
-        "1+2x+x²",
+        "1+2x+x\u00B2",
         "1+2x+x^2",
       ];
       if (validForms.some((f) => normalize(f) === norm)) {
@@ -136,7 +164,6 @@ function gradeAnswer(
       };
     }
     case "3": {
-      // Distance
       if (norm === "5") {
         return {
           is_correct: true,
@@ -144,7 +171,7 @@ function gradeAnswer(
           reasoning: "The answer is correct. The distance is 5.",
         };
       }
-      const nonNumericForms = ["√25", "sqrt(25)", "\\sqrt{25}"];
+      const nonNumericForms = ["\u221A25", "sqrt(25)", "\\sqrt{25}"];
       if (nonNumericForms.some((f) => normalize(f) === norm)) {
         return {
           is_correct: false,
@@ -160,7 +187,6 @@ function gradeAnswer(
       };
     }
     case "4": {
-      // Proof
       if (trimmed.length > 0) {
         return {
           is_correct: true,
@@ -188,10 +214,15 @@ export default function GradingPage() {
   const t = useTranslations("grading");
 
   const [selectedProblemId, setSelectedProblemId] = useState<string>("");
-  const [studentAnswer, setStudentAnswer] = useState("");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [pipelineStep, setPipelineStep] = useState<PipelineStep>("idle");
+  const [ocrText, setOcrText] = useState<string | null>(null);
+  const [ocrConfidence, setOcrConfidence] = useState<number | null>(null);
   const [result, setResult] = useState<GradingResult | null>(null);
 
-  // Cache: key = problemId + "|" + normalized answer
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   const cacheRef = useRef<Map<string, GradingResult>>(new Map());
   const [stats, setStats] = useState({
     cacheHits: 0,
@@ -199,43 +230,99 @@ export default function GradingPage() {
     llmJudgments: 0,
   });
 
-  const selectedProblem = MOCK_PROBLEMS.find((p) => p.id === selectedProblemId);
+  const selectedProblem = MOCK_PROBLEMS.find(
+    (p) => p.id === selectedProblemId
+  );
 
-  const handleGrade = useCallback(() => {
-    if (!selectedProblem || !studentAnswer.trim()) return;
+  const handleFileSelected = useCallback(
+    (file: File) => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setUploadedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setPipelineStep("idle");
+      setOcrText(null);
+      setOcrConfidence(null);
+      setResult(null);
+    },
+    [previewUrl]
+  );
 
-    const cacheKey = `${selectedProblem.id}|${normalize(studentAnswer)}`;
+  const handleClearFile = useCallback(() => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setUploadedFile(null);
+    setPreviewUrl(null);
+    setPipelineStep("idle");
+    setOcrText(null);
+    setOcrConfidence(null);
+    setResult(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (cameraInputRef.current) cameraInputRef.current.value = "";
+  }, [previewUrl]);
 
+  // Single button: OCR → Grade in one pipeline
+  const handleGradeAnswer = useCallback(() => {
+    if (!selectedProblem || !uploadedFile) return;
+
+    const mockOcr = MOCK_OCR[selectedProblem.id] ?? {
+      text: "Unable to parse",
+      confidence: 0.5,
+    };
+
+    // Check cache first
+    const cacheKey = `${selectedProblem.id}|${normalize(mockOcr.text)}`;
     if (cacheRef.current.has(cacheKey)) {
       const cached = cacheRef.current.get(cacheKey)!;
+      setPipelineStep("done");
+      setOcrText(cached.ocr_text);
+      setOcrConfidence(cached.ocr_confidence);
       setResult({ ...cached, judged_by: "cache" });
       setStats((prev) => ({ ...prev, cacheHits: prev.cacheHits + 1 }));
       return;
     }
 
-    const { is_correct, judged_by, reasoning } = gradeAnswer(
-      selectedProblem,
-      studentAnswer
-    );
+    // Step 1: OCR
+    setPipelineStep("ocr");
+    setOcrText(null);
+    setOcrConfidence(null);
+    setResult(null);
 
-    const gradingResult: GradingResult = {
-      is_correct,
-      judged_by,
-      reasoning,
-      problem: selectedProblem,
-    };
+    setTimeout(() => {
+      setOcrText(mockOcr.text);
+      setOcrConfidence(mockOcr.confidence);
 
-    cacheRef.current.set(cacheKey, gradingResult);
-    setResult(gradingResult);
+      // Step 2: Grading
+      setPipelineStep("grading");
 
-    setStats((prev) => {
-      if (judged_by === "llm") {
-        return { ...prev, llmJudgments: prev.llmJudgments + 1 };
-      }
-      // sympy or graphrag+sympy both count as sympy
-      return { ...prev, sympyJudgments: prev.sympyJudgments + 1 };
-    });
-  }, [selectedProblem, studentAnswer]);
+      setTimeout(() => {
+        const { is_correct, judged_by, reasoning } = gradeAnswer(
+          selectedProblem,
+          mockOcr.text
+        );
+
+        const gradingResult: GradingResult = {
+          is_correct,
+          judged_by,
+          reasoning,
+          problem: selectedProblem,
+          ocr_text: mockOcr.text,
+          ocr_confidence: mockOcr.confidence,
+        };
+
+        cacheRef.current.set(cacheKey, gradingResult);
+        setResult(gradingResult);
+        setPipelineStep("done");
+
+        setStats((prev) => {
+          if (judged_by === "llm") {
+            return { ...prev, llmJudgments: prev.llmJudgments + 1 };
+          }
+          return { ...prev, sympyJudgments: prev.sympyJudgments + 1 };
+        });
+      }, 1200);
+    }, 1800);
+  }, [selectedProblem, uploadedFile]);
+
+  const isProcessing = pipelineStep === "ocr" || pipelineStep === "grading";
 
   return (
     <div className="space-y-8">
@@ -256,18 +343,23 @@ export default function GradingPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
+        {/* LEFT: Submission */}
         <Card className="shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">{t("gradeSubmission")}</CardTitle>
             <CardDescription>{t("gradeSubmissionDesc")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Select problem */}
             <div className="space-y-1.5">
               <label className="text-sm font-medium">{t("problem")}</label>
               <Select
                 value={selectedProblemId}
                 onValueChange={(val) => {
                   setSelectedProblemId(val);
+                  setPipelineStep("idle");
+                  setOcrText(null);
+                  setOcrConfidence(null);
                   setResult(null);
                 }}
               >
@@ -312,27 +404,199 @@ export default function GradingPage() {
               </div>
             )}
 
+            {/* Upload answer image */}
             <div className="space-y-1.5">
               <label className="text-sm font-medium">
-                {t("studentAnswer")}
+                Student Answer Sheet
               </label>
-              <Textarea
-                placeholder={t("studentAnswerPlaceholder")}
-                value={studentAnswer}
-                onChange={(e) => setStudentAnswer(e.target.value)}
-                className="min-h-[60px]"
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleFileSelected(file);
+                }}
               />
+              <input
+                ref={cameraInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleFileSelected(file);
+                }}
+              />
+
+              {!uploadedFile ? (
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/20 py-6 transition-colors hover:border-emerald-400/50 hover:bg-emerald-50/30"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100">
+                      <Upload className="size-5 text-emerald-600" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs font-medium">Upload Image</p>
+                      <p className="text-[10px] text-muted-foreground">
+                        PNG, JPG, PDF
+                      </p>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => cameraInputRef.current?.click()}
+                    className="flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/20 py-6 transition-colors hover:border-teal-400/50 hover:bg-teal-50/30"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-100">
+                      <Camera className="size-5 text-teal-600" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs font-medium">Take Photo</p>
+                      <p className="text-[10px] text-muted-foreground">
+                        Use camera
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                <div className="relative rounded-lg border bg-muted/20 p-2">
+                  <button
+                    onClick={handleClearFile}
+                    disabled={isProcessing}
+                    className="absolute -right-2 -top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-red-100 text-red-600 shadow-sm hover:bg-red-200 transition-colors disabled:opacity-50"
+                  >
+                    <X className="size-3.5" />
+                  </button>
+                  {previewUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={previewUrl}
+                      alt="Uploaded answer"
+                      className="mx-auto max-h-36 rounded-md object-contain"
+                    />
+                  )}
+                  <p className="mt-2 text-center text-xs text-muted-foreground truncate flex items-center justify-center gap-1.5">
+                    <ImageIcon className="size-3" />
+                    {uploadedFile.name}
+                  </p>
+                </div>
+              )}
             </div>
+
+            {/* Single Grade Answer button */}
             <button
-              onClick={handleGrade}
-              disabled={!selectedProblem || !studentAnswer.trim()}
-              className="inline-flex h-9 w-full items-center justify-center rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleGradeAnswer}
+              disabled={!selectedProblem || !uploadedFile || isProcessing}
+              className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t("gradeAnswer")}
+              {isProcessing ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  {pipelineStep === "ocr"
+                    ? "Running OCR..."
+                    : "Grading..."}
+                </>
+              ) : (
+                <>
+                  <ScanLine className="size-4" />
+                  {t("gradeAnswer")}
+                </>
+              )}
             </button>
+
+            {/* Pipeline progress steps */}
+            {pipelineStep !== "idle" && (
+              <div className="rounded-lg border bg-muted/20 p-3 space-y-2.5">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Pipeline
+                </p>
+
+                {/* Step 1: OCR */}
+                <div className="flex items-center gap-2.5">
+                  {pipelineStep === "ocr" ? (
+                    <Loader2 className="size-4 shrink-0 animate-spin text-sky-600" />
+                  ) : (
+                    <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500">
+                      <Check className="size-2.5 text-white" />
+                    </div>
+                  )}
+                  <span
+                    className={`text-xs font-medium ${pipelineStep === "ocr" ? "text-sky-700" : "text-emerald-700"}`}
+                  >
+                    Gemini Vision OCR
+                  </span>
+                  {ocrConfidence !== null && (
+                    <Badge
+                      variant="outline"
+                      className={`ml-auto text-[10px] px-1.5 py-0 ${
+                        ocrConfidence >= 0.9
+                          ? "border-emerald-300 text-emerald-700 bg-emerald-50"
+                          : ocrConfidence >= 0.8
+                            ? "border-amber-300 text-amber-700 bg-amber-50"
+                            : "border-red-300 text-red-700 bg-red-50"
+                      }`}
+                    >
+                      {(ocrConfidence * 100).toFixed(0)}%
+                    </Badge>
+                  )}
+                </div>
+
+                {/* OCR extracted text */}
+                {ocrText && (
+                  <div className="ml-6 rounded-md border bg-white/80 px-2.5 py-1.5">
+                    <p className="text-[10px] text-muted-foreground mb-0.5">
+                      Extracted:
+                    </p>
+                    <p className="text-xs font-mono font-medium truncate">
+                      {ocrText}
+                    </p>
+                  </div>
+                )}
+
+                {/* Step 2: Grading */}
+                {(pipelineStep === "grading" || pipelineStep === "done") && (
+                  <div className="flex items-center gap-2.5">
+                    {pipelineStep === "grading" ? (
+                      <Loader2 className="size-4 shrink-0 animate-spin text-violet-600" />
+                    ) : (
+                      <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500">
+                        <Check className="size-2.5 text-white" />
+                      </div>
+                    )}
+                    <span
+                      className={`text-xs font-medium ${pipelineStep === "grading" ? "text-violet-700" : "text-emerald-700"}`}
+                    >
+                      Intent-Based Grading
+                    </span>
+                    {result && (
+                      <Badge
+                        variant="outline"
+                        className={`ml-auto text-[10px] px-1.5 py-0 ${
+                          result.judged_by === "cache"
+                            ? "border-blue-300 text-blue-700 bg-blue-50"
+                            : result.judged_by === "llm"
+                              ? "border-violet-300 text-violet-700 bg-violet-50"
+                              : "border-emerald-300 text-emerald-700 bg-emerald-50"
+                        }`}
+                      >
+                        {result.judged_by}
+                      </Badge>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
 
+        {/* RIGHT: Result */}
         <Card className="shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">{t("gradingResult")}</CardTitle>
@@ -344,8 +608,8 @@ export default function GradingPage() {
                 <div
                   className={`flex items-center gap-3 rounded-lg border p-4 ${
                     result.is_correct
-                      ? "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950/30"
-                      : "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/30"
+                      ? "border-emerald-200 bg-emerald-50"
+                      : "border-red-200 bg-red-50"
                   }`}
                 >
                   {result.is_correct ? (
@@ -357,8 +621,8 @@ export default function GradingPage() {
                     <p
                       className={`text-lg font-bold ${
                         result.is_correct
-                          ? "text-emerald-700 dark:text-emerald-400"
-                          : "text-red-700 dark:text-red-400"
+                          ? "text-emerald-700"
+                          : "text-red-700"
                       }`}
                     >
                       {result.is_correct ? t("correct") : t("wrong")}
@@ -371,16 +635,28 @@ export default function GradingPage() {
                         variant="outline"
                         className={`text-[10px] px-1.5 py-0 ${
                           result.judged_by === "cache"
-                            ? "border-blue-300 text-blue-700 bg-blue-50 dark:border-blue-700 dark:text-blue-300 dark:bg-blue-950/30"
+                            ? "border-blue-300 text-blue-700 bg-blue-50"
                             : result.judged_by === "llm"
-                              ? "border-violet-300 text-violet-700 bg-violet-50 dark:border-violet-700 dark:text-violet-300 dark:bg-violet-950/30"
-                              : "border-emerald-300 text-emerald-700 bg-emerald-50 dark:border-emerald-700 dark:text-emerald-300 dark:bg-emerald-950/30"
+                              ? "border-violet-300 text-violet-700 bg-violet-50"
+                              : "border-emerald-300 text-emerald-700 bg-emerald-50"
                         }`}
                       >
                         {result.judged_by}
                       </Badge>
                     </div>
                   </div>
+                </div>
+
+                {/* OCR info */}
+                <div className="rounded-lg border bg-sky-50/50 p-3 space-y-1">
+                  <p className="text-xs font-semibold text-sky-700 flex items-center gap-1.5">
+                    <ScanLine className="size-3.5" />
+                    OCR Output
+                  </p>
+                  <p className="text-sm font-mono">{result.ocr_text}</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Confidence: {(result.ocr_confidence * 100).toFixed(0)}%
+                  </p>
                 </div>
 
                 <div className="space-y-2">
@@ -442,49 +718,52 @@ export default function GradingPage() {
         </Card>
       </div>
 
+      {/* Cache Statistics */}
       <div>
-        <h2 className="mb-4 text-lg font-semibold">{t("cacheStatistics")}</h2>
+        <h2 className="mb-4 text-lg font-semibold">
+          {t("cacheStatistics")}
+        </h2>
         <div className="grid gap-4 md:grid-cols-3">
-          <Card className="border-none bg-gradient-to-br from-blue-50 to-sky-50 shadow-sm dark:from-blue-950/30 dark:to-sky-950/30">
+          <Card className="border-none bg-gradient-to-br from-blue-50 to-sky-50 shadow-sm">
             <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/50">
-                <Database className="size-6 text-blue-600 dark:text-blue-400" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100">
+                <Database className="size-6 text-blue-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-blue-700 dark:text-blue-400">
+                <p className="text-2xl font-bold text-blue-700">
                   {stats.cacheHits}
                 </p>
-                <p className="text-xs text-blue-600/70 dark:text-blue-400/70">
+                <p className="text-xs text-blue-600/70">
                   {t("cacheHitRate")}
                 </p>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-none bg-gradient-to-br from-emerald-50 to-teal-50 shadow-sm dark:from-emerald-950/30 dark:to-teal-950/30">
+          <Card className="border-none bg-gradient-to-br from-emerald-50 to-teal-50 shadow-sm">
             <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900/50">
-                <Zap className="size-6 text-emerald-600 dark:text-emerald-400" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100">
+                <Zap className="size-6 text-emerald-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
+                <p className="text-2xl font-bold text-emerald-700">
                   {stats.sympyJudgments}
                 </p>
-                <p className="text-xs text-emerald-600/70 dark:text-emerald-400/70">
+                <p className="text-xs text-emerald-600/70">
                   {t("sympyEngine")}
                 </p>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-none bg-gradient-to-br from-violet-50 to-purple-50 shadow-sm dark:from-violet-950/30 dark:to-purple-950/30">
+          <Card className="border-none bg-gradient-to-br from-violet-50 to-purple-50 shadow-sm">
             <CardContent className="flex items-center gap-4 pt-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-100 dark:bg-violet-900/50">
-                <Brain className="size-6 text-violet-600 dark:text-violet-400" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-100">
+                <Brain className="size-6 text-violet-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-violet-700 dark:text-violet-400">
+                <p className="text-2xl font-bold text-violet-700">
                   {stats.llmJudgments}
                 </p>
-                <p className="text-xs text-violet-600/70 dark:text-violet-400/70">
+                <p className="text-xs text-violet-600/70">
                   {t("llmFallback")}
                 </p>
               </div>
@@ -493,12 +772,13 @@ export default function GradingPage() {
         </div>
       </div>
 
+      {/* Intent-based examples */}
       <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg">{t("intentBasedExamples")}</CardTitle>
-          <CardDescription>
-            {t("intentBasedExamplesDesc")}
-          </CardDescription>
+          <CardTitle className="text-lg">
+            {t("intentBasedExamples")}
+          </CardTitle>
+          <CardDescription>{t("intentBasedExamplesDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
