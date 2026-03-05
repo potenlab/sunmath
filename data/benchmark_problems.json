@@ -1,0 +1,616 @@
+{
+  "metadata": {
+    "description": "LLM Benchmark Test Suite for SunMath Task 3",
+    "total_problems": 60,
+    "subjects": ["algebra", "factoring_expansion", "geometry", "calculus", "probability_statistics", "mixed_descriptive"],
+    "difficulty_levels": ["easy", "medium", "hard"],
+    "created": "2026-03-05"
+  },
+  "problems": [
+    {
+      "id": "ALG-E01",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "content": "Solve for x: 3x + 7 = 22",
+      "correct_answer": "x = 5",
+      "correct_answer_latex": "x = 5",
+      "concepts": ["linear_equation_solving"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "ALG-E02",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "content": "Solve for x: 2(x - 3) = 10",
+      "correct_answer": "x = 8",
+      "correct_answer_latex": "x = 8",
+      "concepts": ["linear_equation_solving", "distributive_property"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "ALG-E03",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "content": "Solve for x: x/4 + 3 = 7",
+      "correct_answer": "x = 16",
+      "correct_answer_latex": "x = 16",
+      "concepts": ["linear_equation_solving", "fraction_operations"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "ALG-M01",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "content": "Solve the system: 2x + y = 7 and x - y = 2",
+      "correct_answer": "x = 3, y = 1",
+      "correct_answer_latex": "x = 3, y = 1",
+      "concepts": ["linear_equation_solving"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "ALG-M02",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "content": "Solve: |2x - 5| = 9",
+      "correct_answer": "x = 7 or x = -2",
+      "correct_answer_latex": "x = 7 \\text{ or } x = -2",
+      "concepts": ["absolute_value", "linear_equation_solving"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "ALG-M03",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "content": "Solve the inequality: 3x - 2 ≤ 4x + 5",
+      "correct_answer": "x ≥ -7",
+      "correct_answer_latex": "x \\geq -7",
+      "concepts": ["linear_inequality"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "ALG-M04",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "content": "Solve: x² - 5x + 6 = 0",
+      "correct_answer": "x = 2, x = 3",
+      "correct_answer_latex": "x = 2, x = 3",
+      "concepts": ["quadratic_equation_solving", "factoring_quadratic"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "ALG-H01",
+      "subject": "algebra",
+      "difficulty": "hard",
+      "content": "Solve: x⁴ - 5x² + 4 = 0",
+      "correct_answer": "x = ±1, x = ±2",
+      "correct_answer_latex": "x = \\pm 1, x = \\pm 2",
+      "concepts": ["quadratic_equation_solving"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "ALG-H02",
+      "subject": "algebra",
+      "difficulty": "hard",
+      "content": "Solve the inequality: (x-1)(x+2)(x-3) < 0",
+      "correct_answer": "x < -2 or 1 < x < 3",
+      "correct_answer_latex": "x < -2 \\text{ or } 1 < x < 3",
+      "concepts": ["quadratic_inequality"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "ALG-H03",
+      "subject": "algebra",
+      "difficulty": "hard",
+      "content": "Find all real solutions of: √(x+3) + √(x-1) = 4",
+      "correct_answer": "x = 6",
+      "correct_answer_latex": "x = 6",
+      "concepts": ["quadratic_equation_solving"],
+      "expected_form": "numeric"
+    },
+
+    {
+      "id": "FAC-E01",
+      "subject": "factoring_expansion",
+      "difficulty": "easy",
+      "content": "Expand: (x + 4)(x + 5)",
+      "correct_answer": "x² + 9x + 20",
+      "correct_answer_latex": "x^2 + 9x + 20",
+      "concepts": ["polynomial_multiplication"],
+      "expected_form": "expanded"
+    },
+    {
+      "id": "FAC-E02",
+      "subject": "factoring_expansion",
+      "difficulty": "easy",
+      "content": "Factor: x² + 7x + 12",
+      "correct_answer": "(x + 3)(x + 4)",
+      "correct_answer_latex": "(x + 3)(x + 4)",
+      "concepts": ["factoring_quadratic"],
+      "expected_form": "factored"
+    },
+    {
+      "id": "FAC-E03",
+      "subject": "factoring_expansion",
+      "difficulty": "easy",
+      "content": "Expand: (x - 2)²",
+      "correct_answer": "x² - 4x + 4",
+      "correct_answer_latex": "x^2 - 4x + 4",
+      "concepts": ["multiplication_formulas"],
+      "expected_form": "expanded"
+    },
+    {
+      "id": "FAC-M01",
+      "subject": "factoring_expansion",
+      "difficulty": "medium",
+      "content": "Factor completely: 2x² - 8x + 6",
+      "correct_answer": "2(x - 1)(x - 3)",
+      "correct_answer_latex": "2(x - 1)(x - 3)",
+      "concepts": ["factoring_common", "factoring_quadratic"],
+      "expected_form": "factored"
+    },
+    {
+      "id": "FAC-M02",
+      "subject": "factoring_expansion",
+      "difficulty": "medium",
+      "content": "Expand: (2x - 3)(x² + x - 4)",
+      "correct_answer": "2x³ - x² - 11x + 12",
+      "correct_answer_latex": "2x^3 - x^2 - 11x + 12",
+      "concepts": ["polynomial_multiplication"],
+      "expected_form": "expanded"
+    },
+    {
+      "id": "FAC-M03",
+      "subject": "factoring_expansion",
+      "difficulty": "medium",
+      "content": "Factor: x³ - 8",
+      "correct_answer": "(x - 2)(x² + 2x + 4)",
+      "correct_answer_latex": "(x - 2)(x^2 + 2x + 4)",
+      "concepts": ["factoring_quadratic", "multiplication_formulas"],
+      "expected_form": "factored"
+    },
+    {
+      "id": "FAC-M04",
+      "subject": "factoring_expansion",
+      "difficulty": "medium",
+      "content": "Complete the square: x² + 8x + 10",
+      "correct_answer": "(x + 4)² - 6",
+      "correct_answer_latex": "(x + 4)^2 - 6",
+      "concepts": ["completing_the_square"],
+      "expected_form": "factored"
+    },
+    {
+      "id": "FAC-H01",
+      "subject": "factoring_expansion",
+      "difficulty": "hard",
+      "content": "Factor completely: x⁴ - 16",
+      "correct_answer": "(x² + 4)(x + 2)(x - 2)",
+      "correct_answer_latex": "(x^2 + 4)(x + 2)(x - 2)",
+      "concepts": ["factoring_quadratic", "multiplication_formulas"],
+      "expected_form": "factored"
+    },
+    {
+      "id": "FAC-H02",
+      "subject": "factoring_expansion",
+      "difficulty": "hard",
+      "content": "Factor: x³ + 3x² - 4x - 12",
+      "correct_answer": "(x + 3)(x + 2)(x - 2)",
+      "correct_answer_latex": "(x + 3)(x + 2)(x - 2)",
+      "concepts": ["factoring_common", "factoring_quadratic"],
+      "expected_form": "factored"
+    },
+    {
+      "id": "FAC-H03",
+      "subject": "factoring_expansion",
+      "difficulty": "hard",
+      "content": "Expand: (a + b + c)²",
+      "correct_answer": "a² + b² + c² + 2ab + 2ac + 2bc",
+      "correct_answer_latex": "a^2 + b^2 + c^2 + 2ab + 2ac + 2bc",
+      "concepts": ["multiplication_formulas", "polynomial_multiplication"],
+      "expected_form": "expanded"
+    },
+
+    {
+      "id": "GEO-E01",
+      "subject": "geometry",
+      "difficulty": "easy",
+      "content": "Find the area of a triangle with base 8 cm and height 5 cm.",
+      "correct_answer": "20 cm²",
+      "correct_answer_latex": "20 \\text{ cm}^2",
+      "concepts": ["multiplication_division"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "GEO-E02",
+      "subject": "geometry",
+      "difficulty": "easy",
+      "content": "Find the distance between points (1, 2) and (4, 6).",
+      "correct_answer": "5",
+      "correct_answer_latex": "5",
+      "concepts": ["distance_formula", "coordinate_plane"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "GEO-E03",
+      "subject": "geometry",
+      "difficulty": "easy",
+      "content": "What is the circumference of a circle with radius 7 cm? Express in terms of π.",
+      "correct_answer": "14π cm",
+      "correct_answer_latex": "14\\pi \\text{ cm}",
+      "concepts": ["circle_equation"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "GEO-M01",
+      "subject": "geometry",
+      "difficulty": "medium",
+      "content": "Find the equation of the circle with center (3, -1) and passing through (6, 3).",
+      "correct_answer": "(x-3)² + (y+1)² = 25",
+      "correct_answer_latex": "(x-3)^2 + (y+1)^2 = 25",
+      "concepts": ["circle_equation", "distance_formula"],
+      "expected_form": "expanded"
+    },
+    {
+      "id": "GEO-M02",
+      "subject": "geometry",
+      "difficulty": "medium",
+      "content": "Prove that the diagonals of a rectangle are equal in length.",
+      "correct_answer": "Place rectangle with vertices at (0,0), (a,0), (a,b), (0,b). Diagonal 1: √(a²+b²). Diagonal 2: √(a²+b²). Equal.",
+      "correct_answer_latex": "\\text{Both diagonals have length } \\sqrt{a^2 + b^2}",
+      "concepts": ["distance_formula", "coordinate_plane"],
+      "expected_form": "proof"
+    },
+    {
+      "id": "GEO-M03",
+      "subject": "geometry",
+      "difficulty": "medium",
+      "content": "Find the area of a triangle with vertices A(1,1), B(4,1), C(2,5).",
+      "correct_answer": "6",
+      "correct_answer_latex": "6",
+      "concepts": ["coordinate_plane"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "GEO-M04",
+      "subject": "geometry",
+      "difficulty": "medium",
+      "content": "Find the center and radius of the circle x² + y² + 6x - 2y - 6 = 0.",
+      "correct_answer": "Center: (-3, 1), Radius: 4",
+      "correct_answer_latex": "\\text{Center: } (-3, 1), \\text{ Radius: } 4",
+      "concepts": ["circle_equation", "completing_the_square"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "GEO-H01",
+      "subject": "geometry",
+      "difficulty": "hard",
+      "content": "Prove that the medians of a triangle are concurrent (meet at a single point).",
+      "correct_answer": "Using coordinate geometry: place triangle at A(0,0), B(2a,0), C(2b,2c). Medians from each vertex to opposite midpoint all pass through ((2a+2b)/3, 2c/3).",
+      "correct_answer_latex": "\\text{Centroid at } \\left(\\frac{x_1+x_2+x_3}{3}, \\frac{y_1+y_2+y_3}{3}\\right)",
+      "concepts": ["coordinate_plane", "linear_function"],
+      "expected_form": "proof"
+    },
+    {
+      "id": "GEO-H02",
+      "subject": "geometry",
+      "difficulty": "hard",
+      "content": "Two circles x² + y² = 25 and x² + y² - 8x + 6y + 7 = 0 intersect. Find the equation of their common chord.",
+      "correct_answer": "8x - 6y - 32 = 0 or equivalently 4x - 3y - 16 = 0",
+      "correct_answer_latex": "4x - 3y - 16 = 0",
+      "concepts": ["circle_equation", "linear_equation_solving"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "GEO-H03",
+      "subject": "geometry",
+      "difficulty": "hard",
+      "content": "Find the length of the tangent from the point (7, 1) to the circle x² + y² - 4x + 6y - 12 = 0.",
+      "correct_answer": "√(49 + 1 - 28 + 6 - 12) = √16 = 4",
+      "correct_answer_latex": "4",
+      "concepts": ["circle_equation", "distance_formula", "completing_the_square"],
+      "expected_form": "numeric"
+    },
+
+    {
+      "id": "CAL-E01",
+      "subject": "calculus",
+      "difficulty": "easy",
+      "content": "Find the derivative of f(x) = 5x³ - 2x + 7.",
+      "correct_answer": "f'(x) = 15x² - 2",
+      "correct_answer_latex": "f'(x) = 15x^2 - 2",
+      "concepts": ["derivative_rules"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "CAL-E02",
+      "subject": "calculus",
+      "difficulty": "easy",
+      "content": "Find ∫(6x² + 4x - 3) dx.",
+      "correct_answer": "2x³ + 2x² - 3x + C",
+      "correct_answer_latex": "2x^3 + 2x^2 - 3x + C",
+      "concepts": ["integral_rules"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "CAL-E03",
+      "subject": "calculus",
+      "difficulty": "easy",
+      "content": "Evaluate: lim(x→2) (x² - 4)/(x - 2)",
+      "correct_answer": "4",
+      "correct_answer_latex": "4",
+      "concepts": ["limit_concept", "factoring_quadratic"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "CAL-M01",
+      "subject": "calculus",
+      "difficulty": "medium",
+      "content": "Find the derivative of f(x) = (3x + 1)⁴.",
+      "correct_answer": "f'(x) = 12(3x + 1)³",
+      "correct_answer_latex": "f'(x) = 12(3x + 1)^3",
+      "concepts": ["derivative_rules"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "CAL-M02",
+      "subject": "calculus",
+      "difficulty": "medium",
+      "content": "Find the area under the curve y = x² from x = 0 to x = 3.",
+      "correct_answer": "9",
+      "correct_answer_latex": "9",
+      "concepts": ["integral_definition", "integral_rules"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "CAL-M03",
+      "subject": "calculus",
+      "difficulty": "medium",
+      "content": "Find the equation of the tangent line to y = x² - 3x + 2 at x = 1.",
+      "correct_answer": "y = -x + 1",
+      "correct_answer_latex": "y = -x + 1",
+      "concepts": ["derivative_rules", "derivative_applications", "linear_function"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "CAL-M04",
+      "subject": "calculus",
+      "difficulty": "medium",
+      "content": "Find the local maximum and minimum of f(x) = x³ - 6x² + 9x + 1.",
+      "correct_answer": "Local max at x=1: f(1)=5. Local min at x=3: f(3)=1.",
+      "correct_answer_latex": "\\text{Local max: } (1, 5), \\text{ Local min: } (3, 1)",
+      "concepts": ["derivative_applications", "derivative_rules"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "CAL-H01",
+      "subject": "calculus",
+      "difficulty": "hard",
+      "content": "Evaluate ∫₀^(π/2) sin(x)cos(x) dx.",
+      "correct_answer": "1/2",
+      "correct_answer_latex": "\\frac{1}{2}",
+      "concepts": ["integral_rules", "trigonometric_functions"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "CAL-H02",
+      "subject": "calculus",
+      "difficulty": "hard",
+      "content": "Find the derivative of f(x) = x^x for x > 0.",
+      "correct_answer": "f'(x) = x^x(ln(x) + 1)",
+      "correct_answer_latex": "f'(x) = x^x(\\ln(x) + 1)",
+      "concepts": ["derivative_rules"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "CAL-H03",
+      "subject": "calculus",
+      "difficulty": "hard",
+      "content": "Find the volume of the solid formed by rotating y = √x around the x-axis from x = 0 to x = 4.",
+      "correct_answer": "8π",
+      "correct_answer_latex": "8\\pi",
+      "concepts": ["integral_definition", "integral_rules"],
+      "expected_form": "simplified"
+    },
+
+    {
+      "id": "PRB-E01",
+      "subject": "probability_statistics",
+      "difficulty": "easy",
+      "content": "A bag contains 3 red balls and 5 blue balls. What is the probability of drawing a red ball?",
+      "correct_answer": "3/8",
+      "correct_answer_latex": "\\frac{3}{8}",
+      "concepts": ["fraction_basics"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "PRB-E02",
+      "subject": "probability_statistics",
+      "difficulty": "easy",
+      "content": "Find the mean of the data set: 4, 7, 10, 13, 16.",
+      "correct_answer": "10",
+      "correct_answer_latex": "10",
+      "concepts": ["addition_subtraction", "multiplication_division"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "PRB-E03",
+      "subject": "probability_statistics",
+      "difficulty": "easy",
+      "content": "A coin is flipped 3 times. How many possible outcomes are there?",
+      "correct_answer": "8",
+      "correct_answer_latex": "8",
+      "concepts": ["exponent_basics"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "PRB-M01",
+      "subject": "probability_statistics",
+      "difficulty": "medium",
+      "content": "In how many ways can 5 students be arranged in a line?",
+      "correct_answer": "120",
+      "correct_answer_latex": "120",
+      "concepts": ["multiplication_division"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "PRB-M02",
+      "subject": "probability_statistics",
+      "difficulty": "medium",
+      "content": "Two dice are rolled. What is the probability that the sum is 7?",
+      "correct_answer": "1/6",
+      "correct_answer_latex": "\\frac{1}{6}",
+      "concepts": ["fraction_basics", "addition_subtraction"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "PRB-M03",
+      "subject": "probability_statistics",
+      "difficulty": "medium",
+      "content": "Find the standard deviation of: 2, 4, 4, 4, 5, 5, 7, 9. (Population std dev)",
+      "correct_answer": "2",
+      "correct_answer_latex": "2",
+      "concepts": ["addition_subtraction", "exponent_basics"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "PRB-M04",
+      "subject": "probability_statistics",
+      "difficulty": "medium",
+      "content": "From a group of 8 people, how many ways can a committee of 3 be selected?",
+      "correct_answer": "56",
+      "correct_answer_latex": "56",
+      "concepts": ["multiplication_division", "fraction_operations"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "PRB-H01",
+      "subject": "probability_statistics",
+      "difficulty": "hard",
+      "content": "A binomial experiment has n=6 trials with p=0.3. Find P(X=2).",
+      "correct_answer": "0.3241 (or 15 × 0.09 × 0.1681)",
+      "correct_answer_latex": "\\binom{6}{2}(0.3)^2(0.7)^4 \\approx 0.3241",
+      "concepts": ["exponent_basics", "multiplication_division"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "PRB-H02",
+      "subject": "probability_statistics",
+      "difficulty": "hard",
+      "content": "Prove that the variance of the sum of two independent random variables equals the sum of their variances.",
+      "correct_answer": "Var(X+Y) = E[(X+Y-μ_X-μ_Y)²] = E[(X-μ_X)²] + 2E[(X-μ_X)(Y-μ_Y)] + E[(Y-μ_Y)²]. Independence gives E[(X-μ_X)(Y-μ_Y)] = 0. So Var(X+Y) = Var(X) + Var(Y).",
+      "correct_answer_latex": "\\text{Var}(X+Y) = \\text{Var}(X) + \\text{Var}(Y)",
+      "concepts": ["variable_expression"],
+      "expected_form": "proof"
+    },
+    {
+      "id": "PRB-H03",
+      "subject": "probability_statistics",
+      "difficulty": "hard",
+      "content": "A test has 10 questions, each with 4 choices. A student guesses randomly on all. What is the probability of getting at least 8 correct?",
+      "correct_answer": "≈ 0.0000416",
+      "correct_answer_latex": "\\sum_{k=8}^{10} \\binom{10}{k}\\left(\\frac{1}{4}\\right)^k\\left(\\frac{3}{4}\\right)^{10-k} \\approx 0.0000416",
+      "concepts": ["exponent_basics", "multiplication_division"],
+      "expected_form": "numeric"
+    },
+
+    {
+      "id": "MIX-M01",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "content": "A rectangle has a perimeter of 36 cm and an area of 80 cm². Find its dimensions.",
+      "correct_answer": "8 cm × 10 cm",
+      "correct_answer_latex": "8 \\text{ cm} \\times 10 \\text{ cm}",
+      "concepts": ["quadratic_equation_solving", "linear_equation_solving"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "MIX-M02",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "content": "A ball is thrown upward with initial velocity 20 m/s. Its height is h(t) = 20t - 5t². When does it reach maximum height and what is that height?",
+      "correct_answer": "t = 2s, h = 20m",
+      "correct_answer_latex": "t = 2 \\text{ s}, h = 20 \\text{ m}",
+      "concepts": ["derivative_applications", "quadratic_function"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "MIX-M03",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "content": "A car travels 120 km at a certain speed. If it had traveled 20 km/h faster, the trip would have taken 1 hour less. Find the original speed.",
+      "correct_answer": "40 km/h",
+      "correct_answer_latex": "40 \\text{ km/h}",
+      "concepts": ["quadratic_equation_solving", "ratio_proportion"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "MIX-M04",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "content": "Explain why the equation x² + 1 = 0 has no real solutions but has complex solutions.",
+      "correct_answer": "For real numbers, x² ≥ 0, so x² + 1 ≥ 1 > 0. No real x satisfies x² + 1 = 0. In complex numbers, x = ±i where i² = -1.",
+      "correct_answer_latex": "x^2 \\geq 0 \\implies x^2 + 1 > 0 \\text{ for all real } x. \\text{ Complex solutions: } x = \\pm i",
+      "concepts": ["quadratic_equation_solving", "discriminant"],
+      "expected_form": "proof"
+    },
+    {
+      "id": "MIX-M05",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "content": "A ladder 10 m long leans against a wall. The bottom slides away at 1 m/s. How fast is the top sliding down when the bottom is 6 m from the wall?",
+      "correct_answer": "3/4 m/s (or 0.75 m/s)",
+      "correct_answer_latex": "\\frac{3}{4} \\text{ m/s}",
+      "concepts": ["derivative_applications", "distance_formula"],
+      "expected_form": "simplified"
+    },
+    {
+      "id": "MIX-H01",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "content": "Prove that for any positive integers a and b, if ab is even, then a is even or b is even.",
+      "correct_answer": "Proof by contrapositive: Assume a is odd and b is odd. Then a = 2m+1 and b = 2n+1. ab = (2m+1)(2n+1) = 4mn + 2m + 2n + 1 = 2(2mn+m+n) + 1, which is odd. So if ab is even, a or b must be even.",
+      "correct_answer_latex": "\\text{Contrapositive proof using odd = 2k+1}",
+      "concepts": ["variable_expression"],
+      "expected_form": "proof"
+    },
+    {
+      "id": "MIX-H02",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "content": "A farmer has 200 m of fencing to enclose a rectangular area next to a river (no fence needed on the river side). What dimensions maximize the area?",
+      "correct_answer": "Width = 50 m, Length = 100 m, Max area = 5000 m²",
+      "correct_answer_latex": "50 \\text{ m} \\times 100 \\text{ m} = 5000 \\text{ m}^2",
+      "concepts": ["derivative_applications", "quadratic_function"],
+      "expected_form": "numeric"
+    },
+    {
+      "id": "MIX-H03",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "content": "A point moves along the curve y = x³. Find the point where the tangent line has the smallest positive slope.",
+      "correct_answer": "At x = 0, slope = 0 (not positive). The slope is 3x² which is positive for all x ≠ 0 and approaches 0 as x → 0. There is no smallest positive slope; the infimum is 0 but it is not achieved.",
+      "correct_answer_latex": "\\text{No minimum positive slope exists; inf} = 0 \\text{ (not achieved)}",
+      "concepts": ["derivative_rules", "derivative_applications", "limit_concept"],
+      "expected_form": "proof"
+    },
+    {
+      "id": "MIX-H04",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "content": "Show that the sum of the first n odd numbers equals n².",
+      "correct_answer": "Proof by induction: Base case n=1: 1 = 1². Inductive step: Assume 1+3+...+(2k-1) = k². Then 1+3+...+(2k-1)+(2k+1) = k² + 2k + 1 = (k+1)². QED.",
+      "correct_answer_latex": "\\sum_{i=1}^{n}(2i-1) = n^2 \\text{ (by induction)}",
+      "concepts": ["sequence_arithmetic", "series_sum"],
+      "expected_form": "proof"
+    },
+    {
+      "id": "MIX-H05",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "content": "Three circles of radius 1 are mutually tangent. Find the area of the region enclosed between them.",
+      "correct_answer": "√3 - π/2 ≈ 0.1613",
+      "correct_answer_latex": "\\sqrt{3} - \\frac{\\pi}{2}",
+      "concepts": ["trigonometric_ratios", "circle_equation"],
+      "expected_form": "simplified"
+    }
+  ]
+}
