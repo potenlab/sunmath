@@ -11,3 +11,5 @@ python-dotenv>=1.0.0
 httpx>=0.28.0
 python-multipart>=0.0.12
 google-cloud-aiplatform>=1.140.0
+python-jose[cryptography]>=3.3.0
+bcrypt>=4.0.0

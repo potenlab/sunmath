@@ -1,5 +1,6 @@
 from app.models.base import Base
 from app.models.nodes import Unit, Concept, Question, Student, ExpectedForm
+from app.models.user import User, UserRole
 from app.models.edges import (
     UnitConcept,
     ConceptPrerequisite,
@@ -40,4 +41,6 @@ __all__ = [
     "StudentDiagnosis",
     "JudgedBy",
     "WrongAnswerStatus",
+    "User",
+    "UserRole",
 ]

@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, func as sa_func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_db
+from app.api.deps_auth import require_role
+from app.models.user import User, UserRole
 from app.models.history import (
     StudentAnswer,
     StudentConceptMastery,
@@ -14,6 +16,10 @@ from app.schemas.student import (
     DiagnosisResponse,
     LearningPathResponse,
     MasteryListResponse,
+    StudentCreate,
+    StudentListResponse,
+    StudentResponse,
+    StudentUpdate,
     WrongAnswerListResponse,
     WrongAnswerResponse,
 )
@@ -31,9 +37,61 @@ async def _verify_student(student_id: int, db: AsyncSession) -> None:
         raise HTTPException(status_code=404, detail="Student not found")
 
 
+@router.get("", response_model=StudentListResponse)
+async def list_students(db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
+    """List all students."""
+    total_result = await db.execute(select(sa_func.count()).select_from(Student))
+    total = total_result.scalar() or 0
+    result = await db.execute(select(Student).order_by(Student.created_at.desc()))
+    students = result.scalars().all()
+    return StudentListResponse(
+        students=[StudentResponse.model_validate(s) for s in students],
+        total=total,
+    )
+
+
+@router.post("", response_model=StudentResponse, status_code=201)
+async def create_student(body: StudentCreate, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
+    """Create a new student."""
+    student = Student(name=body.name, grade_level=body.grade_level)
+    db.add(student)
+    await db.flush()
+    await db.refresh(student)
+    return StudentResponse.model_validate(student)
+
+
+@router.put("/{student_id}", response_model=StudentResponse)
+async def update_student(student_id: int, body: StudentUpdate, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
+    """Update a student."""
+    result = await db.execute(select(Student).where(Student.id == student_id))
+    student = result.scalar_one_or_none()
+    if not student:
+        raise HTTPException(status_code=404, detail="Student not found")
+    update_data = body.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(student, key, value)
+    db.add(student)
+    await db.flush()
+    await db.refresh(student)
+    return StudentResponse.model_validate(student)
+
+
+@router.delete("/{student_id}", status_code=204)
+async def delete_student(student_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
+    """Delete a student."""
+    result = await db.execute(select(Student).where(Student.id == student_id))
+    student = result.scalar_one_or_none()
+    if not student:
+        raise HTTPException(status_code=404, detail="Student not found")
+    await db.delete(student)
+    await db.flush()
+
+
 @router.get("/{student_id}/diagnosis", response_model=DiagnosisResponse)
-async def get_diagnosis(student_id: int, db: AsyncSession = Depends(get_db)):
+async def get_diagnosis(student_id: int, db: AsyncSession = Depends(get_db), current_user: User = Depends(require_role(UserRole.admin, UserRole.student))):
     """Get student diagnosis with root cause analysis."""
+    if current_user.role == UserRole.student and current_user.student_id != student_id:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
     await _verify_student(student_id, db)
     svc = DiagnosisService(db)
     diagnosis = await svc.generate_diagnosis(student_id)
@@ -48,8 +106,10 @@ async def get_diagnosis(student_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/{student_id}/wrong-answers", response_model=WrongAnswerListResponse)
-async def get_wrong_answers(student_id: int, db: AsyncSession = Depends(get_db)):
+async def get_wrong_answers(student_id: int, db: AsyncSession = Depends(get_db), current_user: User = Depends(require_role(UserRole.admin, UserRole.student))):
     """Get student's wrong answer warehouse."""
+    if current_user.role == UserRole.student and current_user.student_id != student_id:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
     await _verify_student(student_id, db)
 
     result = await db.execute(
@@ -86,8 +146,10 @@ async def get_wrong_answers(student_id: int, db: AsyncSession = Depends(get_db))
 
 
 @router.get("/{student_id}/mastery", response_model=MasteryListResponse)
-async def get_mastery(student_id: int, db: AsyncSession = Depends(get_db)):
+async def get_mastery(student_id: int, db: AsyncSession = Depends(get_db), current_user: User = Depends(require_role(UserRole.admin, UserRole.student))):
     """Get student's concept mastery levels sorted by mastery ascending."""
+    if current_user.role == UserRole.student and current_user.student_id != student_id:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
     await _verify_student(student_id, db)
 
     result = await db.execute(
@@ -117,8 +179,10 @@ async def get_mastery(student_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/{student_id}/learning-path", response_model=LearningPathResponse)
-async def get_learning_path(student_id: int, db: AsyncSession = Depends(get_db)):
+async def get_learning_path(student_id: int, db: AsyncSession = Depends(get_db), current_user: User = Depends(require_role(UserRole.admin, UserRole.student))):
     """Get student's personalized learning path."""
+    if current_user.role == UserRole.student and current_user.student_id != student_id:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
     await _verify_student(student_id, db)
     svc = DiagnosisService(db)
     path_data = await svc.generate_learning_path(student_id)

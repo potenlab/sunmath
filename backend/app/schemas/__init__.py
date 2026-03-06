@@ -6,7 +6,10 @@ from app.schemas.problem import (
 )
 from app.schemas.grading import GradeRequest, GradeResponse, CacheStatsResponse
 from app.schemas.student import (
+    StudentCreate,
+    StudentListResponse,
     StudentResponse,
+    StudentUpdate,
     ConceptMasteryResponse,
     MasteryListResponse,
     WrongAnswerResponse,

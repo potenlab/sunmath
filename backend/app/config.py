@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     google_application_credentials: str = ""
     gcp_project_id: str = ""
     gcp_location: str = "us-central1"
+    jwt_secret: str = "change-me-in-production"
+    access_token_expire: int = 30       # minutes
+    refresh_token_expire: int = 10080   # 7 days
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8", "extra": "ignore"}
 

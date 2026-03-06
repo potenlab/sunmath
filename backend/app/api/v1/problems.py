@@ -5,14 +5,19 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_db
+from app.api.deps_auth import require_role
 from app.models.edges import QuestionEvaluates, QuestionRequires, QuestionUnits
+from app.models.user import User, UserRole
 from app.models.nodes import ExpectedForm, Question
+from sqlalchemy import func as sa_func
 from app.schemas.problem import (
     ConceptExtractionResult,
     DuplicateCheckResponse,
     ProblemCreate,
+    ProblemListResponse,
     ProblemRegistrationResponse,
     ProblemResponse,
+    ProblemUpdate,
     SimilarProblemDetail,
     SimilarProblemResponse,
 )
@@ -25,8 +30,31 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/problems", tags=["problems"])
 
 
+@router.get("", response_model=ProblemListResponse)
+async def list_problems(
+    page: int = 1,
+    page_size: int = 20,
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(require_role(UserRole.admin, UserRole.student)),
+):
+    """List all problems with pagination."""
+    offset = (page - 1) * page_size
+    total_result = await db.execute(select(sa_func.count()).select_from(Question))
+    total = total_result.scalar() or 0
+    result = await db.execute(
+        select(Question).order_by(Question.created_at.desc()).offset(offset).limit(page_size)
+    )
+    questions = result.scalars().all()
+    return ProblemListResponse(
+        problems=[ProblemResponse.model_validate(q) for q in questions],
+        total=total,
+        page=page,
+        page_size=page_size,
+    )
+
+
 @router.post("", response_model=ProblemRegistrationResponse, status_code=201)
-async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db)):
+async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
     """Create a new problem with duplicate detection and optional concept extraction."""
     concept_extraction = None
     eval_concept_ids: list[int] = []
@@ -149,7 +177,7 @@ async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db)
 
 
 @router.get("/{problem_id}", response_model=ProblemResponse)
-async def get_problem(problem_id: int, db: AsyncSession = Depends(get_db)):
+async def get_problem(problem_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin, UserRole.student))):
     """Get a problem by ID."""
     result = await db.execute(
         select(Question).where(Question.id == problem_id)
@@ -160,8 +188,39 @@ async def get_problem(problem_id: int, db: AsyncSession = Depends(get_db)):
     return ProblemResponse.model_validate(question)
 
 
+@router.put("/{problem_id}", response_model=ProblemResponse)
+async def update_problem(problem_id: int, body: ProblemUpdate, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
+    """Update a problem by ID."""
+    result = await db.execute(
+        select(Question).where(Question.id == problem_id)
+    )
+    question = result.scalar_one_or_none()
+    if not question:
+        raise HTTPException(status_code=404, detail="Problem not found")
+    update_data = body.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(question, key, value)
+    db.add(question)
+    await db.flush()
+    await db.refresh(question)
+    return ProblemResponse.model_validate(question)
+
+
+@router.delete("/{problem_id}", status_code=204)
+async def delete_problem(problem_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
+    """Delete a problem by ID."""
+    result = await db.execute(
+        select(Question).where(Question.id == problem_id)
+    )
+    question = result.scalar_one_or_none()
+    if not question:
+        raise HTTPException(status_code=404, detail="Problem not found")
+    await db.delete(question)
+    await db.flush()
+
+
 @router.get("/{problem_id}/similar", response_model=SimilarProblemResponse)
-async def get_similar_problems(problem_id: int, db: AsyncSession = Depends(get_db)):
+async def get_similar_problems(problem_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
     """Find problems similar to the given problem."""
     graphrag = GraphRAGService(db)
     concept_ids = await graphrag.get_concepts_for_question(problem_id)

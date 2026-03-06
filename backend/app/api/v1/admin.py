@@ -3,14 +3,16 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_db
+from app.api.deps_auth import require_role
 from app.models.history import AdminSettings
+from app.models.user import User, UserRole
 from app.schemas.admin import SettingResponse, SettingUpdate, SettingsListResponse
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
 
 @router.get("/settings", response_model=SettingsListResponse)
-async def list_settings(db: AsyncSession = Depends(get_db)):
+async def list_settings(db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
     """List all admin settings."""
     result = await db.execute(select(AdminSettings))
     settings = result.scalars().all()
@@ -21,7 +23,7 @@ async def list_settings(db: AsyncSession = Depends(get_db)):
 
 @router.put("/settings/{key}", response_model=SettingResponse)
 async def update_setting(
-    key: str, body: SettingUpdate, db: AsyncSession = Depends(get_db)
+    key: str, body: SettingUpdate, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))
 ):
     """Update an admin setting by key."""
     result = await db.execute(select(AdminSettings).where(AdminSettings.key == key))

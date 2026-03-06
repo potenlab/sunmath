@@ -55,3 +55,18 @@ class LearningPathResponse(BaseModel):
     student_id: int
     path: list[str]
     estimated_concepts: int
+
+
+class StudentCreate(BaseModel):
+    name: str
+    grade_level: int | None = None
+
+
+class StudentUpdate(BaseModel):
+    name: str | None = None
+    grade_level: int | None = None
+
+
+class StudentListResponse(BaseModel):
+    students: list[StudentResponse]
+    total: int
