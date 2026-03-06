@@ -13,12 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useDiagnosis } from "../hooks/use-diagnosis";
-import {
-  getMockWrongAnswers,
-  getMockConcepts,
-  getMockLearningPath,
-  getMockPracticeItems,
-} from "../data/mock";
+import { useWrongAnswers, useMastery } from "../api/use-student-data";
 import { WrongAnswerItem } from "@/components/students/wrong-answer-item";
 import { AnalysisComparison } from "@/components/students/analysis-comparison";
 import { ConceptFrequencyChart } from "@/components/students/concept-frequency-chart";
@@ -32,19 +27,43 @@ interface StudentDetailProps {
 
 export function StudentDetail({ id }: StudentDetailProps) {
   const t = useTranslations("studentDetail");
-  const { analysisState, handleRunAnalysis } = useDiagnosis();
+  const studentId = parseInt(id, 10);
+  const { analysisState, diagnosis, handleRunAnalysis } = useDiagnosis(studentId);
 
-  const mockWrongAnswers = getMockWrongAnswers(t);
-  const mockConcepts = getMockConcepts(t);
-  const mockLearningPath = getMockLearningPath(t);
-  const practiceItems = getMockPracticeItems(t);
+  const { data: wrongAnswersData, isLoading: wrongAnswersLoading } = useWrongAnswers(studentId);
+  const { data: masteryData } = useMastery(studentId);
+
+  const wrongAnswers = wrongAnswersData?.wrong_answers ?? [];
+  const activeCount = wrongAnswers.filter((a) => a.status === "active").length;
+  const resolvedCount = wrongAnswers.filter((a) => a.status === "resolved").length;
+
+  // Convert mastery data to concept frequency format for the chart
+  const conceptsForChart = (masteryData?.masteries ?? []).map((m) => ({
+    name: m.concept_name,
+    count: 1,
+    pct: Math.round(m.mastery_level * 100),
+  }));
+
+  // Convert diagnosis learning path to display format
+  const learningPathItems = (diagnosis?.learning_path ?? []).map((concept, i) => ({
+    step: i + 1,
+    concept,
+    desc: concept,
+  }));
+
+  // Convert recommended problems to practice items
+  const practiceItems = (diagnosis?.recommended_problems ?? []).map((pid) => ({
+    problem: `Problem #${pid}`,
+    concept: diagnosis?.core_weaknesses[0] ?? "",
+    difficulty: "medium",
+  }));
 
   return (
     <div className="space-y-8">
       {/* Header */}
       <div>
         <Link
-          href="/students"
+          href="/admin/students"
           className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-3.5" />
@@ -52,17 +71,17 @@ export function StudentDetail({ id }: StudentDetailProps) {
         </Link>
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-violet-400 to-purple-500 text-lg font-bold text-white shadow-sm">
-            A
+            {id.charAt(0).toUpperCase()}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold tracking-tight">Student A</h1>
+              <h1 className="text-2xl font-bold tracking-tight">Student {id}</h1>
               <Badge className="bg-red-100 text-red-700 hover:bg-red-100">
                 {t("active")}
               </Badge>
             </div>
             <p className="text-sm text-muted-foreground">
-              High School 2 &middot; {t("studentId")}: {id}
+              {t("studentId")}: {id}
             </p>
           </div>
         </div>
@@ -76,16 +95,32 @@ export function StudentDetail({ id }: StudentDetailProps) {
             {t("wrongAnswersTitle")}
           </CardTitle>
           <CardDescription>
-            {mockWrongAnswers.filter((a) => a.status === "active").length}{" "}
-            {t("active").toLowerCase()},{" "}
-            {mockWrongAnswers.filter((a) => a.status === "resolved").length}{" "}
-            {t("resolved").toLowerCase()}
+            {activeCount} {t("active").toLowerCase()},{" "}
+            {resolvedCount} {t("resolved").toLowerCase()}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
-          {mockWrongAnswers.map((answer) => (
-            <WrongAnswerItem key={answer.id} answer={answer} />
-          ))}
+          {wrongAnswersLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="size-6 animate-spin text-muted-foreground" />
+            </div>
+          ) : wrongAnswers.length === 0 ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">
+              No wrong answers found.
+            </p>
+          ) : (
+            wrongAnswers.map((answer) => (
+              <WrongAnswerItem
+                key={answer.id}
+                answer={{
+                  id: answer.id,
+                  problem: answer.question_content,
+                  unit: `Q${answer.question_id}`,
+                  status: answer.status,
+                }}
+              />
+            ))
+          )}
 
           {analysisState === "idle" && (
             <div className="pt-4">
@@ -116,40 +151,44 @@ export function StudentDetail({ id }: StudentDetailProps) {
       </Card>
 
       {/* Diagnosis Section */}
-      {analysisState === "done" && (
+      {analysisState === "done" && diagnosis && (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <AnalysisComparison />
 
           {/* Root Cause Banner */}
-          <Card className="border-none bg-gradient-to-r from-amber-50 via-orange-50 to-red-50 shadow-sm">
-            <CardContent className="pt-6">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-100">
-                  <Brain className="size-6 text-amber-600" />
+          {diagnosis.core_weaknesses.length > 0 && (
+            <Card className="border-none bg-gradient-to-r from-amber-50 via-orange-50 to-red-50 shadow-sm">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-100">
+                    <Brain className="size-6 text-amber-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-amber-900">
+                      {t("rootCauseIdentified")}
+                    </h3>
+                    <p className="mt-1 text-sm text-amber-800">
+                      Core weaknesses: {diagnosis.core_weaknesses.join(", ")}
+                    </p>
+                    {diagnosis.prerequisite_chains.length > 0 && (
+                      <p className="mt-2 text-xs text-amber-700/70">
+                        {t("prerequisiteChain")}:{" "}
+                        {diagnosis.prerequisite_chains[0]?.join(" → ")}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-amber-900">
-                    {t("rootCauseIdentified")}
-                  </h3>
-                  <p
-                    className="mt-1 text-sm text-amber-800"
-                    dangerouslySetInnerHTML={{ __html: t.raw("rootCauseDesc") }}
-                  />
-                  <p className="mt-2 text-xs text-amber-700/70">
-                    {t("prerequisiteChain")}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
 
           <div className="grid gap-6 lg:grid-cols-2">
-            <ConceptFrequencyChart concepts={mockConcepts} />
+            <ConceptFrequencyChart concepts={conceptsForChart} />
             <RootCauseGraph />
           </div>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            <LearningPath items={mockLearningPath} />
+            <LearningPath items={learningPathItems} />
             <PracticeList items={practiceItems} />
           </div>
         </div>

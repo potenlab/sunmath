@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useDiagnosisQuery } from "../api/use-student-data";
 
-export function useDiagnosis() {
-  const [analysisState, setAnalysisState] = useState<"idle" | "loading" | "done">("idle");
+export function useDiagnosis(studentId: number) {
+  const { data, refetch, isFetching, isSuccess } = useDiagnosisQuery(studentId);
+
+  const analysisState: "idle" | "loading" | "done" = isFetching
+    ? "loading"
+    : isSuccess && data
+      ? "done"
+      : "idle";
 
   const handleRunAnalysis = () => {
-    setAnalysisState("loading");
-    setTimeout(() => {
-      setAnalysisState("done");
-    }, 1500);
+    refetch();
   };
 
-  return { analysisState, handleRunAnalysis };
+  return { analysisState, diagnosis: data ?? null, handleRunAnalysis };
 }

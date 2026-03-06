@@ -3,6 +3,7 @@
 import { usePathname } from "@/i18n/navigation";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/features/auth/context/auth-context";
 import {
   Sidebar,
   SidebarContent,
@@ -14,42 +15,67 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuBadge,
 } from "@/components/ui/sidebar";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   Settings,
   ClipboardCheck,
   Users,
   Sun,
+  LogOut,
+  BookOpen,
+  Brain,
+  FileText,
 } from "lucide-react";
 
 export function AppSidebar() {
   const pathname = usePathname();
   const t = useTranslations();
+  const { user, logout } = useAuth();
 
-  const navItems = [
+  const adminNavItems = [
     {
-      title: t("nav.adminPanel"),
-      href: "/admin" as const,
-      icon: Settings,
-      description: t("nav.adminDesc"),
+      title: "Problems",
+      href: "/admin/problems" as const,
+      icon: FileText,
+      description: "Manage math problems",
     },
     {
       title: t("nav.grading"),
-      href: "/grading" as const,
+      href: "/admin/grading" as const,
       icon: ClipboardCheck,
       description: t("nav.gradingDesc"),
     },
     {
       title: t("nav.students"),
-      href: "/students" as const,
+      href: "/admin/students" as const,
       icon: Users,
       description: t("nav.studentsDesc"),
-      badge: "3",
+    },
+    {
+      title: "Settings",
+      href: "/admin/settings" as const,
+      icon: Settings,
+      description: "Configure system settings",
     },
   ];
+
+  const studentNavItems = [
+    {
+      title: "Problems",
+      href: "/student/problems" as const,
+      icon: BookOpen,
+      description: "Browse and answer problems",
+    },
+    {
+      title: "My Diagnosis",
+      href: "/student/diagnosis" as const,
+      icon: Brain,
+      description: "View your learning diagnosis",
+    },
+  ];
+
+  const navItems = user?.role === "admin" ? adminNavItems : studentNavItems;
 
   return (
     <Sidebar>
@@ -95,34 +121,30 @@ export function AppSidebar() {
                         </div>
                       </Link>
                     </SidebarMenuButton>
-                    {item.badge && (
-                      <SidebarMenuBadge>
-                        <Badge
-                          variant="secondary"
-                          className="h-5 min-w-5 justify-center rounded-full bg-sidebar-primary/20 px-1.5 text-[10px] font-semibold text-sidebar-primary"
-                        >
-                          {item.badge}
-                        </Badge>
-                      </SidebarMenuBadge>
-                    )}
                   </SidebarMenuItem>
                 );
               })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
       </SidebarContent>
 
       <SidebarFooter className="px-5 py-4">
-        <div className="rounded-lg bg-sidebar-accent/50 p-3">
-          <p className="text-[11px] font-medium text-sidebar-foreground/70">
-            {t("common.mvpDemo")}
-          </p>
-          <p className="text-[10px] text-sidebar-foreground/40">
-            {t("common.daechiDong")}
-          </p>
-        </div>
+        {user && (
+          <div className="mb-2 flex items-center justify-between rounded-lg bg-sidebar-accent/50 p-3">
+            <div>
+              <p className="text-sm font-medium">{user.name}</p>
+              <p className="text-[11px] text-sidebar-foreground/50">{user.role}</p>
+            </div>
+            <button
+              onClick={logout}
+              className="rounded-md p-1.5 hover:bg-sidebar-accent transition-colors"
+              title="Logout"
+            >
+              <LogOut className="size-4 text-sidebar-foreground/60" />
+            </button>
+          </div>
+        )}
       </SidebarFooter>
     </Sidebar>
   );

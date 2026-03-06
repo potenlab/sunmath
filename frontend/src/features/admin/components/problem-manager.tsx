@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
   Card,
@@ -47,10 +48,9 @@ export function ProblemManager({
     handleDeleteProblem,
   } = useProblemRegistration(duplicateMode);
 
-  // Notify parent of problems count changes
-  if (onProblemsCountChange) {
-    onProblemsCountChange(problems.length);
-  }
+  useEffect(() => {
+    onProblemsCountChange?.(problems.length);
+  }, [problems.length, onProblemsCountChange]);
 
   return (
     <>

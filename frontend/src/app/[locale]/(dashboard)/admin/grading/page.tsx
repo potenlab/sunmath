@@ -9,7 +9,7 @@ import { ResultPanel } from "@/features/grading/components/result-panel";
 import { IntentExamples } from "@/components/grading/intent-examples";
 import { useGradingPipeline } from "@/features/grading/hooks/use-grading-pipeline";
 
-export default function GradingPage() {
+export default function AdminGradingPage() {
   const t = useTranslations("grading");
   const pipeline = useGradingPipeline();
 

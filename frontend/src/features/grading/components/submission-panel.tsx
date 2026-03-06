@@ -29,7 +29,6 @@ export function SubmissionPanel({ pipeline }: SubmissionPanelProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <ProblemSelector
-          problems={pipeline.problems}
           selectedProblemId={pipeline.selectedProblemId}
           selectedProblem={pipeline.selectedProblem}
           onSelect={pipeline.handleSelectProblem}

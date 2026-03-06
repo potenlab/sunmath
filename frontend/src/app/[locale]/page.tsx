@@ -6,5 +6,5 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  redirect(`/${locale}/admin`);
+  redirect(`/${locale}/login`);
 }

@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
-import type { RegisteredProblem, DuplicateInfo } from "../types";
-import { SEED_PROBLEM } from "../data/mock";
+import type { RegisteredProblem, DuplicateInfo, ExpectedForm } from "../types";
+import { useCreateProblem } from "../api/use-problems";
 
 export function useProblemRegistration(duplicateMode: "warn" | "block") {
   const [problemContent, setProblemContent] = useState("");
@@ -9,21 +9,13 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
   const [targetGrade, setTargetGrade] = useState("");
   const [gradingHints, setGradingHints] = useState("");
 
-  const [problems, setProblems] = useState<RegisteredProblem[]>([SEED_PROBLEM]);
-  const [nextId, setNextId] = useState(2);
+  const [problems, setProblems] = useState<RegisteredProblem[]>([]);
 
   const [registrationMessage, setRegistrationMessage] = useState<string | null>(null);
   const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
   const [duplicateInfo, setDuplicateInfo] = useState<DuplicateInfo | null>(null);
 
-  const isFactoringRelated = useCallback((content: string) => {
-    const lower = content.toLowerCase();
-    return (
-      lower.includes("factor") ||
-      lower.includes("factorise") ||
-      lower.includes("factorize")
-    );
-  }, []);
+  const createProblem = useCreateProblem();
 
   const resetForm = useCallback(() => {
     setProblemContent("");
@@ -33,80 +25,101 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
     setGradingHints("");
   }, []);
 
-  const addProblem = useCallback(() => {
-    const concepts = isFactoringRelated(problemContent)
-      ? ["Factoring", "Quadratic expressions", "Polynomial operations"]
-      : ["Geometry", "Circle properties"];
+  const handleRegisterProblem = useCallback(async () => {
+    if (!problemContent.trim()) return;
 
-    const newProblem: RegisteredProblem = {
-      id: nextId,
-      content: problemContent,
-      correctAnswer,
-      expectedForm,
-      targetGrade,
-      gradingHints,
-      concepts,
-    };
+    try {
+      const response = await createProblem.mutateAsync({
+        content: problemContent,
+        correct_answer: correctAnswer,
+        expected_form: (expectedForm as ExpectedForm) || undefined,
+        target_grade: targetGrade ? parseInt(targetGrade, 10) : undefined,
+        grading_hints: gradingHints || undefined,
+        auto_extract_concepts: true,
+      });
 
-    setProblems((prev) => [...prev, newProblem]);
-    setNextId((prev) => prev + 1);
-    resetForm();
-    setRegistrationMessage("Problem registered successfully!");
-    setTimeout(() => setRegistrationMessage(null), 3000);
+      // Handle duplicate detection
+      if (response.duplicate_check.is_duplicate) {
+        if (duplicateMode === "block") {
+          setRegistrationMessage(
+            `Registration blocked: Duplicate problem detected (similarity: ${response.duplicate_check.similarity_score.toFixed(2)}). Change mode to 'Warn' to override.`
+          );
+          setTimeout(() => setRegistrationMessage(null), 5000);
+          return;
+        }
+
+        // In warn mode, show the duplicate dialog
+        // Use the first similar problem for display
+        if (response.similar_problems.length > 0) {
+          const existingId = response.similar_problems[0].question_id;
+          setDuplicateInfo({
+            similarity: response.duplicate_check.similarity_score,
+            existingProblem: {
+              id: existingId,
+              content: `Problem #${existingId}`,
+              correctAnswer: "",
+              expectedForm: "",
+              targetGrade: "",
+              gradingHints: "",
+              concepts: response.similar_problems[0].shared_concepts.map(String),
+            },
+            sharedConcepts: response.similar_problems[0].shared_concepts.map(String),
+            differences: [],
+          });
+          setDuplicateDialogOpen(true);
+          return;
+        }
+      }
+
+      // Success — add to local list and reset
+      if (response.problem) {
+        const concepts = response.concept_extraction?.evaluation_concept_names ?? [];
+        const newProblem: RegisteredProblem = {
+          id: response.problem.id,
+          content: response.problem.content,
+          correctAnswer: response.problem.correct_answer,
+          expectedForm: response.problem.expected_form,
+          targetGrade: response.problem.target_grade?.toString() ?? "",
+          gradingHints: response.problem.grading_hints ?? "",
+          concepts,
+        };
+        setProblems((prev) => [...prev, newProblem]);
+        resetForm();
+        setRegistrationMessage("Problem registered successfully!");
+        setTimeout(() => setRegistrationMessage(null), 3000);
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Registration failed";
+      // Handle 409 Conflict (duplicate blocked by server)
+      if (message.includes("409")) {
+        setRegistrationMessage(
+          "Registration blocked by server: Duplicate problem detected."
+        );
+      } else {
+        setRegistrationMessage(`Error: ${message}`);
+      }
+      setTimeout(() => setRegistrationMessage(null), 5000);
+    }
   }, [
     problemContent,
     correctAnswer,
     expectedForm,
     targetGrade,
     gradingHints,
-    nextId,
-    isFactoringRelated,
+    duplicateMode,
+    createProblem,
     resetForm,
   ]);
 
-  const handleRegisterProblem = useCallback(() => {
-    if (!problemContent.trim()) return;
-
-    const hasFactoringProblem = problems.some((p) =>
-      isFactoringRelated(p.content)
-    );
-
-    if (isFactoringRelated(problemContent) && hasFactoringProblem) {
-      const existing = problems.find((p) => isFactoringRelated(p.content))!;
-
-      if (duplicateMode === "block") {
-        setRegistrationMessage(
-          "Registration blocked: Duplicate problem detected (similarity: 0.92). Change mode to 'Warn' to override."
-        );
-        setTimeout(() => setRegistrationMessage(null), 5000);
-        return;
-      }
-
-      setDuplicateInfo({
-        similarity: 0.92,
-        existingProblem: existing,
-        sharedConcepts: [
-          "Factoring",
-          "Quadratic expressions",
-          "Polynomial operations",
-        ],
-        differences: [
-          "Different coefficients (5x+6 vs 7x+12)",
-          "Different factor pairs ((2,3) vs (3,4))",
-          "Same difficulty level",
-        ],
-      });
-      setDuplicateDialogOpen(true);
-    } else {
-      addProblem();
-    }
-  }, [problemContent, problems, duplicateMode, isFactoringRelated, addProblem]);
-
-  const handleRegisterAnyway = useCallback(() => {
+  const handleRegisterAnyway = useCallback(async () => {
     setDuplicateDialogOpen(false);
     setDuplicateInfo(null);
-    addProblem();
-  }, [addProblem]);
+    // Re-submit — the server already registered it in "warn" mode
+    // The problem was already created; just add to local state
+    setRegistrationMessage("Problem registered (duplicate warning acknowledged).");
+    resetForm();
+    setTimeout(() => setRegistrationMessage(null), 3000);
+  }, [resetForm]);
 
   const handleDeleteProblem = useCallback((id: number) => {
     setProblems((prev) => prev.filter((p) => p.id !== id));

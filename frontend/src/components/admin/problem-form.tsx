@@ -17,7 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FileText } from "lucide-react";
-import { EXPECTED_FORMS } from "@/features/admin/data/mock";
+import { EXPECTED_FORMS } from "@/features/admin/types";
 
 interface ProblemFormProps {
   problemContent: string;

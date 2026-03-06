@@ -102,17 +102,12 @@ export function GradingResultCard({ result }: GradingResultCardProps) {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-1">
-                {result.problem.evaluation_concepts.map((c) => (
-                  <Badge
-                    key={c}
-                    variant="secondary"
-                    className="text-[10px] px-1.5 py-0"
-                  >
-                    {c}
-                  </Badge>
-                ))}
-              </div>
+              {result.problem.target_grade && (
+                <div>
+                  <span className="text-muted-foreground">Target grade:</span>
+                  <p className="font-medium">{result.problem.target_grade}</p>
+                </div>
+              )}
             </div>
           </div>
         ) : (
