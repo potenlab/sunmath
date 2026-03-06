@@ -103,4 +103,46 @@ export function del<T = void>(path: string): Promise<T> {
   });
 }
 
+export async function postFormData<T>(
+  path: string,
+  formData: FormData,
+): Promise<T> {
+  const headers: Record<string, string> = {
+    ...getAuthHeaders(),
+  };
+
+  let res = await fetch(`${BASE_URL}${path}`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+
+  if (res.status === 401) {
+    const refreshed = await tryRefreshToken();
+    if (refreshed) {
+      const retryHeaders = { ...headers, ...getAuthHeaders() };
+      res = await fetch(`${BASE_URL}${path}`, {
+        method: "POST",
+        headers: retryHeaders,
+        body: formData,
+      });
+    } else {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        if (!window.location.pathname.includes("/login") && !window.location.pathname.includes("/register")) {
+          window.location.href = `/${window.location.pathname.split("/")[1]}/login`;
+        }
+      }
+    }
+  }
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new ApiError(res.status, body);
+  }
+
+  return res.json() as Promise<T>;
+}
+
 export { ApiError };

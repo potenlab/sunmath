@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useStudentProblem } from "@/features/student/api/use-problems";
 import { useSubmitAnswer } from "@/features/student/api/use-answer";
+import { useOCR } from "@/features/student/api/use-ocr";
 import { useAuth } from "@/features/auth/context/auth-context";
 import { GradingResultCard } from "@/components/grading/grading-result-card";
 
@@ -24,10 +25,13 @@ export default function StudentProblemDetailPage() {
   const { user } = useAuth();
   const { data: problem, isLoading } = useStudentProblem(problemId);
   const submitMutation = useSubmitAnswer();
+  const ocrMutation = useOCR();
 
   const [answer, setAnswer] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [ocrText, setOcrText] = useState<string | null>(null);
+  const [isRecognizing, setIsRecognizing] = useState(false);
   const [result, setResult] = useState<{
     is_correct: boolean;
     judged_by: string;
@@ -55,7 +59,27 @@ export default function StudentProblemDetailPage() {
 
   const handleSubmit = async () => {
     if (!user?.student_id || !problem) return;
-    const submittedAnswer = answer.trim() || "Image upload (OCR pending)";
+
+    let submittedAnswer = answer.trim();
+
+    // If an image is uploaded and no text was typed, run OCR first
+    if (!submittedAnswer && uploadedFile) {
+      try {
+        setIsRecognizing(true);
+        const ocrResult = await ocrMutation.mutateAsync(uploadedFile);
+        submittedAnswer = ocrResult.text;
+        setOcrText(ocrResult.text);
+        setAnswer(ocrResult.text);
+      } catch {
+        setIsRecognizing(false);
+        return;
+      } finally {
+        setIsRecognizing(false);
+      }
+    }
+
+    if (!submittedAnswer) return;
+
     try {
       const res = await submitMutation.mutateAsync({
         student_id: user.student_id,
@@ -174,10 +198,15 @@ export default function StudentProblemDetailPage() {
             className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-medium"
             onClick={handleSubmit}
             disabled={
-              (!answer.trim() && !uploadedFile) || submitMutation.isPending
+              (!answer.trim() && !uploadedFile) || isRecognizing || submitMutation.isPending
             }
           >
-            {submitMutation.isPending ? (
+            {isRecognizing ? (
+              <>
+                <Loader2 className="size-4 animate-spin mr-1" />
+                Recognizing...
+              </>
+            ) : submitMutation.isPending ? (
               <>
                 <Loader2 className="size-4 animate-spin mr-1" />
                 Grading...
@@ -189,6 +218,12 @@ export default function StudentProblemDetailPage() {
               </>
             )}
           </Button>
+
+          {ocrMutation.isError && (
+            <div className="rounded-lg bg-red-50 dark:bg-red-950/30 p-3 text-sm text-red-600 dark:text-red-400">
+              OCR failed. Please try again or type your answer manually.
+            </div>
+          )}
 
           {submitMutation.isError && (
             <div className="rounded-lg bg-red-50 dark:bg-red-950/30 p-3 text-sm text-red-600 dark:text-red-400">
@@ -208,7 +243,7 @@ export default function StudentProblemDetailPage() {
                 judged_by: result.judged_by,
                 reasoning: result.reasoning,
                 problem,
-                ocr_text: answer || "Image upload",
+                ocr_text: ocrText || answer,
                 ocr_confidence: 1.0,
               }}
             />

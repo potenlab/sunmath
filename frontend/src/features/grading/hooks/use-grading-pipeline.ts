@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from "react";
 import type { GradingResult, ProblemResponse, PipelineStep } from "../types";
 import { useGradeMutation } from "../api/use-grade";
 import { useQuery } from "@tanstack/react-query";
-import { get } from "@/lib/api";
+import { get, postFormData } from "@/lib/api";
 
 export function useGradingPipeline() {
   const [selectedProblemId, setSelectedProblemId] = useState<string>("");
@@ -72,11 +72,12 @@ export function useGradingPipeline() {
     setOcrConfidence(null);
     setResult(null);
 
-    // TODO: Replace with real OCR API call when available
-    // For now, simulate OCR step with a placeholder
-    const ocrResult = { text: "OCR not yet integrated", confidence: 0.0 };
-
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    const formData = new FormData();
+    formData.append("file", uploadedFile);
+    const ocrResult = await postFormData<{ text: string; confidence: number }>(
+      "/ocr/recognize",
+      formData,
+    );
     setOcrText(ocrResult.text);
     setOcrConfidence(ocrResult.confidence);
 
