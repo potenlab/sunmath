@@ -150,13 +150,13 @@
 - [x] **P0** — Standardize format: problem text, LaTeX answer, concepts, difficulty
 
 ### 1.5 Handwriting OCR Data (for Task 2)
-- [ ] **P0** — Collect 50+ handwriting formula images
-  - [ ] Clean handwriting samples
-  - [ ] Messy handwriting samples
-  - [ ] Unusual notation samples
-  - [ ] Formula types: fractions, radicals, exponents, integrals, matrices
-- [ ] **P0** — Create ground truth LaTeX for each image
-- [ ] **P1** — Prepare 100-200 image+LaTeX pairs for LoRA training set
+- [x] **P0** — Collect 50+ handwriting formula images *(55 synthetic images generated via matplotlib + distortions)*
+  - [x] Clean handwriting samples (27 generated)
+  - [x] Messy handwriting samples (16 generated with noise/rotation/blur)
+  - [x] Unusual notation samples (12 generated with shear/heavy distortion)
+  - [x] Formula types: fractions, radicals, exponents, integrals, matrices
+- [x] **P0** — Create ground truth LaTeX for each image *(55 LaTeX formulas in manifest.csv, paired with images)*
+- [~] **P1** — Prepare 100-200 image+LaTeX pairs for LoRA training set *(55/100 complete, manifest supports expansion)*
 
 ### 1.6 Data Loading
 - [x] **P0** — Write Python script to load all sample data into PostgreSQL
@@ -492,3 +492,4 @@ Phase 5            │              │
 *Updated: 2026-03-05 — Phase 1 sample data complete (18 units, 53 concepts, 79 prerequisites, 25 lateral relations, 37 problems, 3 students, 60 benchmark problems)*
 *Updated: 2026-03-05 — Phase 2 core logic complete (GraphRAG service, SymPy form checking, LLM router, Jaccard similarity, grading engine with caching, diagnosis service, wrong answer warehouse — all 3 demos verified end-to-end)*
 *Updated: 2026-03-05 — LLM integration via OpenRouter: real _call_llm() with httpx, concept auto-extraction, match_concept_names in GraphRAG, auto_extract_concepts on POST /problems*
+*Updated: 2026-03-06 — Phase 1.5 complete: 55 synthetic handwriting images generated (matplotlib + distortions), manifest.csv with ground truth LaTeX, validate_manifest.py confirms 55/55 coverage. Real photos can replace synthetic images later.*

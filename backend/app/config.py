@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     llm_model: str = ""
     llm_base_url: str = "https://openrouter.ai/api/v1"
     llm_timeout: float = 30.0
+    benchmark_results_dir: str = "data/benchmark_results"
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8", "extra": "ignore"}
 
