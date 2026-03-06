@@ -1,0 +1,60 @@
+{
+  "run_id": "20260306_084957",
+  "timestamp": "2026-03-06T08:50:08.935083+00:00",
+  "models": [
+    "deepseek-v3"
+  ],
+  "problem_count": 2,
+  "results": [
+    {
+      "problem_id": "ALG-E01",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "model_key": "deepseek-v3",
+      "model_id": "deepseek/deepseek-chat",
+      "response": {
+        "answer": "5",
+        "answer_latex": "5",
+        "confidence": 100,
+        "solution": "To solve for x in the equation 3x + 7 = 22, follow these steps:\n1. Subtract 7 from both sides of the equation to isolate the term with x: 3x = 22 - 7.\n2. Simplify the right side: 3x = 15.\n3. Divide both sides by 3 to solve for x: x = 15 / 3.\n4. Simplify the division: x = 5.",
+        "latency_ms": 5654.976457997691,
+        "input_tokens": 64,
+        "output_tokens": 131,
+        "cost": 0.00016138000000000003,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "x = 5",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-E02",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "model_key": "deepseek-v3",
+      "model_id": "deepseek/deepseek-chat",
+      "response": {
+        "answer": "8",
+        "answer_latex": "8",
+        "confidence": 100,
+        "solution": "To solve for x in the equation 2(x - 3) = 10, follow these steps:\n\n1. **Divide both sides by 2** to isolate the term with x:\n   \\(\\frac{2(x - 3)}{2} = \\frac{10}{2}\\)\n   Simplifying this gives:\n   \\(x - 3 = 5\\)\n\n2. **Add 3 to both sides** to solve for x:\n   \\(x - 3 + 3 = 5 + 3\\)\n   Simplifying this gives:\n   \\(x = 8\\)\n\nTherefore, the solution is x = 8.",
+        "latency_ms": 5999.630375008564,
+        "input_tokens": 65,
+        "output_tokens": 180,
+        "cost": 0.00021555,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "x = 8",
+      "expected_form": "numeric"
+    }
+  ],
+  "total_cost": 0.00037693000000000004,
+  "total_duration_s": 11.72
+}
