@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Settings, Gauge, ShieldAlert } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { StatCard } from "@/components/common/stat-card";
 import { AdminSettings } from "@/features/admin/components/admin-settings";
+import { useAdminSettings } from "@/features/admin/hooks/use-admin-settings";
 
 export default function AdminSettingsPage() {
   const t = useTranslations("admin");
-  const [duplicateMode, setDuplicateMode] = useState<"warn" | "block">("warn");
+  const { similarityThreshold, duplicateMode } = useAdminSettings();
 
   return (
     <div className="space-y-8">
@@ -23,7 +23,7 @@ export default function AdminSettingsPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <StatCard
           icon={Gauge}
-          value="0.85"
+          value={similarityThreshold.toFixed(2)}
           label={t("similarityThreshold")}
           colorScheme="amber"
         />
@@ -35,10 +35,7 @@ export default function AdminSettingsPage() {
         />
       </div>
 
-      <AdminSettings
-        duplicateMode={duplicateMode}
-        onDuplicateModeChange={setDuplicateMode}
-      />
+      <AdminSettings />
     </div>
   );
 }

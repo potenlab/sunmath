@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import type { RegisteredProblem, DuplicateInfo, ExpectedForm } from "../types";
 import { useCreateProblem } from "../api/use-problems";
+import { ApiError } from "@/lib/api";
 
 export function useProblemRegistration(duplicateMode: "warn" | "block") {
   const [problemContent, setProblemContent] = useState("");
@@ -14,6 +15,7 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
   const [registrationMessage, setRegistrationMessage] = useState<string | null>(null);
   const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
   const [duplicateInfo, setDuplicateInfo] = useState<DuplicateInfo | null>(null);
+  const [duplicateBlocked, setDuplicateBlocked] = useState(false);
 
   const createProblem = useCreateProblem();
 
@@ -66,6 +68,7 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
             sharedConcepts: response.similar_problems[0].shared_concepts.map(String),
             differences: [],
           });
+          setDuplicateBlocked(false);
           setDuplicateDialogOpen(true);
           return;
         }
@@ -89,16 +92,46 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
         setTimeout(() => setRegistrationMessage(null), 3000);
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Registration failed";
       // Handle 409 Conflict (duplicate blocked by server)
-      if (message.includes("409")) {
+      if (err instanceof ApiError && err.status === 409) {
+        try {
+          const body = JSON.parse(err.message);
+          const detail = body.detail;
+          const dupCheck = detail?.duplicate_check;
+          const similarProblems = detail?.similar_problems;
+
+          if (dupCheck && similarProblems?.length > 0) {
+            const first = similarProblems[0];
+            setDuplicateInfo({
+              similarity: dupCheck.similarity_score,
+              existingProblem: {
+                id: first.question_id,
+                content: `Problem #${first.question_id}`,
+                correctAnswer: "",
+                expectedForm: "",
+                targetGrade: "",
+                gradingHints: "",
+                concepts: first.shared_concepts.map(String),
+              },
+              sharedConcepts: first.shared_concepts.map(String),
+              differences: [],
+            });
+            setDuplicateBlocked(true);
+            setDuplicateDialogOpen(true);
+            return;
+          }
+        } catch {
+          // JSON parse failed — fall through to generic message
+        }
         setRegistrationMessage(
           "Registration blocked by server: Duplicate problem detected."
         );
+        setTimeout(() => setRegistrationMessage(null), 5000);
       } else {
+        const message = err instanceof Error ? err.message : "Registration failed";
         setRegistrationMessage(`Error: ${message}`);
+        setTimeout(() => setRegistrationMessage(null), 5000);
       }
-      setTimeout(() => setRegistrationMessage(null), 5000);
     }
   }, [
     problemContent,
@@ -142,6 +175,7 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
     setDuplicateDialogOpen,
     duplicateInfo,
     setDuplicateInfo,
+    duplicateBlocked,
     handleRegisterProblem,
     handleRegisterAnyway,
     handleDeleteProblem,

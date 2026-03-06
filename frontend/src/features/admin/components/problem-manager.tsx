@@ -46,6 +46,7 @@ export function ProblemManager({
     handleRegisterProblem,
     handleRegisterAnyway,
     handleDeleteProblem,
+    duplicateBlocked,
   } = useProblemRegistration(duplicateMode);
 
   useEffect(() => {
@@ -114,6 +115,7 @@ export function ProblemManager({
           setDuplicateInfo(null);
         }}
         onRegisterAnyway={handleRegisterAnyway}
+        blocked={duplicateBlocked}
       />
     </>
   );

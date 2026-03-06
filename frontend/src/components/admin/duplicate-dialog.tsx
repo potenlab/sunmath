@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ShieldX } from "lucide-react";
 import type { DuplicateInfo } from "@/features/admin/types";
 
 interface DuplicateDialogProps {
@@ -18,6 +18,7 @@ interface DuplicateDialogProps {
   newProblemContent: string;
   onCancel: () => void;
   onRegisterAnyway: () => void;
+  blocked?: boolean;
 }
 
 export function DuplicateDialog({
@@ -27,27 +28,30 @@ export function DuplicateDialog({
   newProblemContent,
   onCancel,
   onRegisterAnyway,
+  blocked = false,
 }: DuplicateDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-amber-600">
-            <AlertTriangle className="size-5" />
-            Duplicate Problem Detected
+          <DialogTitle className={`flex items-center gap-2 ${blocked ? "text-red-600" : "text-amber-600"}`}>
+            {blocked ? <ShieldX className="size-5" /> : <AlertTriangle className="size-5" />}
+            {blocked ? "Registration Blocked" : "Duplicate Problem Detected"}
           </DialogTitle>
           <DialogDescription>
-            A similar problem already exists in the system.
+            {blocked
+              ? "This problem was blocked because a similar problem already exists. Change the duplicate detection mode to \"Warn\" to allow overrides."
+              : "A similar problem already exists in the system."}
           </DialogDescription>
         </DialogHeader>
 
         {duplicateInfo && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between rounded-lg bg-amber-50 p-3">
-              <span className="text-sm font-medium text-amber-800">
+            <div className={`flex items-center justify-between rounded-lg p-3 ${blocked ? "bg-red-50" : "bg-amber-50"}`}>
+              <span className={`text-sm font-medium ${blocked ? "text-red-800" : "text-amber-800"}`}>
                 Similarity Score
               </span>
-              <span className="text-lg font-bold text-amber-600">
+              <span className={`text-lg font-bold ${blocked ? "text-red-600" : "text-amber-600"}`}>
                 {duplicateInfo.similarity.toFixed(2)}
               </span>
             </div>
@@ -78,7 +82,7 @@ export function DuplicateDialog({
                 {duplicateInfo.sharedConcepts.map((concept) => (
                   <Badge
                     key={concept}
-                    className="bg-amber-100 text-amber-700 hover:bg-amber-100"
+                    className={blocked ? "bg-red-100 text-red-700 hover:bg-red-100" : "bg-amber-100 text-amber-700 hover:bg-amber-100"}
                   >
                     {concept}
                   </Badge>
@@ -104,14 +108,16 @@ export function DuplicateDialog({
 
         <DialogFooter>
           <Button variant="outline" onClick={onCancel}>
-            Cancel
+            {blocked ? "Close" : "Cancel"}
           </Button>
-          <Button
-            onClick={onRegisterAnyway}
-            className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:opacity-90"
-          >
-            Register Anyway
-          </Button>
+          {!blocked && (
+            <Button
+              onClick={onRegisterAnyway}
+              className="bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:opacity-90"
+            >
+              Register Anyway
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

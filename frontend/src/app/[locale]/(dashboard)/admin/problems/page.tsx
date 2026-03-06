@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { FileText, Trash2, Pencil } from "lucide-react";
+import { FileText, Trash2 } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { ProblemManager } from "@/features/admin/components/problem-manager";
+import { useAdminSettings } from "@/features/admin/hooks/use-admin-settings";
 import { useProblems, useDeleteProblem } from "@/features/admin/api/use-problems";
 import {
   Card,
@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 
 export default function AdminProblemsPage() {
   const t = useTranslations("admin");
-  const [duplicateMode] = useState<"warn" | "block">("warn");
+  const { duplicateMode } = useAdminSettings();
   const { data: problemsData, isLoading } = useProblems();
   const deleteMutation = useDeleteProblem();
 

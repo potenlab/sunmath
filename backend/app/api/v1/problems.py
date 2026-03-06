@@ -105,7 +105,7 @@ async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db)
         effective_form = ExpectedForm.simplified
 
     similarity_svc = SimilarityService(db)
-    dup_result = await similarity_svc.check_duplicate(effective_concept_ids)
+    dup_result = await similarity_svc.check_duplicate(effective_concept_ids, content=body.content)
 
     similar_details = [
         SimilarProblemDetail(**s) for s in dup_result["similar_problems"]

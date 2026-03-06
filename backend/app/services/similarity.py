@@ -1,9 +1,13 @@
 """Similarity service for finding similar/duplicate problems using concept-based Jaccard similarity."""
 
+import re
+import unicodedata
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.history import AdminSettings
+from app.models.nodes import Question
 from app.services.graphrag import GraphRAGService
 
 
@@ -22,6 +26,14 @@ class SimilarityService:
         intersection = set_a & set_b
         union = set_a | set_b
         return len(intersection) / len(union)
+
+    @staticmethod
+    def normalize_content(text: str) -> str:
+        """Normalize problem content for comparison: lowercase, strip whitespace, remove accents."""
+        text = unicodedata.normalize("NFKD", text)
+        text = text.lower().strip()
+        text = re.sub(r"\s+", " ", text)
+        return text
 
     async def get_threshold(self) -> float:
         """Read similarity threshold from admin_settings."""
@@ -74,8 +86,34 @@ class SimilarityService:
         results.sort(key=lambda x: x["similarity_score"], reverse=True)
         return results
 
-    async def check_duplicate(self, new_concept_ids: set[int]) -> dict:
+    async def find_content_duplicates(self, content: str) -> list[dict]:
+        """Find existing problems with identical normalized content."""
+        normalized = self.normalize_content(content)
+        if not normalized:
+            return []
+
+        result = await self.db.execute(select(Question.id, Question.content))
+        duplicates = []
+        for row in result.all():
+            if self.normalize_content(row.content) == normalized:
+                duplicates.append(
+                    {
+                        "question_id": row.id,
+                        "similarity_score": 1.0,
+                        "shared_concepts": [],
+                        "only_in_new": [],
+                        "only_in_existing": [],
+                    }
+                )
+        return duplicates
+
+    async def check_duplicate(
+        self, new_concept_ids: set[int], content: str = ""
+    ) -> dict:
         """Check if a new problem's concept set is a duplicate.
+
+        Uses concept-based Jaccard similarity first, then falls back to
+        exact text content matching when concept sets are empty.
 
         Returns dict with is_duplicate, mode, threshold, and similar_problems.
         """
@@ -84,6 +122,12 @@ class SimilarityService:
         similar = await self.find_similar(new_concept_ids)
 
         duplicates = [s for s in similar if s["similarity_score"] >= threshold]
+
+        # Fallback: if no concept-based duplicates found, check text content
+        if not duplicates and content:
+            content_dups = await self.find_content_duplicates(content)
+            duplicates.extend(content_dups)
+
         is_duplicate = len(duplicates) > 0
 
         return {
