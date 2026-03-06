@@ -193,8 +193,11 @@ def check_answer(
     correct_answer: str,
     correct_answer_latex: str,
     expected_form: str,
+    model_error: str | None = None,
 ) -> AnswerCheckResult:
     """Verify model answer: SymPy equivalence -> normalized string match -> manual review."""
+    if model_error:
+        return AnswerCheckResult(is_correct=False, method="model_error")
     if expected_form == "proof":
         return AnswerCheckResult(is_correct=False, method="needs_manual_review")
 
@@ -252,6 +255,7 @@ async def run_full_benchmark(
                 correct_answer=problem["correct_answer"],
                 correct_answer_latex=problem.get("correct_answer_latex", ""),
                 expected_form=problem.get("expected_form", ""),
+                model_error=response.error,
             )
 
             result = ProblemResult(

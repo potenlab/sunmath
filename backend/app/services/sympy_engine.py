@@ -41,8 +41,14 @@ class SympyEngine:
         s = s.replace("\\pi", "pi")
         # \cdot -> *
         s = s.replace("\\cdot", "*")
-        # Remove remaining backslash commands (e.g. \left, \right)
+        # Remove remaining backslash commands (e.g. \left, \right, \sin, \cos, etc.)
         s = re.sub(r"\\(left|right|,|;|quad|qquad)", "", s)
+        # Common trig/log functions: \sin -> sin, \cos -> cos, etc.
+        s = re.sub(r"\\(sin|cos|tan|log|ln|exp|lim|inf|max|min|det|gcd)", r"\1", s)
+        # Remove any remaining backslash commands
+        s = re.sub(r"\\[a-zA-Z]+", "", s)
+        # Remove stray backslashes
+        s = s.replace("\\", "")
         # ^ for exponents (SymPy uses **)
         s = s.replace("^", "**")
         return s.strip()
@@ -66,7 +72,7 @@ class SympyEngine:
                 "simplified_diff": str(diff),
                 "error": None,
             }
-        except (SympifyError, SyntaxError, TypeError, ValueError) as e:
+        except Exception as e:
             return {
                 "equivalent": False,
                 "simplified_diff": "",
@@ -130,7 +136,7 @@ class SympyEngine:
                 "error": None,
             }
 
-        except (SympifyError, SyntaxError, TypeError, ValueError) as e:
+        except Exception as e:
             return {
                 "matches": False,
                 "reason": "",

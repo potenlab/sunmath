@@ -1,0 +1,109 @@
+{
+  "run_id": "20260306_132320",
+  "timestamp": "2026-03-06T13:23:42.902655+00:00",
+  "models": [
+    "deepseek-v3",
+    "claude-sonnet"
+  ],
+  "problem_count": 2,
+  "results": [
+    {
+      "problem_id": "ALG-E01",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "model_key": "deepseek-v3",
+      "model_id": "deepseek/deepseek-chat",
+      "response": {
+        "answer": "5",
+        "answer_latex": "5",
+        "confidence": 100,
+        "solution": "To solve for x in the equation 3x + 7 = 22, follow these steps:\n1. Subtract 7 from both sides of the equation to isolate the term containing x:\n   3x + 7 - 7 = 22 - 7\n   3x = 15\n2. Divide both sides of the equation by 3 to solve for x:\n   3x / 3 = 15 / 3\n   x = 5",
+        "latency_ms": 8582.211833971087,
+        "input_tokens": 64,
+        "output_tokens": 126,
+        "cost": 0.00015588000000000003,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "x = 5",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-E01",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "model_key": "claude-sonnet",
+      "model_id": "anthropic/claude-sonnet-4",
+      "response": {
+        "answer": "I need to solve the linear equation 3x + 7 = 22 for x.\n\nStep 1: Subtract 7 from both sides to isolate the term with x.\n3x + 7 - 7 = 22 - 7\n3x = 15\n\nStep 2: Divide both sides by 3 to solve for x.\n3x \u00f7 ",
+        "answer_latex": "",
+        "confidence": 0,
+        "solution": "",
+        "latency_ms": 4332.654499972705,
+        "input_tokens": 77,
+        "output_tokens": 277,
+        "cost": 0.004386,
+        "error": "Failed to parse JSON from model response"
+      },
+      "check": {
+        "is_correct": false,
+        "method": "model_error"
+      },
+      "correct_answer": "x = 5",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-M01",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "model_key": "deepseek-v3",
+      "model_id": "deepseek/deepseek-chat",
+      "response": {
+        "answer": "x = 3, y = 1",
+        "answer_latex": "x = 3, y = 1",
+        "confidence": 100,
+        "solution": "To solve the system of equations:\n1. 2x + y = 7\n2. x - y = 2\n\nWe can use the method of addition to eliminate one of the variables. Adding both equations together:\n(2x + y) + (x - y) = 7 + 2\n3x = 9\nx = 3\n\nNow, substitute x = 3 into the second equation to find y:\n3 - y = 2\ny = 3 - 2\ny = 1\n\nThe solution to the system is x = 3 and y = 1.",
+        "latency_ms": 5529.029958997853,
+        "input_tokens": 70,
+        "output_tokens": 181,
+        "cost": 0.000218,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "string_match"
+      },
+      "correct_answer": "x = 3, y = 1",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-M01",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "model_key": "claude-sonnet",
+      "model_id": "anthropic/claude-sonnet-4",
+      "response": {
+        "answer": "I need to solve the system of equations:\n- 2x + y = 7\n- x - y = 2\n\nI'll use the elimination method by adding the equations together.\n\nAdding the equations:\n(2x + y) + (x - y) = 7 + 2\n2x + y + x - y = ",
+        "answer_latex": "",
+        "confidence": 0,
+        "solution": "",
+        "latency_ms": 3979.1140829911456,
+        "input_tokens": 83,
+        "output_tokens": 358,
+        "cost": 0.005619,
+        "error": "Failed to parse JSON from model response"
+      },
+      "check": {
+        "is_correct": false,
+        "method": "model_error"
+      },
+      "correct_answer": "x = 3, y = 1",
+      "expected_form": "numeric"
+    }
+  ],
+  "total_cost": 0.01037888,
+  "total_duration_s": 22.49
+}
