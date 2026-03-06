@@ -1,0 +1,60 @@
+id,filename,category,difficulty,style,latex,predicted,exact_match,normalized_match,error_type
+1,fractions/IMG_001.jpg,fractions,easy,clean,\frac{1}{2},\frac{1}{2},True,True,
+2,fractions/IMG_002.jpg,fractions,easy,clean,\frac{3}{4},\frac{3}{4},True,True,
+3,fractions/IMG_003.jpg,fractions,medium,clean,\frac{x+1}{x-1},\frac{x+1}{x-1},True,True,
+4,fractions/IMG_004.jpg,fractions,hard,messy,\frac{2x^2+3x}{x+1},\frac{2x^2 + 3x}{x + 1},False,True,
+5,fractions/IMG_005.jpg,fractions,medium,messy,\frac{a}{b}+\frac{c}{d},\frac{a}{b} + \frac{c}{d},False,True,
+6,fractions/IMG_006.jpg,fractions,hard,clean,\frac{d}{dx}\left(x^2\right),\frac{d}{dx}(x^{2}),False,True,
+7,fractions/IMG_007.jpg,fractions,medium,unusual,\frac{1}{x^2+1},\frac{1}{x^{2}+1},False,True,
+8,fractions/IMG_008.jpg,fractions,medium,clean,\frac{\sqrt{3}}{2},\frac{\sqrt{3}}{2},True,True,
+9,fractions/IMG_009.jpg,fractions,hard,messy,\frac{n!}{k!(n-k)!},\frac{n!}{k! (n-k)!},False,True,
+10,fractions/IMG_010.jpg,fractions,hard,unusual,\frac{1}{1+\frac{1}{x}},\frac{1}{1+\frac{1}{x}},True,True,
+11,radicals/IMG_011.jpg,radicals,easy,clean,\sqrt{2},\sqrt{2},True,True,
+12,radicals/IMG_012.jpg,radicals,easy,clean,\sqrt{x+1},\sqrt{x+1},True,True,
+13,radicals/IMG_013.jpg,radicals,medium,messy,\sqrt[3]{x+1},\sqrt[3]{x+1},True,True,
+14,radicals/IMG_014.jpg,radicals,easy,clean,2\sqrt{3},2\sqrt{3},True,True,
+15,radicals/IMG_015.jpg,radicals,medium,clean,\sqrt{x^2+y^2},\sqrt{x^2+y^2},True,True,
+16,radicals/IMG_016.jpg,radicals,medium,unusual,\sqrt[4]{16},\sqrt[4]{16},True,True,
+17,radicals/IMG_017.jpg,radicals,medium,messy,\frac{1}{\sqrt{2}},\frac{1}{\sqrt{2}},True,True,
+18,radicals/IMG_018.jpg,radicals,hard,unusual,\sqrt{a^2-b^2},\sqrt{a^2 - b^2},False,True,
+19,exponents/IMG_019.jpg,exponents,easy,clean,x^2+y^2,x^{2}+y^{2},False,True,
+20,exponents/IMG_020.jpg,exponents,easy,clean,e^{-x},e^{-x},True,True,
+21,exponents/IMG_021.jpg,exponents,medium,clean,2^{n+1},2^{n}+1,False,False,brace_mismatch
+22,exponents/IMG_022.jpg,exponents,hard,unusual,a^{b^c},a^{b^c},True,True,
+23,exponents/IMG_023.jpg,exponents,medium,messy,x^{-\frac{1}{2}},X^{-\frac{1}{2}},False,True,
+24,exponents/IMG_024.jpg,exponents,hard,clean,e^{i\pi}+1=0,e^{i\pi}+1=0,True,True,
+25,exponents/IMG_025.jpg,exponents,easy,messy,10^{3.5},10^{3.5},True,True,
+26,exponents/IMG_026.jpg,exponents,medium,unusual,(x+y)^n,(x+y)^n,True,True,
+27,integrals/IMG_027.jpg,integrals,easy,clean,"\int x\,dx","\int x\, dx",False,True,
+28,integrals/IMG_028.jpg,integrals,medium,clean,"\int_0^1 x^2\,dx",\int_0^1 x^2 dx,False,True,
+29,integrals/IMG_029.jpg,integrals,easy,clean,"\int e^x\,dx",\int e^{x} dx,False,True,
+30,integrals/IMG_030.jpg,integrals,medium,messy,"\int \frac{1}{x}\,dx",\int \frac{1}{x} dx,False,True,
+31,integrals/IMG_031.jpg,integrals,hard,clean,"\int_0^\infty e^{-x}\,dx",\int_0^{\infty} e^{-x} dx,False,False,command_difference
+32,integrals/IMG_032.jpg,integrals,hard,unusual,"\iint_D f(x,y)\,dA","\iint_D f(x,y) dA",False,True,
+33,integrals/IMG_033.jpg,integrals,hard,messy,\oint \vec{F}\cdot d\vec{r},\oint \vec{F} \cdot d\vec{r},False,True,
+34,integrals/IMG_034.jpg,integrals,easy,messy,"\int \sin x\,dx","\int \sin x \, dx",False,True,
+35,integrals/IMG_035.jpg,integrals,medium,clean,"\int_a^b f(x)\,dx","\int_a^b f(x) \, dx",False,True,
+36,integrals/IMG_036.jpg,integrals,hard,unusual,"\int \frac{x}{x^2+1}\,dx",\int \frac{x}{x^2+1} dx,False,True,
+37,matrices/IMG_037.jpg,matrices,easy,clean,\begin{pmatrix} a & b \\ c & d \end{pmatrix},\begin{pmatrix} a & b \\ c & d \end{pmatrix},True,True,
+38,matrices/IMG_038.jpg,matrices,easy,clean,\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix},\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix},True,True,
+39,matrices/IMG_039.jpg,matrices,medium,clean,\begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{pmatrix},\begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{pmatrix},True,True,
+40,matrices/IMG_040.jpg,matrices,medium,messy,\det\begin{pmatrix} a & b \\ c & d \end{pmatrix}=ad-bc,\det \begin{pmatrix} a & b \\ c & d \end{pmatrix} =ad-bc,False,True,
+41,matrices/IMG_041.jpg,matrices,medium,clean,\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix},"\begin{pmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{pmatrix}",False,False,length_difference
+42,matrices/IMG_042.jpg,matrices,hard,unusual,A^{-1}=\frac{1}{\det A}\text{adj}(A),A^{-1} = \frac{1}{\det A} adj(A),False,False,brace_mismatch
+43,matrices/IMG_043.jpg,matrices,hard,messy,\left(\begin{array}{cc|c} 1 & 2 & 3 \\ 4 & 5 & 6 \end{array}\right),\begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{pmatrix},False,False,brace_mismatch
+44,matrices/IMG_044.jpg,matrices,easy,messy,A\vec{x}=\vec{b},A\vec{x}=\vec{b},True,True,
+45,matrices/IMG_045.jpg,matrices,medium,unusual,\begin{vmatrix} a & b \\ c & d \end{vmatrix},\begin{vmatrix} a & b \\ c & d \end{vmatrix},True,True,
+46,mixed/IMG_046.jpg,mixed,hard,clean,x=\frac{-b\pm\sqrt{b^2-4ac}}{2a},X = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a},False,True,
+47,mixed/IMG_047.jpg,mixed,medium,clean,e^{i\pi}+1=0,e^{i\pi}+1=0,True,True,
+48,mixed/IMG_048.jpg,mixed,hard,messy,\sum_{k=1}^{n}k=\frac{n(n+1)}{2},\sum_{k=1}^{n} k = \frac{n(n+1)}{2},False,True,
+49,mixed/IMG_049.jpg,mixed,medium,clean,\lim_{x\to 0}\frac{\sin x}{x}=1,\lim_{x\to 0}^{\frac{\sin x}{x}} = 1,False,False,sub_superscript
+50,mixed/IMG_050.jpg,mixed,hard,unusual,f'(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h},f'(x) = \lim_{h \to 0} \frac{f(x+h)-f(x)}{h},False,True,
+51,mixed/IMG_051.jpg,mixed,medium,messy,\binom{n}{k}=\frac{n!}{k!(n-k)!},\binom{n}{k} = \frac{n!}{k!(n-k)!},False,True,
+52,mixed/IMG_052.jpg,mixed,hard,unusual,\sum_{n=0}^{\infty}\frac{x^n}{n!}=e^x,\sum_{n=0}^{\infty} \frac{x^{n}}{n!} = e^{x},False,True,
+53,mixed/IMG_053.jpg,mixed,medium,clean,\prod_{i=1}^{n}a_i,\prod_{i=1}^{n} a_i,False,True,
+54,mixed/IMG_054.jpg,mixed,easy,messy,\log_a b=\frac{\ln b}{\ln a},\log_a b = \frac{\ln b}{\ln a},False,True,
+55,mixed/IMG_055.jpg,mixed,easy,clean,|x-a|<\epsilon,\left|x-a\right|<\varepsilon,False,True,

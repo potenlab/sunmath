@@ -1,0 +1,20 @@
+problem_id,subject,difficulty,model_key,answer,correct_answer,is_correct,check_method,confidence,latency_ms,cost,error
+ALG-E01,algebra,easy,deepseek-v3,5,x = 5,False,string_match,100,8582.2,0.000156,
+ALG-E01,algebra,easy,claude-sonnet,"I need to solve the linear equation 3x + 7 = 22 for x.
+
+Step 1: Subtract 7 from both sides to isolate the term with x.
+3x + 7 - 7 = 22 - 7
+3x = 15
+
+Step 2: Divide both sides by 3 to solve for x.
+3x ÷ ",x = 5,False,model_error,0,4332.7,0.004386,Failed to parse JSON from model response
+ALG-M01,algebra,medium,deepseek-v3,"x = 3, y = 1","x = 3, y = 1",True,string_match,100,5529.0,0.000218,
+ALG-M01,algebra,medium,claude-sonnet,"I need to solve the system of equations:
+- 2x + y = 7
+- x - y = 2
+
+I'll use the elimination method by adding the equations together.
+
+Adding the equations:
+(2x + y) + (x - y) = 7 + 2
+2x + y + x - y = ","x = 3, y = 1",False,model_error,0,3979.1,0.005619,Failed to parse JSON from model response

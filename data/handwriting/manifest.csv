@@ -1,0 +1,56 @@
+id,filename,latex,category,difficulty,style
+1,fractions/IMG_001.jpg,"\frac{1}{2}",fractions,easy,clean
+2,fractions/IMG_002.jpg,"\frac{3}{4}",fractions,easy,clean
+3,fractions/IMG_003.jpg,"\frac{x+1}{x-1}",fractions,medium,clean
+4,fractions/IMG_004.jpg,"\frac{2x^2+3x}{x+1}",fractions,hard,messy
+5,fractions/IMG_005.jpg,"\frac{a}{b}+\frac{c}{d}",fractions,medium,messy
+6,fractions/IMG_006.jpg,"\frac{d}{dx}\left(x^2\right)",fractions,hard,clean
+7,fractions/IMG_007.jpg,"\frac{1}{x^2+1}",fractions,medium,unusual
+8,fractions/IMG_008.jpg,"\frac{\sqrt{3}}{2}",fractions,medium,clean
+9,fractions/IMG_009.jpg,"\frac{n!}{k!(n-k)!}",fractions,hard,messy
+10,fractions/IMG_010.jpg,"\frac{1}{1+\frac{1}{x}}",fractions,hard,unusual
+11,radicals/IMG_011.jpg,"\sqrt{2}",radicals,easy,clean
+12,radicals/IMG_012.jpg,"\sqrt{x+1}",radicals,easy,clean
+13,radicals/IMG_013.jpg,"\sqrt[3]{x+1}",radicals,medium,messy
+14,radicals/IMG_014.jpg,"2\sqrt{3}",radicals,easy,clean
+15,radicals/IMG_015.jpg,"\sqrt{x^2+y^2}",radicals,medium,clean
+16,radicals/IMG_016.jpg,"\sqrt[4]{16}",radicals,medium,unusual
+17,radicals/IMG_017.jpg,"\frac{1}{\sqrt{2}}",radicals,medium,messy
+18,radicals/IMG_018.jpg,"\sqrt{a^2-b^2}",radicals,hard,unusual
+19,exponents/IMG_019.jpg,"x^2+y^2",exponents,easy,clean
+20,exponents/IMG_020.jpg,"e^{-x}",exponents,easy,clean
+21,exponents/IMG_021.jpg,"2^{n+1}",exponents,medium,clean
+22,exponents/IMG_022.jpg,"a^{b^c}",exponents,hard,unusual
+23,exponents/IMG_023.jpg,"x^{-\frac{1}{2}}",exponents,medium,messy
+24,exponents/IMG_024.jpg,"e^{i\pi}+1=0",exponents,hard,clean
+25,exponents/IMG_025.jpg,"10^{3.5}",exponents,easy,messy
+26,exponents/IMG_026.jpg,"(x+y)^n",exponents,medium,unusual
+27,integrals/IMG_027.jpg,"\int x\,dx",integrals,easy,clean
+28,integrals/IMG_028.jpg,"\int_0^1 x^2\,dx",integrals,medium,clean
+29,integrals/IMG_029.jpg,"\int e^x\,dx",integrals,easy,clean
+30,integrals/IMG_030.jpg,"\int \frac{1}{x}\,dx",integrals,medium,messy
+31,integrals/IMG_031.jpg,"\int_0^\infty e^{-x}\,dx",integrals,hard,clean
+32,integrals/IMG_032.jpg,"\iint_D f(x,y)\,dA",integrals,hard,unusual
+33,integrals/IMG_033.jpg,"\oint \vec{F}\cdot d\vec{r}",integrals,hard,messy
+34,integrals/IMG_034.jpg,"\int \sin x\,dx",integrals,easy,messy
+35,integrals/IMG_035.jpg,"\int_a^b f(x)\,dx",integrals,medium,clean
+36,integrals/IMG_036.jpg,"\int \frac{x}{x^2+1}\,dx",integrals,hard,unusual
+37,matrices/IMG_037.jpg,"\begin{pmatrix} a & b \\ c & d \end{pmatrix}",matrices,easy,clean
+38,matrices/IMG_038.jpg,"\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}",matrices,easy,clean
+39,matrices/IMG_039.jpg,"\begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{pmatrix}",matrices,medium,clean
+40,matrices/IMG_040.jpg,"\det\begin{pmatrix} a & b \\ c & d \end{pmatrix}=ad-bc",matrices,medium,messy
+41,matrices/IMG_041.jpg,"\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}",matrices,medium,clean
+42,matrices/IMG_042.jpg,"A^{-1}=\frac{1}{\det A}\text{adj}(A)",matrices,hard,unusual
+43,matrices/IMG_043.jpg,"\left(\begin{array}{cc|c} 1 & 2 & 3 \\ 4 & 5 & 6 \end{array}\right)",matrices,hard,messy
+44,matrices/IMG_044.jpg,"A\vec{x}=\vec{b}",matrices,easy,messy
+45,matrices/IMG_045.jpg,"\begin{vmatrix} a & b \\ c & d \end{vmatrix}",matrices,medium,unusual
+46,mixed/IMG_046.jpg,"x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}",mixed,hard,clean
+47,mixed/IMG_047.jpg,"e^{i\pi}+1=0",mixed,medium,clean
+48,mixed/IMG_048.jpg,"\sum_{k=1}^{n}k=\frac{n(n+1)}{2}",mixed,hard,messy
+49,mixed/IMG_049.jpg,"\lim_{x\to 0}\frac{\sin x}{x}=1",mixed,medium,clean
+50,mixed/IMG_050.jpg,"f'(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}",mixed,hard,unusual
+51,mixed/IMG_051.jpg,"\binom{n}{k}=\frac{n!}{k!(n-k)!}",mixed,medium,messy
+52,mixed/IMG_052.jpg,"\sum_{n=0}^{\infty}\frac{x^n}{n!}=e^x",mixed,hard,unusual
+53,mixed/IMG_053.jpg,"\prod_{i=1}^{n}a_i",mixed,medium,clean
+54,mixed/IMG_054.jpg,"\log_a b=\frac{\ln b}{\ln a}",mixed,easy,messy
+55,mixed/IMG_055.jpg,"|x-a|<\epsilon",mixed,easy,clean

@@ -16,6 +16,10 @@ ENV/
 # Environment variables
 .env
 
+# Google Cloud credentials
+google.json
+*.json.bak
+
 # IDE
 .idea/
 .vscode/
