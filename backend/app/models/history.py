@@ -2,7 +2,7 @@ import enum
 from datetime import datetime
 
 from sqlalchemy import (
-    ForeignKey, String, Text, Float, Index, UniqueConstraint,
+    Boolean, ForeignKey, Integer, String, Text, Float, Index, UniqueConstraint,
     func, Enum,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -99,3 +99,46 @@ class StudentDiagnosis(Base):
     student_id: Mapped[int] = mapped_column(ForeignKey("students.id"), nullable=False)
     diagnosis_data: Mapped[dict] = mapped_column(JSONB, nullable=False)
     generated_at: Mapped[datetime] = mapped_column(server_default=func.now())
+
+
+class LoraModelStatus(str, enum.Enum):
+    pending = "pending"
+    training = "training"
+    succeeded = "succeeded"
+    failed = "failed"
+
+
+class StudentTrainingSample(Base):
+    __tablename__ = "student_training_samples"
+    __table_args__ = (
+        Index("ix_student_training_samples_student_id", "student_id"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    student_id: Mapped[int] = mapped_column(ForeignKey("students.id"), nullable=False)
+    question_id: Mapped[int] = mapped_column(ForeignKey("questions.id"), nullable=False)
+    image_gcs_uri: Mapped[str] = mapped_column(Text, nullable=False)
+    ground_truth_latex: Mapped[str] = mapped_column(Text, nullable=False)
+    content_type: Mapped[str] = mapped_column(String(50), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+
+
+class StudentLoraModel(Base):
+    __tablename__ = "student_lora_models"
+    __table_args__ = (
+        Index("ix_student_lora_models_student_id", "student_id"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    student_id: Mapped[int] = mapped_column(ForeignKey("students.id"), nullable=False)
+    tuning_job_id: Mapped[str] = mapped_column(String(500), nullable=False)
+    model_endpoint: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    model_name: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    status: Mapped[LoraModelStatus] = mapped_column(
+        Enum(LoraModelStatus), default=LoraModelStatus.pending
+    )
+    training_samples_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    accuracy: Mapped[float | None] = mapped_column(Float, nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    completed_at: Mapped[datetime | None] = mapped_column(nullable=True)

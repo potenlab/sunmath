@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import type { GradingResult, ProblemResponse, PipelineStep } from "../types";
 import { useGradeMutation } from "../api/use-grade";
+import { useSaveTrainingSample } from "@/features/student/api/use-training-sample";
 import { useQuery } from "@tanstack/react-query";
 import { get, postFormData } from "@/lib/api";
 
@@ -30,6 +31,7 @@ export function useGradingPipeline() {
   });
 
   const gradeMutation = useGradeMutation();
+  const saveTrainingSample = useSaveTrainingSample();
 
   const handleFileSelected = useCallback(
     (file: File) => {
@@ -103,6 +105,13 @@ export function useGradingPipeline() {
 
       setResult(gradingResult);
       setPipelineStep("done");
+
+      // Fire-and-forget: save training sample if answer was correct and image was uploaded
+      if (gradeResponse.is_correct && uploadedFile && selectedProblem) {
+        saveTrainingSample
+          .mutateAsync({ file: uploadedFile, question_id: selectedProblem.id })
+          .catch((err) => console.warn("Training sample save failed (non-critical):", err));
+      }
 
       setStats((prev) => {
         if (gradeResponse.cached) {

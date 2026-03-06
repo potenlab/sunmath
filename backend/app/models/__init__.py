@@ -18,6 +18,9 @@ from app.models.history import (
     StudentDiagnosis,
     JudgedBy,
     WrongAnswerStatus,
+    LoraModelStatus,
+    StudentTrainingSample,
+    StudentLoraModel,
 )
 
 __all__ = [
@@ -41,6 +44,9 @@ __all__ = [
     "StudentDiagnosis",
     "JudgedBy",
     "WrongAnswerStatus",
+    "LoraModelStatus",
+    "StudentTrainingSample",
+    "StudentLoraModel",
     "User",
     "UserRole",
 ]

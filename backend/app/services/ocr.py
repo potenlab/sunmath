@@ -4,6 +4,7 @@ import google.auth
 from google.oauth2 import service_account
 import vertexai
 from vertexai.generative_models import GenerativeModel, Part
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 
@@ -45,24 +46,67 @@ def _ensure_init():
 
 
 class OCRService:
-    def __init__(self):
+    def __init__(self, db: AsyncSession | None = None):
         _ensure_init()
         self.model = GenerativeModel(MODEL_NAME)
+        self.db = db
 
-    async def recognize(self, image_bytes: bytes, content_type: str) -> dict:
+    async def recognize(
+        self, image_bytes: bytes, content_type: str, student_id: int | None = None
+    ) -> dict:
         """Run OCR on image bytes and return extracted text.
 
-        Returns dict with 'text' and 'confidence' keys.
+        Returns dict with 'text', 'confidence', and 'model_used' keys.
         """
+        model_used = "baseline"
+        model = self.model
+
+        # Try to use student's LoRA-tuned model if available
+        if student_id and self.db:
+            try:
+                from app.services.lora_training import get_active_lora_model
+
+                lora_model = await get_active_lora_model(self.db, student_id)
+                if lora_model and lora_model.model_endpoint:
+                    model = GenerativeModel(lora_model.model_endpoint)
+                    model_used = "lora"
+                    logger.info(
+                        "Using LoRA model %s for student %d",
+                        lora_model.model_endpoint,
+                        student_id,
+                    )
+            except Exception as e:
+                logger.warning(
+                    "Failed to load LoRA model for student %d, using baseline: %s",
+                    student_id,
+                    e,
+                )
+
         image_part = Part.from_data(data=image_bytes, mime_type=content_type)
 
         try:
-            response = await self.model.generate_content_async(
+            response = await model.generate_content_async(
                 [OCR_PROMPT, image_part]
             )
             text = response.text.strip()
-            return {"text": text, "confidence": 1.0}
+            return {"text": text, "confidence": 1.0, "model_used": model_used}
         except Exception as e:
+            # If tuned model fails, fall back to baseline
+            if model_used == "lora":
+                logger.warning(
+                    "LoRA model failed for student %d, falling back to baseline: %s",
+                    student_id,
+                    e,
+                )
+                try:
+                    response = await self.model.generate_content_async(
+                        [OCR_PROMPT, image_part]
+                    )
+                    text = response.text.strip()
+                    return {"text": text, "confidence": 1.0, "model_used": "baseline"}
+                except Exception as fallback_err:
+                    e = fallback_err  # report the fallback error
+
             if "429" in str(e):
                 logger.warning("Gemini rate limit hit during OCR")
                 raise RuntimeError("OCR service rate limited. Please try again shortly.") from e

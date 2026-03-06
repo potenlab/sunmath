@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.deps import get_db
 from app.api.deps_auth import require_role
 from app.models.user import User, UserRole
 from app.schemas.ocr import OCRResponse
@@ -13,7 +15,8 @@ MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 @router.post("/recognize", response_model=OCRResponse)
 async def recognize_image(
     file: UploadFile = File(...),
-    _: User = Depends(require_role(UserRole.admin, UserRole.student)),
+    current_user: User = Depends(require_role(UserRole.admin, UserRole.student)),
+    db: AsyncSession = Depends(get_db),
 ):
     if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="File must be an image")
@@ -23,8 +26,10 @@ async def recognize_image(
         raise HTTPException(status_code=400, detail="File size exceeds 10MB limit")
 
     try:
-        service = OCRService()
-        result = await service.recognize(image_bytes, file.content_type)
+        service = OCRService(db=db)
+        result = await service.recognize(
+            image_bytes, file.content_type, student_id=current_user.student_id
+        )
         return OCRResponse(**result)
     except RuntimeError as e:
         status = 429 if "rate limited" in str(e).lower() else 500

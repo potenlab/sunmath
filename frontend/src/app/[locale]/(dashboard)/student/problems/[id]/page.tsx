@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useStudentProblem } from "@/features/student/api/use-problems";
 import { useSubmitAnswer } from "@/features/student/api/use-answer";
 import { useOCR } from "@/features/student/api/use-ocr";
+import { useSaveTrainingSample } from "@/features/student/api/use-training-sample";
 import { useAuth } from "@/features/auth/context/auth-context";
 import { GradingResultCard } from "@/components/grading/grading-result-card";
 
@@ -26,6 +27,7 @@ export default function StudentProblemDetailPage() {
   const { data: problem, isLoading } = useStudentProblem(problemId);
   const submitMutation = useSubmitAnswer();
   const ocrMutation = useOCR();
+  const saveTrainingSample = useSaveTrainingSample();
 
   const [answer, setAnswer] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -87,6 +89,13 @@ export default function StudentProblemDetailPage() {
         submitted_answer: submittedAnswer,
       });
       setResult(res);
+
+      // Fire-and-forget: save training sample if correct and image was uploaded
+      if (res.is_correct && uploadedFile) {
+        saveTrainingSample
+          .mutateAsync({ file: uploadedFile, question_id: problem.id })
+          .catch((err) => console.warn("Training sample save failed (non-critical):", err));
+      }
     } catch {
       // error handled by mutation state
     }
