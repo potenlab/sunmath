@@ -4,6 +4,7 @@ import asyncio
 import csv
 import json
 import logging
+import re
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -49,7 +50,7 @@ BENCHMARK_MODELS: dict[str, dict] = {
         "output_cost_per_m": 4.40,
     },
     "deepseek-r1": {
-        "id": "deepseek/deepseek-reasoner",
+        "id": "deepseek/deepseek-r1",
         "type": "reasoning",
         "input_cost_per_m": 0.55,
         "output_cost_per_m": 2.19,
@@ -64,10 +65,59 @@ BENCHMARK_MODELS: dict[str, dict] = {
 
 SOLVER_SYSTEM_PROMPT = """\
 You are a math problem solver. Solve the given problem step by step.
-Respond with JSON only:
-{"solution": "...", "answer": "...", "answer_latex": "...", "confidence": 0-100}"""
+You MUST respond with a single JSON object and nothing else.
+Do NOT include any text before or after the JSON.
+{"solution": "step-by-step work", "answer": "final answer value only", "answer_latex": "answer in LaTeX", "confidence": 0-100}"""
 
 _client: httpx.AsyncClient | None = None
+
+
+def _normalize_value(s: str) -> str:
+    """Normalize a single value string for comparison."""
+    s = s.strip()
+    # Strip LaTeX wrappers
+    s = re.sub(r"\\[a-zA-Z]+", "", s)
+    s = s.replace("{", "").replace("}", "")
+    s = s.replace("$", "")
+    s = s.replace(" ", "")
+    return s.lower()
+
+
+def _extract_values(text: str) -> list[str]:
+    """Extract numeric/algebraic values from an answer string.
+
+    Handles patterns like:
+      "x = 5"         -> ["5"]
+      "x = 3, y = 1"  -> ["1", "3"]
+      "x = 7 or x = -2" -> ["-2", "7"]
+      "(3, 1)"        -> ["1", "3"]
+    """
+    s = text.strip()
+    # Remove outer parentheses/brackets for tuple-style answers: (3, 1)
+    s = re.sub(r"^\s*[\(\[]\s*", "", s)
+    s = re.sub(r"\s*[\)\]]\s*$", "", s)
+    # Split on "or", ",", ";"
+    parts = re.split(r"\s+or\s+|[,;]\s*", s)
+    values = []
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        # Strip variable assignment: "x = 5" -> "5", "y= -3" -> "-3"
+        if "=" in part:
+            part = part.split("=", 1)[1].strip()
+        if part:
+            values.append(_normalize_value(part))
+    return sorted(values)
+
+
+def _values_match(model_answer: str, correct_answer: str) -> bool:
+    """Compare two answers by extracting and normalizing their values."""
+    model_vals = _extract_values(model_answer)
+    correct_vals = _extract_values(correct_answer)
+    if not model_vals or not correct_vals:
+        return False
+    return model_vals == correct_vals
 
 
 def _get_client() -> httpx.AsyncClient:
@@ -105,26 +155,47 @@ async def call_model(
     """Call a model via OpenRouter and return parsed response."""
     model_info = BENCHMARK_MODELS[model_key]
     model_id = model_info["id"]
+    is_reasoning = model_info["type"] == "reasoning"
     client = _get_client()
 
     for attempt in range(max_retries):
         start = time.monotonic()
         try:
+            # Build messages based on model type
+            if is_reasoning:
+                # Reasoning models: no system message, put JSON instruction in user message
+                messages = [
+                    {
+                        "role": "user",
+                        "content": (
+                            f"{SOLVER_SYSTEM_PROMPT}\n\nProblem:\n{problem_content}"
+                        ),
+                    },
+                ]
+            else:
+                messages = [
+                    {"role": "system", "content": SOLVER_SYSTEM_PROMPT},
+                    {"role": "user", "content": f"Problem:\n{problem_content}"},
+                ]
+
+            payload: dict = {
+                "model": model_id,
+                "messages": messages,
+                "temperature": 0.1,
+                "max_tokens": 2048,
+            }
+
+            # Standard models: request structured JSON output
+            if not is_reasoning:
+                payload["response_format"] = {"type": "json_object"}
+
             resp = await client.post(
                 f"{settings.llm_base_url}/chat/completions",
                 headers={
                     "Authorization": f"Bearer {settings.llm_api_key}",
                     "Content-Type": "application/json",
                 },
-                json={
-                    "model": model_id,
-                    "messages": [
-                        {"role": "system", "content": SOLVER_SYSTEM_PROMPT},
-                        {"role": "user", "content": f"Problem:\n{problem_content}"},
-                    ],
-                    "temperature": 0.1,
-                    "max_tokens": 1000,
-                },
+                json=payload,
             )
             latency_ms = (time.monotonic() - start) * 1000
 
@@ -208,6 +279,10 @@ def check_answer(
         result = SympyEngine.check_equivalence(latex_to_check, correct_latex)
         if result["error"] is None:
             return AnswerCheckResult(is_correct=result["equivalent"], method="sympy")
+
+    # Try value extraction: handles "x = 5" vs "5", multi-value answers, etc.
+    if _values_match(model_answer, correct_answer):
+        return AnswerCheckResult(is_correct=True, method="value_extraction")
 
     # Fallback: normalized string match
     norm_model = LLMRouter._normalize(model_answer)

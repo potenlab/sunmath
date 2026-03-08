@@ -19,6 +19,7 @@ from app.schemas.llm_benchmark import (
 )
 from app.services.benchmark_runner import (
     BENCHMARK_MODELS,
+    _values_match,
     call_model,
     check_answer,
     load_problems,
@@ -30,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 # Voting chain: cheapest -> mid-quality -> high-quality
 PRIMARY_MODEL = "deepseek-v3"
-SECONDARY_MODEL = "claude-sonnet"
+SECONDARY_MODEL = "qwen-2.5-72b"
 TERTIARY_MODEL = "gpt-4o"
 
 
@@ -41,7 +42,7 @@ def _answers_agree(
     answer2_latex: str,
     correct_answer_latex: str,
 ) -> bool:
-    """Check if two model answers agree using SymPy then string match."""
+    """Check if two model answers agree using SymPy, value extraction, then string match."""
     # Try SymPy equivalence between the two answers
     latex1 = answer1_latex or answer1
     latex2 = answer2_latex or answer2
@@ -49,6 +50,10 @@ def _answers_agree(
         result = SympyEngine.check_equivalence(latex1, latex2)
         if result["error"] is None:
             return result["equivalent"]
+
+    # Try value extraction: handles "x = 5" vs "5", etc.
+    if _values_match(answer1, answer2):
+        return True
 
     # Fallback: normalized string
     norm1 = LLMRouter._normalize(answer1)

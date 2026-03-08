@@ -19,7 +19,7 @@ class ModelResponse(BaseModel):
 
 class AnswerCheckResult(BaseModel):
     is_correct: bool
-    method: str  # "sympy" | "string_match" | "needs_manual_review"
+    method: str  # "sympy" | "value_extraction" | "string_match" | "needs_manual_review"
 
 
 class ProblemResult(BaseModel):

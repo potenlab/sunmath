@@ -1,0 +1,677 @@
+problem_id,subject,difficulty,model_key,answer,correct_answer,is_correct,check_method,confidence,latency_ms,cost,error
+ALG-E01,algebra,easy,deepseek-v3,5,x = 5,False,string_match,100,4789.3,0.000159,
+ALG-E01,algebra,easy,claude-sonnet,"I need to solve the linear equation 3x + 7 = 22 for x.
+
+Step 1: Subtract 7 from both sides to isolate the term with x.
+3x + 7 - 7 = 22 - 7
+3x = 15
+
+Step 2: Divide both sides by 3 to solve for x.
+3x ÷ ",x = 5,False,model_error,0,3380.5,0.004386,Failed to parse JSON from model response
+ALG-E01,algebra,easy,gpt-4o,x = 5,x = 5,True,string_match,100,1740.8,0.001807,
+ALG-E01,algebra,easy,o3-mini,x = 5,x = 5,True,string_match,100,2253.5,0.001868,
+ALG-E01,algebra,easy,deepseek-r1,,x = 5,False,model_error,0,35.5,0.0,HTTP 400
+ALG-E01,algebra,easy,qwen-2.5-72b,5,x = 5,False,string_match,100,3026.5,5.1e-05,
+ALG-E02,algebra,easy,deepseek-v3,8,x = 8,False,string_match,95,3893.5,0.000137,
+ALG-E02,algebra,easy,claude-sonnet,"I need to solve the equation 2(x - 3) = 10 for x.
+
+Step 1: Distribute the 2 on the left side.
+2(x - 3) = 10
+2x - 6 = 10
+
+Step 2: Add 6 to both sides to isolate the term with x.
+2x - 6 + 6 = 10 + 6
+2x ",x = 8,False,model_error,0,3209.6,0.004344,Failed to parse JSON from model response
+ALG-E02,algebra,easy,gpt-4o,8,x = 8,False,string_match,100,2110.7,0.00182,
+ALG-E02,algebra,easy,o3-mini,8,x = 8,False,string_match,100,1943.9,0.001218,
+ALG-E02,algebra,easy,deepseek-r1,,x = 8,False,model_error,0,39.7,0.0,HTTP 400
+ALG-E02,algebra,easy,qwen-2.5-72b,8,x = 8,False,string_match,100,3546.0,6.3e-05,
+ALG-E03,algebra,easy,deepseek-v3,16,x = 16,False,string_match,100,3480.0,0.000182,
+ALG-E03,algebra,easy,claude-sonnet,"I need to solve the equation x/4 + 3 = 7 for x.
+
+Step 1: Subtract 3 from both sides to isolate the term with x.
+x/4 + 3 - 3 = 7 - 3
+x/4 = 4
+
+Step 2: Multiply both sides by 4 to solve for x.
+x/4 × 4 = ",x = 16,False,model_error,0,3839.9,0.004269,Failed to parse JSON from model response
+ALG-E03,algebra,easy,gpt-4o,16,x = 16,False,string_match,100,1535.4,0.001868,
+ALG-E03,algebra,easy,o3-mini,16,x = 16,False,string_match,100,2284.1,0.002189,
+ALG-E03,algebra,easy,deepseek-r1,,x = 16,False,model_error,0,35.6,0.0,HTTP 400
+ALG-E03,algebra,easy,qwen-2.5-72b,16,x = 16,False,string_match,100,3458.7,4.4e-05,
+ALG-M01,algebra,medium,deepseek-v3,"x = 3, y = 1","x = 3, y = 1",True,string_match,100,4301.2,0.000225,
+ALG-M01,algebra,medium,claude-sonnet,"I need to solve the system of equations:
+- 2x + y = 7
+- x - y = 2
+
+I'll use the elimination method by adding the equations together.
+
+Adding the equations:
+(2x + y) + (x - y) = 7 + 2
+2x + y + x - y = ","x = 3, y = 1",False,model_error,0,3849.1,0.005424,Failed to parse JSON from model response
+ALG-M01,algebra,medium,gpt-4o,"(3, 1)","x = 3, y = 1",False,string_match,100,2268.9,0.002652,
+ALG-M01,algebra,medium,o3-mini,"(x, y) = (3, 1)","x = 3, y = 1",False,string_match,100,3553.3,0.002658,
+ALG-M01,algebra,medium,deepseek-r1,,"x = 3, y = 1",False,model_error,0,34.3,0.0,HTTP 400
+ALG-M01,algebra,medium,qwen-2.5-72b,"x = 3, y = 1","x = 3, y = 1",True,string_match,100,7333.1,7.9e-05,
+ALG-M02,algebra,medium,deepseek-v3,"x = 7, x = -2",x = 7 or x = -2,False,string_match,100,6088.6,0.000206,
+ALG-M02,algebra,medium,claude-sonnet,"I need to solve the absolute value equation |2x - 5| = 9.
+
+When we have |A| = B where B > 0, this means either A = B or A = -B.
+
+So |2x - 5| = 9 means either:
+- 2x - 5 = 9, or
+- 2x - 5 = -9
+
+Let me so",x = 7 or x = -2,False,model_error,0,4825.2,0.00693,Failed to parse JSON from model response
+ALG-M02,algebra,medium,gpt-4o,x = 7 or x = -2,x = 7 or x = -2,True,string_match,100,1894.6,0.002795,
+ALG-M02,algebra,medium,o3-mini,x = 7 or x = -2,x = 7 or x = -2,True,string_match,100,2993.8,0.002566,
+ALG-M02,algebra,medium,deepseek-r1,,x = 7 or x = -2,False,model_error,0,33.5,0.0,HTTP 400
+ALG-M02,algebra,medium,qwen-2.5-72b,"x = 7, x = -2",x = 7 or x = -2,False,string_match,100,5231.6,7.2e-05,
+ALG-M03,algebra,medium,deepseek-v3,x ≥ -7,x ≥ -7,True,sympy,95,4263.0,0.000166,
+ALG-M03,algebra,medium,claude-sonnet,"I need to solve the inequality 3x - 2 ≤ 4x + 5.
+
+Let me work through this step by step:
+
+Starting with: 3x - 2 ≤ 4x + 5
+
+First, I'll subtract 3x from both sides:
+3x - 2 - 3x ≤ 4x + 5 - 3x
+-2 ≤ x + 5
+
+",x ≥ -7,False,model_error,0,5074.6,0.007257,Failed to parse JSON from model response
+ALG-M03,algebra,medium,gpt-4o,x ≥ -7,x ≥ -7,True,sympy,100,1572.0,0.001727,
+ALG-M03,algebra,medium,o3-mini,x >= -7,x ≥ -7,True,sympy,100,2207.9,0.002396,
+ALG-M03,algebra,medium,deepseek-r1,,x ≥ -7,False,model_error,0,33.4,0.0,HTTP 400
+ALG-M03,algebra,medium,qwen-2.5-72b,x ≥ -7,x ≥ -7,True,sympy,100,3177.7,5.5e-05,
+ALG-M04,algebra,medium,deepseek-v3,"x = 2, x = 3","x = 2, x = 3",True,string_match,100,5595.4,0.000265,
+ALG-M04,algebra,medium,claude-sonnet,"I need to solve the quadratic equation x² - 5x + 6 = 0.
+
+I can solve this by factoring. I need to find two numbers that multiply to 6 and add to -5.
+
+Let me think about the factors of 6:
+- 1 × 6 = 6, ","x = 2, x = 3",False,model_error,0,5626.0,0.007989,Failed to parse JSON from model response
+ALG-M04,algebra,medium,gpt-4o,x = 2 or x = 3,"x = 2, x = 3",False,string_match,100,3174.0,0.00217,
+ALG-M04,algebra,medium,o3-mini,"x = 2, 3","x = 2, x = 3",False,string_match,100,3088.6,0.002727,
+ALG-M04,algebra,medium,deepseek-r1,,"x = 2, x = 3",False,model_error,0,34.6,0.0,HTTP 400
+ALG-M04,algebra,medium,qwen-2.5-72b,"x = 2, x = 3","x = 2, x = 3",True,string_match,100,3520.3,6e-05,
+ALG-H01,algebra,hard,deepseek-v3,"x = -2, -1, 1, 2","x = ±1, x = ±2",False,string_match,95,7430.5,0.000225,
+ALG-H01,algebra,hard,claude-sonnet,"I need to solve the equation x⁴ - 5x² + 4 = 0.
+
+This is a quartic equation, but I can solve it by substitution since it's in the form of a quadratic in x².
+
+Let me substitute u = x², so the equation b","x = ±1, x = ±2",False,model_error,0,6913.3,0.009156,Failed to parse JSON from model response
+ALG-H01,algebra,hard,gpt-4o,"x = 2, x = -2, x = 1, x = -1","x = ±1, x = ±2",False,string_match,100,2810.2,0.003845,
+ALG-H01,algebra,hard,o3-mini,"x = -2, -1, 1, 2","x = ±1, x = ±2",False,string_match,100,2920.7,0.003257,
+ALG-H01,algebra,hard,deepseek-r1,,"x = ±1, x = ±2",False,model_error,0,33.7,0.0,HTTP 400
+ALG-H01,algebra,hard,qwen-2.5-72b,"-2, -1, 1, 2","x = ±1, x = ±2",False,string_match,100,8041.4,9.1e-05,
+ALG-H02,algebra,hard,deepseek-v3,"(-∞, -2) ∪ (1, 3)",x < -2 or 1 < x < 3,False,string_match,95,11180.1,0.000462,
+ALG-H02,algebra,hard,claude-sonnet,"I need to solve the inequality (x-1)(x+2)(x-3) < 0.
+
+To solve this, I'll find where the expression equals zero and then determine the sign of the expression in each interval.
+
+Step 1: Find the zeros o",x < -2 or 1 < x < 3,False,model_error,0,8369.3,0.010944,Failed to parse JSON from model response
+ALG-H02,algebra,hard,gpt-4o,"x ∈ (-∞, -2) ∪ (1, 3)",x < -2 or 1 < x < 3,False,string_match,100,3164.2,0.006065,
+ALG-H02,algebra,hard,o3-mini,"(-∞, -2) ∪ (1, 3)",x < -2 or 1 < x < 3,False,string_match,100,4034.1,0.005356,
+ALG-H02,algebra,hard,deepseek-r1,,x < -2 or 1 < x < 3,False,model_error,0,41.6,0.0,HTTP 400
+ALG-H02,algebra,hard,qwen-2.5-72b,"(-inf, -2) U (1, 3)",x < -2 or 1 < x < 3,False,string_match,100,7734.0,0.0001,
+ALG-H03,algebra,hard,deepseek-v3,13/4,x = 6,False,string_match,95,19304.8,0.000814,
+ALG-H03,algebra,hard,claude-sonnet,"I need to find all real solutions to the equation √(x+3) + √(x-1) = 4.
+
+First, let me determine the domain. For the square roots to be defined, I need:
+- x + 3 ≥ 0, so x ≥ -3
+- x - 1 ≥ 0, so x ≥ 1
+
+Th",x = 6,False,model_error,0,9928.5,0.014607,Failed to parse JSON from model response
+ALG-H03,algebra,hard,gpt-4o,x = 13/4,x = 6,False,string_match,100,4197.6,0.00705,
+ALG-H03,algebra,hard,o3-mini,x = 13/4,x = 6,False,string_match,100,5367.6,0.006445,
+ALG-H03,algebra,hard,deepseek-r1,,x = 6,False,model_error,0,40.7,0.0,HTTP 400
+ALG-H03,algebra,hard,qwen-2.5-72b,13 / 4,x = 6,False,string_match,100,17516.4,0.000181,
+FAC-E01,factoring_expansion,easy,deepseek-v3,x^2 + 9x + 20,x² + 9x + 20,True,sympy,100,8468.6,0.000291,
+FAC-E01,factoring_expansion,easy,claude-sonnet,"I need to expand the product (x + 4)(x + 5) using the distributive property (also known as FOIL method).
+
+Let me multiply each term in the first binomial by each term in the second binomial:
+
+(x + 4)(",x² + 9x + 20,False,model_error,0,3305.7,0.004308,Failed to parse JSON from model response
+FAC-E01,factoring_expansion,easy,gpt-4o,x^2 + 9x + 20,x² + 9x + 20,True,sympy,100,1847.2,0.002728,
+FAC-E01,factoring_expansion,easy,o3-mini,x^2 + 9x + 20,x² + 9x + 20,True,sympy,100,2355.0,0.002083,
+FAC-E01,factoring_expansion,easy,deepseek-r1,,x² + 9x + 20,False,model_error,0,39.0,0.0,HTTP 400
+FAC-E01,factoring_expansion,easy,qwen-2.5-72b,x^2 + 9x + 20,x² + 9x + 20,True,sympy,100,5047.3,8.4e-05,
+FAC-E02,factoring_expansion,easy,deepseek-v3,"```json
+{""solution"":""To factor the quadratic expression \(x^2 + 7x + 12\), we look for two numbers that multiply to the constant term (12) and add up to the coefficient of the middle term (7).\n\nStep",(x + 3)(x + 4),False,model_error,0,8679.5,0.000257,Failed to parse JSON from model response
+FAC-E02,factoring_expansion,easy,claude-sonnet,"I need to factor the quadratic expression x² + 7x + 12.
+
+To factor a quadratic of the form x² + bx + c, I need to find two numbers that:
+- Multiply to give c (which is 12)
+- Add to give b (which is 7)",(x + 3)(x + 4),False,model_error,0,4745.3,0.006489,Failed to parse JSON from model response
+FAC-E02,factoring_expansion,easy,gpt-4o,(x + 3)(x + 4),(x + 3)(x + 4),True,sympy,100,2544.0,0.003512,
+FAC-E02,factoring_expansion,easy,o3-mini,(x + 3)(x + 4),(x + 3)(x + 4),True,sympy,100,2285.9,0.001496,
+FAC-E02,factoring_expansion,easy,deepseek-r1,,(x + 3)(x + 4),False,model_error,0,33.2,0.0,HTTP 400
+FAC-E02,factoring_expansion,easy,qwen-2.5-72b,(x + 3)(x + 4),(x + 3)(x + 4),True,sympy,100,3578.0,6e-05,
+FAC-E03,factoring_expansion,easy,deepseek-v3,x² - 4x + 4,x² - 4x + 4,True,sympy,100,4842.8,0.000169,
+FAC-E03,factoring_expansion,easy,claude-sonnet,"I need to expand the expression (x - 2)².
+
+I'll use the formula for squaring a binomial: (a - b)² = a² - 2ab + b²
+
+Where a = x and b = 2.
+
+Step 1: Apply the formula
+(x - 2)² = x² - 2(x)(2) + 2²
+
+Step ",x² - 4x + 4,False,model_error,0,3492.7,0.004251,Failed to parse JSON from model response
+FAC-E03,factoring_expansion,easy,gpt-4o,x² - 4x + 4,x² - 4x + 4,True,sympy,100,1842.5,0.002158,
+FAC-E03,factoring_expansion,easy,o3-mini,x^2 - 4x + 4,x² - 4x + 4,True,sympy,100,1884.6,0.001318,
+FAC-E03,factoring_expansion,easy,deepseek-r1,,x² - 4x + 4,False,model_error,0,32.1,0.0,HTTP 400
+FAC-E03,factoring_expansion,easy,qwen-2.5-72b,x² - 4x + 4,x² - 4x + 4,True,sympy,100,4486.5,6.1e-05,
+FAC-M01,factoring_expansion,medium,deepseek-v3,2(x - 1)(x - 3),2(x - 1)(x - 3),True,sympy,95,11333.5,0.000542,
+FAC-M01,factoring_expansion,medium,claude-sonnet,"I need to factor the quadratic expression 2x² - 8x + 6 completely.
+
+First, I'll look for a common factor among all terms:
+- 2x² has factor 2
+- -8x has factor 2  
+- 6 has factor 2
+
+So I can factor out ",2(x - 1)(x - 3),False,model_error,0,6617.8,0.008598,Failed to parse JSON from model response
+FAC-M01,factoring_expansion,medium,gpt-4o,2(x - 3)(x - 1),2(x - 1)(x - 3),True,sympy,100,3686.3,0.0028,
+FAC-M01,factoring_expansion,medium,o3-mini,2(x-1)(x-3),2(x - 1)(x - 3),True,sympy,100,2816.5,0.002243,
+FAC-M01,factoring_expansion,medium,deepseek-r1,,2(x - 1)(x - 3),False,model_error,0,34.6,0.0,HTTP 400
+FAC-M01,factoring_expansion,medium,qwen-2.5-72b,2(x - 1)(x - 3),2(x - 1)(x - 3),True,sympy,100,4659.0,6.7e-05,
+FAC-M02,factoring_expansion,medium,deepseek-v3,2x^3 - x^2 - 11x + 12,2x³ - x² - 11x + 12,True,sympy,100,5207.9,0.000396,
+FAC-M02,factoring_expansion,medium,claude-sonnet,"I need to expand the product (2x - 3)(x² + x - 4) using the distributive property.
+
+I'll multiply each term in the first polynomial by each term in the second polynomial:
+
+(2x - 3)(x² + x - 4)
+
+= 2x(x",2x³ - x² - 11x + 12,False,model_error,0,4707.4,0.00651,Failed to parse JSON from model response
+FAC-M02,factoring_expansion,medium,gpt-4o,2x³ - x² - 11x + 12,2x³ - x² - 11x + 12,True,sympy,100,6206.9,0.003648,
+FAC-M02,factoring_expansion,medium,o3-mini,2x^3 - x^2 - 11x + 12,2x³ - x² - 11x + 12,True,sympy,100,3077.6,0.003095,
+FAC-M02,factoring_expansion,medium,deepseek-r1,,2x³ - x² - 11x + 12,False,model_error,0,32.0,0.0,HTTP 400
+FAC-M02,factoring_expansion,medium,qwen-2.5-72b,2x^3 - x^2 - 11x + 12,2x³ - x² - 11x + 12,True,sympy,100,6460.9,8.7e-05,
+FAC-M03,factoring_expansion,medium,deepseek-v3,"```json
+{
+  ""solution"": ""To factor the expression \(x^3 - 8\), we recognize it as a difference of cubes. The formula for factoring a difference of cubes is \(a^3 - b^3 = (a - b)(a^2 + ab + b^2)\). Her",(x - 2)(x² + 2x + 4),False,model_error,0,5749.9,0.000206,Failed to parse JSON from model response
+FAC-M03,factoring_expansion,medium,claude-sonnet,"I need to factor the expression x³ - 8.
+
+I can recognize this as a difference of cubes, since 8 = 2³.
+
+The difference of cubes formula is:
+a³ - b³ = (a - b)(a² + ab + b²)
+
+In this case:
+- a = x
+- b = ",(x - 2)(x² + 2x + 4),False,model_error,0,5085.2,0.00624,Failed to parse JSON from model response
+FAC-M03,factoring_expansion,medium,gpt-4o,(x - 2)(x² + 2x + 4),(x - 2)(x² + 2x + 4),True,sympy,100,1435.1,0.001612,
+FAC-M03,factoring_expansion,medium,o3-mini,(x - 2)(x^2 + 2x + 4),(x - 2)(x² + 2x + 4),True,sympy,100,2211.0,0.00209,
+FAC-M03,factoring_expansion,medium,deepseek-r1,,(x - 2)(x² + 2x + 4),False,model_error,0,33.1,0.0,HTTP 400
+FAC-M03,factoring_expansion,medium,qwen-2.5-72b,(x - 2)(x^2 + 2x + 4),(x - 2)(x² + 2x + 4),True,sympy,100,4110.0,6.1e-05,
+FAC-M04,factoring_expansion,medium,deepseek-v3,,(x + 4)² - 6,False,needs_manual_review,0,0.0,0.0,
+FAC-M04,factoring_expansion,medium,claude-sonnet,,(x + 4)² - 6,False,needs_manual_review,0,0.0,0.0,
+FAC-M04,factoring_expansion,medium,gpt-4o,(x + 4)² - 6,(x + 4)² - 6,True,sympy,100,3232.6,0.003087,
+FAC-M04,factoring_expansion,medium,o3-mini,(x + 4)² - 6,(x + 4)² - 6,True,sympy,100,2071.4,0.002039,
+FAC-M04,factoring_expansion,medium,deepseek-r1,,(x + 4)² - 6,False,model_error,0,35.0,0.0,HTTP 400
+FAC-M04,factoring_expansion,medium,qwen-2.5-72b,(x + 4)^2 - 6,(x + 4)² - 6,True,sympy,100,4324.5,7e-05,
+FAC-H01,factoring_expansion,hard,deepseek-v3,"```json
+{""solution"": ""To factor the expression \(x^4 - 16\) completely, follow these steps:\n\n1. Recognize that the expression is a difference of squares. The difference of squares formula is \(a^2 -",(x² + 4)(x + 2)(x - 2),False,model_error,0,9433.8,0.000352,Failed to parse JSON from model response
+FAC-H01,factoring_expansion,hard,claude-sonnet,"I need to factor x⁴ - 16 completely.
+
+I can recognize this as a difference of squares pattern, since x⁴ = (x²)² and 16 = 4².
+
+So x⁴ - 16 = (x²)² - 4²
+
+Using the difference of squares formula a² - b² =",(x² + 4)(x + 2)(x - 2),False,model_error,0,5108.4,0.006324,Failed to parse JSON from model response
+FAC-H01,factoring_expansion,hard,gpt-4o,(x - 2)(x + 2)(x² + 4),(x² + 4)(x + 2)(x - 2),True,sympy,100,2756.0,0.002808,
+FAC-H01,factoring_expansion,hard,o3-mini,(x - 2)(x + 2)(x^2 + 4),(x² + 4)(x + 2)(x - 2),True,sympy,100,3476.2,0.004512,
+FAC-H01,factoring_expansion,hard,deepseek-r1,,(x² + 4)(x + 2)(x - 2),False,model_error,0,403.2,0.0,HTTP 400
+FAC-H01,factoring_expansion,hard,qwen-2.5-72b,(x^2 + 4)(x + 2)(x - 2),(x² + 4)(x + 2)(x - 2),True,sympy,100,5602.5,8.1e-05,
+FAC-H02,factoring_expansion,hard,deepseek-v3,"```json
+{
+  ""solution"": ""To factor the polynomial \(x^3 + 3x^2 - 4x - 12\), we can use the Rational Root Theorem to find possible rational roots. Testing \(x = 2\):\n\n\(2^3 + 3(2)^2 - 4(2) - 12 = 8 +",(x + 3)(x + 2)(x - 2),False,model_error,0,11004.2,0.000343,Failed to parse JSON from model response
+FAC-H02,factoring_expansion,hard,claude-sonnet,"I need to factor the polynomial x³ + 3x² - 4x - 12.
+
+Let me try factoring by grouping, since this is a cubic polynomial with 4 terms.
+
+I'll group the terms in pairs:
+x³ + 3x² - 4x - 12 = (x³ + 3x²) + ",(x + 3)(x + 2)(x - 2),False,model_error,0,7808.2,0.010467,Failed to parse JSON from model response
+FAC-H02,factoring_expansion,hard,gpt-4o,(x + 3)(x - 2)(x + 2),(x + 3)(x + 2)(x - 2),True,sympy,100,2416.7,0.003425,
+FAC-H02,factoring_expansion,hard,o3-mini,(x - 2)(x + 2)(x + 3),(x + 3)(x + 2)(x - 2),True,sympy,100,3564.6,0.00309,
+FAC-H02,factoring_expansion,hard,deepseek-r1,,(x + 3)(x + 2)(x - 2),False,model_error,0,303.6,0.0,HTTP 400
+FAC-H02,factoring_expansion,hard,qwen-2.5-72b,(x + 3)(x - 2)(x + 2),(x + 3)(x + 2)(x - 2),True,sympy,100,7474.9,0.000101,
+FAC-H03,factoring_expansion,hard,deepseek-v3,"{""solution"": ""To expand \((a + b + c)^2\), we use the formula for the square of a trinomial: \((x + y + z)^2 = x^2 + y^2 + z^2 + 2xy + 2xz + 2yz\). Applying this to \((a + b + c)^2\), we get: \n\n\[
+(",a² + b² + c² + 2ab + 2ac + 2bc,False,model_error,0,5279.5,0.000214,Failed to parse JSON from model response
+FAC-H03,factoring_expansion,hard,claude-sonnet,"I need to expand (a + b + c)².
+
+I can think of this as [(a + b) + c]² and use the formula (x + y)² = x² + 2xy + y², where x = (a + b) and y = c.
+
+(a + b + c)² = [(a + b) + c]²
+= (a + b)² + 2(a + b)(c)",a² + b² + c² + 2ab + 2ac + 2bc,False,model_error,0,6935.7,0.009924,Failed to parse JSON from model response
+FAC-H03,factoring_expansion,hard,gpt-4o,a² + b² + c² + 2ab + 2ac + 2bc,a² + b² + c² + 2ab + 2ac + 2bc,True,sympy,100,1880.8,0.00237,
+FAC-H03,factoring_expansion,hard,o3-mini,a^2 + b^2 + c^2 + 2ab + 2ac + 2bc,a² + b² + c² + 2ab + 2ac + 2bc,True,sympy,100,4730.5,0.004029,
+FAC-H03,factoring_expansion,hard,deepseek-r1,,a² + b² + c² + 2ab + 2ac + 2bc,False,model_error,0,37.7,0.0,HTTP 400
+FAC-H03,factoring_expansion,hard,qwen-2.5-72b,a² + b² + c² + 2ab + 2ac + 2bc,a² + b² + c² + 2ab + 2ac + 2bc,True,sympy,100,4565.9,5.6e-05,
+GEO-E01,geometry,easy,deepseek-v3,20 cm²,20 cm²,True,sympy,100,3726.9,0.000145,
+GEO-E01,geometry,easy,claude-sonnet,20 cm²,20 cm²,True,sympy,100,2420.2,0.003513,
+GEO-E01,geometry,easy,gpt-4o,20 square centimeters,20 cm²,True,sympy,100,1427.4,0.001357,
+GEO-E01,geometry,easy,o3-mini,20 cm^2,20 cm²,False,string_match,100,2660.6,0.003175,
+GEO-E01,geometry,easy,deepseek-r1,,20 cm²,False,model_error,0,55.4,0.0,HTTP 400
+GEO-E01,geometry,easy,qwen-2.5-72b,20,20 cm²,True,sympy,100,2320.4,4.6e-05,
+GEO-E02,geometry,easy,deepseek-v3,5,5,True,sympy,100,7044.4,0.000234,
+GEO-E02,geometry,easy,claude-sonnet,"I need to find the distance between two points using the distance formula.
+
+Given points: (1, 2) and (4, 6)
+
+The distance formula between two points (x₁, y₁) and (x₂, y₂) is:
+d = √[(x₂ - x₁)² + (y₂ - ",5,False,model_error,0,4247.3,0.0051,Failed to parse JSON from model response
+GEO-E02,geometry,easy,gpt-4o,5,5,True,sympy,100,1927.9,0.00313,
+GEO-E02,geometry,easy,o3-mini,5,5,True,sympy,100,2132.6,0.002467,
+GEO-E02,geometry,easy,deepseek-r1,,5,False,model_error,0,38.0,0.0,HTTP 400
+GEO-E02,geometry,easy,qwen-2.5-72b,5,5,True,sympy,100,3685.3,6.3e-05,
+GEO-E03,geometry,easy,deepseek-v3,14π cm,14π cm,True,sympy,100,4288.3,0.000141,
+GEO-E03,geometry,easy,claude-sonnet,"I need to find the circumference of a circle with radius 7 cm.
+
+The formula for the circumference of a circle is:
+C = 2πr
+
+Where:
+- C is the circumference
+- r is the radius
+- π is pi
+
+Given informatio",14π cm,False,model_error,0,2346.4,0.002949,Failed to parse JSON from model response
+GEO-E03,geometry,easy,gpt-4o,14π cm,14π cm,True,sympy,100,1425.6,0.001213,
+GEO-E03,geometry,easy,o3-mini,14π cm,14π cm,True,sympy,100,2623.9,0.001637,
+GEO-E03,geometry,easy,deepseek-r1,,14π cm,False,model_error,0,37.6,0.0,HTTP 400
+GEO-E03,geometry,easy,qwen-2.5-72b,14\u03c0,14π cm,True,sympy,100,2212.4,4.7e-05,
+GEO-M01,geometry,medium,deepseek-v3,(x - 3)^2 + (y + 1)^2 = 25,(x-3)² + (y+1)² = 25,False,string_match,100,11235.4,0.000457,
+GEO-M01,geometry,medium,claude-sonnet,"I need to find the equation of a circle with center (3, -1) that passes through the point (6, 3).
+
+The general equation of a circle with center (h, k) and radius r is:
+(x - h)² + (y - k)² = r²
+
+Given ",(x-3)² + (y+1)² = 25,False,model_error,0,6467.6,0.00945,Failed to parse JSON from model response
+GEO-M01,geometry,medium,gpt-4o,(x - 3)^2 + (y + 1)^2 = 25,(x-3)² + (y+1)² = 25,False,string_match,100,3323.8,0.003413,
+GEO-M01,geometry,medium,o3-mini,(x - 3)^2 + (y + 1)^2 = 25,(x-3)² + (y+1)² = 25,False,string_match,100,3585.1,0.003872,
+GEO-M01,geometry,medium,deepseek-r1,,(x-3)² + (y+1)² = 25,False,model_error,0,37.0,0.0,HTTP 400
+GEO-M01,geometry,medium,qwen-2.5-72b,(x - 3)^2 + (y + 1)^2 = 25,(x-3)² + (y+1)² = 25,False,string_match,100,8213.1,0.000117,
+GEO-M02,geometry,medium,deepseek-v3,The diagonals of a rectangle are equal in length.,"Place rectangle with vertices at (0,0), (a,0), (a,b), (0,b). Diagonal 1: √(a²+b²). Diagonal 2: √(a²+b²). Equal.",False,needs_manual_review,100,7648.5,0.000224,
+GEO-M02,geometry,medium,claude-sonnet,"The diagonals of a rectangle are equal in length because both diagonals form the hypotenuse of congruent right triangles with the same side lengths, resulting in equal diagonal lengths of √(a² + b²) where a and b are the rectangle's dimensions.","Place rectangle with vertices at (0,0), (a,0), (a,b), (0,b). Diagonal 1: √(a²+b²). Diagonal 2: √(a²+b²). Equal.",False,needs_manual_review,100,8381.7,0.009726,
+GEO-M02,geometry,medium,gpt-4o,The diagonals of a rectangle are equal in length.,"Place rectangle with vertices at (0,0), (a,0), (a,b), (0,b). Diagonal 1: √(a²+b²). Diagonal 2: √(a²+b²). Equal.",False,needs_manual_review,100,3214.8,0.00355,
+GEO-M02,geometry,medium,o3-mini,"{
+  ""solution"": ""Let the rectangle have vertices A, B, C, and D with AB parallel to CD and BC parallel to AD. One common approach is to use coordinate geometry. Place A at (0, 0), B at (a, 0), C at (a","Place rectangle with vertices at (0,0), (a,0), (a,b), (0,b). Diagonal 1: √(a²+b²). Diagonal 2: √(a²+b²). Equal.",False,model_error,0,6387.5,0.007294,Failed to parse JSON from model response
+GEO-M02,geometry,medium,deepseek-r1,,"Place rectangle with vertices at (0,0), (a,0), (a,b), (0,b). Diagonal 1: √(a²+b²). Diagonal 2: √(a²+b²). Equal.",False,model_error,0,38.6,0.0,HTTP 400
+GEO-M02,geometry,medium,qwen-2.5-72b,The diagonals of a rectangle are equal in length.,"Place rectangle with vertices at (0,0), (a,0), (a,b), (0,b). Diagonal 1: √(a²+b²). Diagonal 2: √(a²+b²). Equal.",False,needs_manual_review,100,5647.1,8.1e-05,
+GEO-M03,geometry,medium,deepseek-v3,6,6,True,sympy,100,10242.5,0.000305,
+GEO-M03,geometry,medium,claude-sonnet,"I need to find the area of a triangle with vertices A(1,1), B(4,1), and C(2,5).
+
+There are several ways to find the area of a triangle given coordinates. I'll use the coordinate formula:
+
+Area = (1/2)",6,False,model_error,0,5584.6,0.008514,Failed to parse JSON from model response
+GEO-M03,geometry,medium,gpt-4o,6,6,True,sympy,100,3226.8,0.00321,
+GEO-M03,geometry,medium,o3-mini,6,6,True,string_match,100,3271.7,0.003303,
+GEO-M03,geometry,medium,deepseek-r1,,6,False,model_error,0,45.1,0.0,HTTP 400
+GEO-M03,geometry,medium,qwen-2.5-72b,6,6,True,sympy,100,4113.2,7.7e-05,
+GEO-M04,geometry,medium,deepseek-v3,"Center: (-3, 1), Radius: 4","Center: (-3, 1), Radius: 4",True,string_match,95,11281.8,0.000459,
+GEO-M04,geometry,medium,claude-sonnet,"I need to find the center and radius of the circle by converting the given equation to standard form.
+
+Given equation: x² + y² + 6x - 2y - 6 = 0
+
+To find the center and radius, I'll complete the squar","Center: (-3, 1), Radius: 4",False,model_error,0,6549.8,0.010053,Failed to parse JSON from model response
+GEO-M04,geometry,medium,gpt-4o,"Center: (-3, 1), Radius: 4","Center: (-3, 1), Radius: 4",True,string_match,100,3688.5,0.004715,
+GEO-M04,geometry,medium,o3-mini,"The center is (-3, 1) and the radius is 4.","Center: (-3, 1), Radius: 4",False,string_match,100,3940.9,0.004146,
+GEO-M04,geometry,medium,deepseek-r1,,"Center: (-3, 1), Radius: 4",False,model_error,0,116.1,0.0,HTTP 400
+GEO-M04,geometry,medium,qwen-2.5-72b,"The center of the circle is (-3, 1) and the radius is 4.","Center: (-3, 1), Radius: 4",False,string_match,100,8015.7,0.000105,
+GEO-H01,geometry,hard,deepseek-v3,The medians of a triangle are concurrent at the centroid.,"Using coordinate geometry: place triangle at A(0,0), B(2a,0), C(2b,2c). Medians from each vertex to opposite midpoint all pass through ((2a+2b)/3, 2c/3).",False,needs_manual_review,95,16229.8,0.00068,
+GEO-H01,geometry,hard,claude-sonnet,"I need to prove that the three medians of a triangle intersect at a single point (called the centroid).
+
+Let me set up a coordinate system and use vector methods for this proof.
+
+**Setup:**
+Let triang","Using coordinate geometry: place triangle at A(0,0), B(2a,0), C(2b,2c). Medians from each vertex to opposite midpoint all pass through ((2a+2b)/3, 2c/3).",False,model_error,0,11173.6,0.01524,Failed to parse JSON from model response
+GEO-H01,geometry,hard,gpt-4o,The medians of a triangle are concurrent at the centroid.,"Using coordinate geometry: place triangle at A(0,0), B(2a,0), C(2b,2c). Medians from each vertex to opposite midpoint all pass through ((2a+2b)/3, 2c/3).",False,needs_manual_review,95,4740.4,0.00661,
+GEO-H01,geometry,hard,o3-mini,"{
+  ""solution"": ""Let triangle ABC be given and let D, E, and F be the midpoints of sides BC, AC, and AB respectively. The medians are the line segments AD, BE, and CF. To prove they are concurrent, co","Using coordinate geometry: place triangle at A(0,0), B(2a,0), C(2b,2c). Medians from each vertex to opposite midpoint all pass through ((2a+2b)/3, 2c/3).",False,model_error,0,5360.5,0.006735,Failed to parse JSON from model response
+GEO-H01,geometry,hard,deepseek-r1,,"Using coordinate geometry: place triangle at A(0,0), B(2a,0), C(2b,2c). Medians from each vertex to opposite midpoint all pass through ((2a+2b)/3, 2c/3).",False,model_error,0,45.1,0.0,HTTP 400
+GEO-H01,geometry,hard,qwen-2.5-72b,The medians of a triangle are concurrent at the centroid.,"Using coordinate geometry: place triangle at A(0,0), B(2a,0), C(2b,2c). Medians from each vertex to opposite midpoint all pass through ((2a+2b)/3, 2c/3).",False,needs_manual_review,100,6777.4,9.6e-05,
+GEO-H02,geometry,hard,deepseek-v3,4x - 3y - 16 = 0,8x - 6y - 32 = 0 or equivalently 4x - 3y - 16 = 0,False,string_match,95,6925.3,0.000283,
+GEO-H02,geometry,hard,claude-sonnet,"I need to find the equation of the common chord of two intersecting circles.
+
+Given circles:
+- Circle 1: x² + y² = 25
+- Circle 2: x² + y² - 8x + 6y + 7 = 0
+
+To find the common chord, I'll use the fact",8x - 6y - 32 = 0 or equivalently 4x - 3y - 16 = 0,False,model_error,0,8123.3,0.011238,Failed to parse JSON from model response
+GEO-H02,geometry,hard,gpt-4o,-4x + 3y + 16 = 0,8x - 6y - 32 = 0 or equivalently 4x - 3y - 16 = 0,False,string_match,95,2328.4,0.003015,
+GEO-H02,geometry,hard,o3-mini,4x - 3y - 16 = 0,8x - 6y - 32 = 0 or equivalently 4x - 3y - 16 = 0,False,string_match,100,5803.7,0.006148,
+GEO-H02,geometry,hard,deepseek-r1,,8x - 6y - 32 = 0 or equivalently 4x - 3y - 16 = 0,False,model_error,0,36.2,0.0,HTTP 400
+GEO-H02,geometry,hard,qwen-2.5-72b,4x - 3y - 16 = 0,8x - 6y - 32 = 0 or equivalently 4x - 3y - 16 = 0,False,string_match,100,5136.2,8.9e-05,
+GEO-H03,geometry,hard,deepseek-v3,4,√(49 + 1 - 28 + 6 - 12) = √16 = 4,True,sympy,100,12843.1,0.000541,
+GEO-H03,geometry,hard,claude-sonnet,"I need to find the length of the tangent from point (7, 1) to the given circle.
+
+First, let me rewrite the circle equation in standard form by completing the square.
+
+Given: x² + y² - 4x + 6y - 12 = 0",√(49 + 1 - 28 + 6 - 12) = √16 = 4,False,model_error,0,7772.9,0.012516,Failed to parse JSON from model response
+GEO-H03,geometry,hard,gpt-4o,sqrt(3),√(49 + 1 - 28 + 6 - 12) = √16 = 4,False,sympy,95,6726.8,0.00526,
+GEO-H03,geometry,hard,o3-mini,4,√(49 + 1 - 28 + 6 - 12) = √16 = 4,True,sympy,100,4371.4,0.005301,
+GEO-H03,geometry,hard,deepseek-r1,,√(49 + 1 - 28 + 6 - 12) = √16 = 4,False,model_error,0,58.0,0.0,HTTP 400
+GEO-H03,geometry,hard,qwen-2.5-72b,4,√(49 + 1 - 28 + 6 - 12) = √16 = 4,True,sympy,100,7277.0,0.000109,
+CAL-E01,calculus,easy,deepseek-v3,15x² - 2,f'(x) = 15x² - 2,False,string_match,100,5503.8,0.000224,
+CAL-E01,calculus,easy,claude-sonnet,"I need to find the derivative of f(x) = 5x³ - 2x + 7.
+
+I'll use the power rule and the fact that the derivative of a sum is the sum of derivatives.
+
+For each term:
+- The derivative of 5x³: Using the p",f'(x) = 15x² - 2,False,model_error,0,4612.1,0.005367,Failed to parse JSON from model response
+CAL-E01,calculus,easy,gpt-4o,f'(x) = 15x² - 2,f'(x) = 15x² - 2,True,string_match,100,2197.3,0.002595,
+CAL-E01,calculus,easy,o3-mini,15x² - 2,f'(x) = 15x² - 2,False,string_match,100,2866.4,0.002478,
+CAL-E01,calculus,easy,deepseek-r1,,f'(x) = 15x² - 2,False,model_error,0,36.7,0.0,HTTP 400
+CAL-E01,calculus,easy,qwen-2.5-72b,15x^2 - 2,f'(x) = 15x² - 2,False,string_match,100,4980.6,7.9e-05,
+CAL-E02,calculus,easy,deepseek-v3,"{""solution"": ""To find the integral of the function \(6x^2 + 4x - 3\) with respect to \(x\), we integrate each term separately:\n\n1. The integral of \(6x^2\) is \(\frac{6}{3}x^3 = 2x^3\).\n2. The inte",2x³ + 2x² - 3x + C,False,model_error,0,6950.6,0.000219,Failed to parse JSON from model response
+CAL-E02,calculus,easy,claude-sonnet,"I need to find the indefinite integral of 6x² + 4x - 3.
+
+I'll integrate each term separately using the power rule for integration: ∫x^n dx = x^(n+1)/(n+1) + C
+
+For 6x²:
+∫6x² dx = 6 · ∫x² dx = 6 · x³/3",2x³ + 2x² - 3x + C,False,model_error,0,4717.7,0.005715,Failed to parse JSON from model response
+CAL-E02,calculus,easy,gpt-4o,2x^3 + 2x^2 - 3x + C,2x³ + 2x² - 3x + C,True,sympy,100,2446.6,0.003168,
+CAL-E02,calculus,easy,o3-mini,2x^3 + 2x^2 - 3x + C,2x³ + 2x² - 3x + C,False,string_match,100,2976.6,0.00262,
+CAL-E02,calculus,easy,deepseek-r1,,2x³ + 2x² - 3x + C,False,model_error,0,44.2,0.0,HTTP 400
+CAL-E02,calculus,easy,qwen-2.5-72b,2x^3 + 2x^2 - 3x + C,2x³ + 2x² - 3x + C,True,sympy,100,5425.9,8.1e-05,
+CAL-E03,calculus,easy,deepseek-v3,4,4,True,sympy,95,5586.4,0.00021,
+CAL-E03,calculus,easy,claude-sonnet,"I need to evaluate the limit of (x² - 4)/(x - 2) as x approaches 2.
+
+First, I'll check if I can substitute x = 2 directly:
+- Numerator: 2² - 4 = 4 - 4 = 0
+- Denominator: 2 - 2 = 0
+
+This gives us the i",4,False,model_error,0,5207.7,0.00696,Failed to parse JSON from model response
+CAL-E03,calculus,easy,gpt-4o,4,4,True,sympy,100,1925.2,0.002103,
+CAL-E03,calculus,easy,o3-mini,4,4,True,sympy,100,2694.6,0.002178,
+CAL-E03,calculus,easy,deepseek-r1,,4,False,model_error,0,34.3,0.0,HTTP 400
+CAL-E03,calculus,easy,qwen-2.5-72b,4,4,True,sympy,100,4449.8,7.2e-05,
+CAL-M01,calculus,medium,deepseek-v3,12(3x + 1)^3,f'(x) = 12(3x + 1)³,False,string_match,95,6440.2,0.000254,
+CAL-M01,calculus,medium,claude-sonnet,"I need to find the derivative of f(x) = (3x + 1)⁴.
+
+I'll use the chain rule, which states that if f(x) = [g(x)]ⁿ, then f'(x) = n[g(x)]ⁿ⁻¹ · g'(x).
+
+Here:
+- The outer function is u⁴ where u = 3x + 1
+- ",f'(x) = 12(3x + 1)³,False,model_error,0,5650.9,0.006711,Failed to parse JSON from model response
+CAL-M01,calculus,medium,gpt-4o,12(3x + 1)^3,f'(x) = 12(3x + 1)³,False,string_match,100,3811.6,0.00316,
+CAL-M01,calculus,medium,o3-mini,12(3x+1)^3,f'(x) = 12(3x + 1)³,False,string_match,100,3209.2,0.001948,
+CAL-M01,calculus,medium,deepseek-r1,,f'(x) = 12(3x + 1)³,False,model_error,0,40.7,0.0,HTTP 400
+CAL-M01,calculus,medium,qwen-2.5-72b,12(3x + 1)^3,f'(x) = 12(3x + 1)³,False,string_match,100,4838.4,6.9e-05,
+CAL-M02,calculus,medium,deepseek-v3,9,9,True,sympy,100,5189.1,0.000162,
+CAL-M02,calculus,medium,claude-sonnet,"I need to find the area under the curve y = x² from x = 0 to x = 3 using definite integration.
+
+The area under a curve from x = a to x = b is given by the definite integral:
+∫[a to b] f(x) dx
+
+In this",9,False,model_error,0,4711.2,0.006372,Failed to parse JSON from model response
+CAL-M02,calculus,medium,gpt-4o,9,9,True,sympy,100,2711.1,0.003268,
+CAL-M02,calculus,medium,o3-mini,9,9,True,string_match,100,3018.1,0.001652,
+CAL-M02,calculus,medium,deepseek-r1,,9,False,model_error,0,45.9,0.0,HTTP 400
+CAL-M02,calculus,medium,qwen-2.5-72b,9,9,True,sympy,100,3201.0,5.8e-05,
+CAL-M03,calculus,medium,deepseek-v3,y = -x + 1,y = -x + 1,True,string_match,100,12638.7,0.000443,
+CAL-M03,calculus,medium,claude-sonnet,"I need to find the equation of the tangent line to the curve y = x² - 3x + 2 at the point where x = 1.
+
+To find the tangent line, I need:
+1. The point of tangency (x₁, y₁)
+2. The slope of the tangent ",y = -x + 1,False,model_error,0,6144.2,0.008622,Failed to parse JSON from model response
+CAL-M03,calculus,medium,gpt-4o,y = -x + 1,y = -x + 1,True,string_match,100,4277.8,0.005248,
+CAL-M03,calculus,medium,o3-mini,y = -x + 1,y = -x + 1,True,string_match,100,3121.4,0.003324,
+CAL-M03,calculus,medium,deepseek-r1,,y = -x + 1,False,model_error,0,37.1,0.0,HTTP 400
+CAL-M03,calculus,medium,qwen-2.5-72b,y = -x + 1,y = -x + 1,True,string_match,100,6157.0,9e-05,
+CAL-M04,calculus,medium,deepseek-v3,"Local maximum at (1, 5), Local minimum at (3, 1)",Local max at x=1: f(1)=5. Local min at x=3: f(3)=1.,False,string_match,100,16439.9,0.00063,
+CAL-M04,calculus,medium,claude-sonnet,"I need to find the local maximum and minimum of f(x) = x³ - 6x² + 9x + 1.
+
+To find local extrema, I'll:
+1. Find the first derivative
+2. Set it equal to zero to find critical points
+3. Use the second d",Local max at x=1: f(1)=5. Local min at x=3: f(3)=1.,False,model_error,0,7326.5,0.010635,Failed to parse JSON from model response
+CAL-M04,calculus,medium,gpt-4o,"Local maximum at (1, 5) and local minimum at (3, 1).",Local max at x=1: f(1)=5. Local min at x=3: f(3)=1.,False,string_match,100,4402.5,0.0052,
+CAL-M04,calculus,medium,o3-mini,"The function has a local maximum at (1, 5) and a local minimum at (3, 1).",Local max at x=1: f(1)=5. Local min at x=3: f(3)=1.,False,string_match,100,4482.2,0.004826,
+CAL-M04,calculus,medium,deepseek-r1,,Local max at x=1: f(1)=5. Local min at x=3: f(3)=1.,False,model_error,0,52.5,0.0,HTTP 400
+CAL-M04,calculus,medium,qwen-2.5-72b,"Local maximum at (1, 5) and local minimum at (3, 1).",Local max at x=1: f(1)=5. Local min at x=3: f(3)=1.,False,string_match,100,12817.5,0.000159,
+CAL-H01,calculus,hard,deepseek-v3,1/2,1/2,True,sympy,95,5946.3,0.000222,
+CAL-H01,calculus,hard,claude-sonnet,"I need to evaluate the definite integral ∫₀^(π/2) sin(x)cos(x) dx.
+
+There are several ways to approach this. I'll use substitution.
+
+Let me use the substitution u = sin(x).
+
+Then du = cos(x) dx.
+
+When",1/2,False,model_error,0,5977.7,0.00849,Failed to parse JSON from model response
+CAL-H01,calculus,hard,gpt-4o,1/2,1/2,True,sympy,100,3390.5,0.0045,
+CAL-H01,calculus,hard,o3-mini,1/2,1/2,True,sympy,100,3241.1,0.003752,
+CAL-H01,calculus,hard,deepseek-r1,,1/2,False,model_error,0,53.1,0.0,HTTP 400
+CAL-H01,calculus,hard,qwen-2.5-72b,1/2,1/2,True,sympy,100,4356.9,7.3e-05,
+CAL-H02,calculus,hard,deepseek-v3,x^x * (ln(x) + 1),f'(x) = x^x(ln(x) + 1),False,string_match,95,11263.5,0.000355,
+CAL-H02,calculus,hard,claude-sonnet,"I need to find the derivative of f(x) = x^x for x > 0.
+
+Since x^x is not a simple power function or exponential function, I'll use logarithmic differentiation.
+
+Step 1: Take the natural logarithm of b",f'(x) = x^x(ln(x) + 1),False,model_error,0,5362.2,0.00777,Failed to parse JSON from model response
+CAL-H02,calculus,hard,gpt-4o,f'(x) = x^x * (ln(x) + 1),f'(x) = x^x(ln(x) + 1),False,string_match,100,2698.8,0.003558,
+CAL-H02,calculus,hard,o3-mini,x^x (ln x + 1),f'(x) = x^x(ln(x) + 1),False,string_match,100,2658.9,0.003368,
+CAL-H02,calculus,hard,deepseek-r1,,f'(x) = x^x(ln(x) + 1),False,model_error,0,44.2,0.0,HTTP 400
+CAL-H02,calculus,hard,qwen-2.5-72b,x^x * (ln(x) + 1),f'(x) = x^x(ln(x) + 1),False,string_match,100,5175.1,8.6e-05,
+CAL-H03,calculus,hard,deepseek-v3,8π,8π,True,sympy,95,8078.8,0.000315,
+CAL-H03,calculus,hard,claude-sonnet,,8π,False,needs_manual_review,0,0.0,0.0,
+CAL-H03,calculus,hard,gpt-4o,,8π,False,needs_manual_review,0,0.0,0.0,
+CAL-H03,calculus,hard,o3-mini,8π,8π,True,sympy,100,3559.2,0.002976,
+CAL-H03,calculus,hard,deepseek-r1,,8π,False,model_error,0,36.8,0.0,HTTP 400
+CAL-H03,calculus,hard,qwen-2.5-72b,8\pi,8π,True,sympy,100,6870.0,9.1e-05,
+PRB-E01,probability_statistics,easy,deepseek-v3,3/8,3/8,True,sympy,100,7167.8,0.000207,
+PRB-E01,probability_statistics,easy,claude-sonnet,"I need to find the probability of drawing a red ball from a bag containing 3 red balls and 5 blue balls.
+
+Let me solve this step by step:
+
+1) First, I'll find the total number of balls in the bag:
+   ",3/8,False,model_error,0,3113.2,0.003936,Failed to parse JSON from model response
+PRB-E01,probability_statistics,easy,gpt-4o,3/8,3/8,True,sympy,100,1645.4,0.002193,
+PRB-E01,probability_statistics,easy,o3-mini,3/8,3/8,True,sympy,100,1727.7,0.001764,
+PRB-E01,probability_statistics,easy,deepseek-r1,,3/8,False,model_error,0,41.7,0.0,HTTP 400
+PRB-E01,probability_statistics,easy,qwen-2.5-72b,3/8,3/8,True,sympy,100,2896.5,4.7e-05,
+PRB-E02,probability_statistics,easy,deepseek-v3,10,10,True,sympy,100,4410.9,0.000157,
+PRB-E02,probability_statistics,easy,claude-sonnet,"I need to find the mean (average) of the data set: 4, 7, 10, 13, 16.
+
+To find the mean, I need to:
+1. Add all the values together
+2. Divide by the number of values
+
+Step 1: Add all the values
+4 + 7 + ",10,False,model_error,0,2681.1,0.00363,Failed to parse JSON from model response
+PRB-E02,probability_statistics,easy,gpt-4o,10,10,True,sympy,100,1332.7,0.001723,
+PRB-E02,probability_statistics,easy,o3-mini,10,10,True,sympy,100,2229.1,0.002279,
+PRB-E02,probability_statistics,easy,deepseek-r1,,10,False,model_error,0,41.9,0.0,HTTP 400
+PRB-E02,probability_statistics,easy,qwen-2.5-72b,10,10,True,sympy,100,3049.0,4.9e-05,
+PRB-E03,probability_statistics,easy,deepseek-v3,8,8,True,sympy,100,4313.7,0.000152,
+PRB-E03,probability_statistics,easy,claude-sonnet,"I need to find the number of possible outcomes when flipping a coin 3 times.
+
+When flipping a coin, there are 2 possible outcomes for each flip: heads (H) or tails (T).
+
+Since we're flipping the coin ",8,False,model_error,0,4106.1,0.004812,Failed to parse JSON from model response
+PRB-E03,probability_statistics,easy,gpt-4o,8,8,True,sympy,100,1990.2,0.002033,
+PRB-E03,probability_statistics,easy,o3-mini,8,8,True,string_match,100,2816.4,0.00246,
+PRB-E03,probability_statistics,easy,deepseek-r1,,8,False,model_error,0,47.7,0.0,HTTP 400
+PRB-E03,probability_statistics,easy,qwen-2.5-72b,8,8,True,string_match,100,2344.5,4.5e-05,
+PRB-M01,probability_statistics,medium,deepseek-v3,120,120,True,sympy,100,4797.6,0.000162,
+PRB-M01,probability_statistics,medium,claude-sonnet,"I need to find the number of ways to arrange 5 students in a line.
+
+This is a permutation problem where I need to arrange 5 distinct objects (students) in a specific order.
+
+For the first position, I ",120,False,model_error,0,4050.9,0.005256,Failed to parse JSON from model response
+PRB-M01,probability_statistics,medium,gpt-4o,120,120,True,sympy,100,1781.6,0.00154,
+PRB-M01,probability_statistics,medium,o3-mini,120,120,True,string_match,100,2812.6,0.003079,
+PRB-M01,probability_statistics,medium,deepseek-r1,,120,False,model_error,0,35.4,0.0,HTTP 400
+PRB-M01,probability_statistics,medium,qwen-2.5-72b,120,120,True,sympy,100,2554.9,4.4e-05,
+PRB-M02,probability_statistics,medium,deepseek-v3,1/6,1/6,True,sympy,95,5764.3,0.000224,
+PRB-M02,probability_statistics,medium,claude-sonnet,,1/6,False,needs_manual_review,0,0.0,0.0,
+PRB-M02,probability_statistics,medium,gpt-4o,1/6,1/6,True,sympy,100,2874.8,0.002595,
+PRB-M02,probability_statistics,medium,o3-mini,1/6,1/6,True,sympy,100,2174.7,0.002448,
+PRB-M02,probability_statistics,medium,deepseek-r1,,1/6,False,model_error,0,43.0,0.0,HTTP 400
+PRB-M02,probability_statistics,medium,qwen-2.5-72b,1/6,1/6,True,sympy,100,3572.1,6.2e-05,
+PRB-M03,probability_statistics,medium,deepseek-v3,2,2,True,sympy,100,9575.8,0.00041,
+PRB-M03,probability_statistics,medium,claude-sonnet,"I need to find the population standard deviation of the given data set: 2, 4, 4, 4, 5, 5, 7, 9.
+
+Step 1: Find the mean (μ).
+Sum = 2 + 4 + 4 + 4 + 5 + 5 + 7 + 9 = 40
+Number of values (N) = 8
+Mean (μ) =",2,False,model_error,0,7012.0,0.009876,Failed to parse JSON from model response
+PRB-M03,probability_statistics,medium,gpt-4o,2,2,True,sympy,100,2526.6,0.003283,
+PRB-M03,probability_statistics,medium,o3-mini,2,2,True,sympy,100,3866.8,0.003714,
+PRB-M03,probability_statistics,medium,deepseek-r1,,2,False,model_error,0,303.0,0.0,HTTP 400
+PRB-M03,probability_statistics,medium,qwen-2.5-72b,2,2,True,string_match,100,8394.5,0.000116,
+PRB-M04,probability_statistics,medium,deepseek-v3,56,56,True,sympy,100,25408.9,0.001073,
+PRB-M04,probability_statistics,medium,claude-sonnet,"I need to find the number of ways to select 3 people from a group of 8 people, where order doesn't matter (since it's a committee).
+
+This is a combination problem, where I need to calculate C(8,3) or ",56,False,model_error,0,4516.4,0.006342,Failed to parse JSON from model response
+PRB-M04,probability_statistics,medium,gpt-4o,56,56,True,sympy,100,3131.0,0.003625,
+PRB-M04,probability_statistics,medium,o3-mini,56,56,True,sympy,100,1783.8,0.001352,
+PRB-M04,probability_statistics,medium,deepseek-r1,,56,False,model_error,0,45.1,0.0,HTTP 400
+PRB-M04,probability_statistics,medium,qwen-2.5-72b,56,56,True,sympy,100,4201.4,6.1e-05,
+PRB-H01,probability_statistics,hard,deepseek-v3,0.3241,0.3241 (or 15 × 0.09 × 0.1681),False,string_match,95,10773.3,0.00038,
+PRB-H01,probability_statistics,hard,claude-sonnet,"I need to find the probability of exactly 2 successes in a binomial experiment with n=6 trials and p=0.3.
+
+The binomial probability formula is:
+P(X = k) = C(n,k) × p^k × (1-p)^(n-k)
+
+Where:
+- n = 6 (n",0.3241 (or 15 × 0.09 × 0.1681),False,model_error,0,5624.0,0.007953,Failed to parse JSON from model response
+PRB-H01,probability_statistics,hard,gpt-4o,0.3241,0.3241 (or 15 × 0.09 × 0.1681),False,string_match,95,3182.6,0.00437,
+PRB-H01,probability_statistics,hard,o3-mini,Approximately 0.3241,0.3241 (or 15 × 0.09 × 0.1681),False,string_match,100,3869.1,0.003871,
+PRB-H01,probability_statistics,hard,deepseek-r1,,0.3241 (or 15 × 0.09 × 0.1681),False,model_error,0,40.6,0.0,HTTP 400
+PRB-H01,probability_statistics,hard,qwen-2.5-72b,0.324135,0.3241 (or 15 × 0.09 × 0.1681),False,string_match,100,8023.7,9.6e-05,
+PRB-H02,probability_statistics,hard,deepseek-v3,Var(X + Y) = Var(X) + Var(Y),Var(X+Y) = E[(X+Y-μ_X-μ_Y)²] = E[(X-μ_X)²] + 2E[(X-μ_X)(Y-μ_Y)] + E[(Y-μ_Y)²]. Independence gives E[(X-μ_X)(Y-μ_Y)] = 0. So Var(X+Y) = Var(X) + Var(Y).,False,needs_manual_review,95,9000.6,0.00035,
+PRB-H02,probability_statistics,hard,claude-sonnet,Var(X + Y) = Var(X) + Var(Y) for independent random variables X and Y,Var(X+Y) = E[(X+Y-μ_X-μ_Y)²] = E[(X-μ_X)²] + 2E[(X-μ_X)(Y-μ_Y)] + E[(Y-μ_Y)²]. Independence gives E[(X-μ_X)(Y-μ_Y)] = 0. So Var(X+Y) = Var(X) + Var(Y).,False,needs_manual_review,95,10935.1,0.015249,
+PRB-H02,probability_statistics,hard,gpt-4o,Var(X + Y) = Var(X) + Var(Y),Var(X+Y) = E[(X+Y-μ_X-μ_Y)²] = E[(X-μ_X)²] + 2E[(X-μ_X)(Y-μ_Y)] + E[(Y-μ_Y)²]. Independence gives E[(X-μ_X)(Y-μ_Y)] = 0. So Var(X+Y) = Var(X) + Var(Y).,False,needs_manual_review,100,3986.8,0.005997,
+PRB-H02,probability_statistics,hard,o3-mini,Var(X+Y) = Var(X) + Var(Y),Var(X+Y) = E[(X+Y-μ_X-μ_Y)²] = E[(X-μ_X)²] + 2E[(X-μ_X)(Y-μ_Y)] + E[(Y-μ_Y)²]. Independence gives E[(X-μ_X)(Y-μ_Y)] = 0. So Var(X+Y) = Var(X) + Var(Y).,False,needs_manual_review,100,3828.2,0.004398,
+PRB-H02,probability_statistics,hard,deepseek-r1,,Var(X+Y) = E[(X+Y-μ_X-μ_Y)²] = E[(X-μ_X)²] + 2E[(X-μ_X)(Y-μ_Y)] + E[(Y-μ_Y)²]. Independence gives E[(X-μ_X)(Y-μ_Y)] = 0. So Var(X+Y) = Var(X) + Var(Y).,False,model_error,0,37.2,0.0,HTTP 400
+PRB-H02,probability_statistics,hard,qwen-2.5-72b,Var(X + Y) = Var(X) + Var(Y),Var(X+Y) = E[(X+Y-μ_X-μ_Y)²] = E[(X-μ_X)²] + 2E[(X-μ_X)(Y-μ_Y)] + E[(Y-μ_Y)²]. Independence gives E[(X-μ_X)(Y-μ_Y)] = 0. So Var(X+Y) = Var(X) + Var(Y).,False,needs_manual_review,100,10765.9,0.000144,
+PRB-H03,probability_statistics,hard,deepseek-v3,0.000415802001953125,≈ 0.0000416,False,string_match,95,14850.2,0.000398,
+PRB-H03,probability_statistics,hard,claude-sonnet,"I need to find the probability of getting at least 8 correct answers when guessing randomly on a 10-question multiple choice test with 4 choices per question.
+
+This is a binomial probability problem w",≈ 0.0000416,False,model_error,0,8250.2,0.011799,Failed to parse JSON from model response
+PRB-H03,probability_statistics,hard,gpt-4o,0.0004158,≈ 0.0000416,False,string_match,95,4580.7,0.006195,
+PRB-H03,probability_statistics,hard,o3-mini,"{""solution"": ""Let X be the number of correct answers. Since each question is guessed with probability 1/4 of being correct, X follows a binomial distribution with parameters n = 10 and p = 1/4. We wan",≈ 0.0000416,False,model_error,0,5876.5,0.007314,Failed to parse JSON from model response
+PRB-H03,probability_statistics,hard,deepseek-r1,,≈ 0.0000416,False,model_error,0,46.1,0.0,HTTP 400
+PRB-H03,probability_statistics,hard,qwen-2.5-72b,0.0037,≈ 0.0000416,False,string_match,95,9628.0,0.00013,
+MIX-M01,mixed_descriptive,medium,deepseek-v3,"```json
+{
+  ""solution"": ""Let the length and width of the rectangle be \( l \) and \( w \) respectively. We are given:\n1. Perimeter \( P = 2(l + w) = 36 \) cm\n2. Area \( A = l \\times w = 80 \) cm²\n",8 cm × 10 cm,False,model_error,0,12726.7,0.000459,Failed to parse JSON from model response
+MIX-M01,mixed_descriptive,medium,claude-sonnet,"I need to find the dimensions of a rectangle given its perimeter and area.
+
+Let me denote the length as $l$ and width as $w$.
+
+Given information:
+- Perimeter = 36 cm
+- Area = 80 cm²
+
+Setting up equati",8 cm × 10 cm,False,model_error,0,7111.8,0.010083,Failed to parse JSON from model response
+MIX-M01,mixed_descriptive,medium,gpt-4o,10 cm and 8 cm,8 cm × 10 cm,False,sympy,100,3442.4,0.00514,
+MIX-M01,mixed_descriptive,medium,o3-mini,10 cm and 8 cm,8 cm × 10 cm,False,string_match,100,3935.5,0.003717,
+MIX-M01,mixed_descriptive,medium,deepseek-r1,,8 cm × 10 cm,False,model_error,0,36.6,0.0,HTTP 400
+MIX-M01,mixed_descriptive,medium,qwen-2.5-72b,The dimensions of the rectangle are 8 cm and 10 cm.,8 cm × 10 cm,True,sympy,100,7505.4,9.3e-05,
+MIX-M02,mixed_descriptive,medium,deepseek-v3,"The ball reaches its maximum height at 2 seconds, and the maximum height is 20 meters.","t = 2s, h = 20m",False,string_match,95,4861.9,0.000262,
+MIX-M02,mixed_descriptive,medium,claude-sonnet,"I need to find when the ball reaches maximum height and what that maximum height is.
+
+Given: h(t) = 20t - 5t²
+
+To find the maximum height, I need to find when the velocity is zero (the turning point).","t = 2s, h = 20m",False,model_error,0,5421.6,0.007323,Failed to parse JSON from model response
+MIX-M02,mixed_descriptive,medium,gpt-4o,The ball reaches its maximum height of 20 meters at 2 seconds.,"t = 2s, h = 20m",False,string_match,100,2715.6,0.002707,
+MIX-M02,mixed_descriptive,medium,o3-mini,The ball reaches maximum height at 2 seconds and the maximum height is 20 meters.,"t = 2s, h = 20m",False,string_match,100,2648.1,0.002409,
+MIX-M02,mixed_descriptive,medium,deepseek-r1,,"t = 2s, h = 20m",False,model_error,0,38.3,0.0,HTTP 400
+MIX-M02,mixed_descriptive,medium,qwen-2.5-72b,The ball reaches its maximum height of 20 meters at 2 seconds.,"t = 2s, h = 20m",False,string_match,100,4388.9,8.1e-05,
+MIX-M03,mixed_descriptive,medium,deepseek-v3,"Here's the solution to the problem:
+
+```json
+{
+  ""solution"": ""Let the original speed of the car be \( x \) km/h. The time taken to travel 120 km at this speed is \( \\frac{120}{x} \) hours. If the car",40 km/h,False,model_error,0,11131.3,0.000454,Failed to parse JSON from model response
+MIX-M03,mixed_descriptive,medium,claude-sonnet,"I need to find the original speed of the car.
+
+Let me define variables:
+- Let v = original speed (km/h)
+- Distance = 120 km
+
+Setting up the equation:
+- Time at original speed = 120/v hours
+- Time at i",40 km/h,False,model_error,0,6190.8,0.009051,Failed to parse JSON from model response
+MIX-M03,mixed_descriptive,medium,gpt-4o,40 km/h,40 km/h,True,sympy,95,4047.5,0.004945,
+MIX-M03,mixed_descriptive,medium,o3-mini,40 km/h,40 km/h,True,sympy,100,4080.2,0.003345,
+MIX-M03,mixed_descriptive,medium,deepseek-r1,,40 km/h,False,model_error,0,35.7,0.0,HTTP 400
+MIX-M03,mixed_descriptive,medium,qwen-2.5-72b,40,40 km/h,True,sympy,100,10089.5,0.000134,
+MIX-M04,mixed_descriptive,medium,deepseek-v3,"The equation x² + 1 = 0 has no real solutions because the square of any real number cannot be negative. It has complex solutions x = i and x = -i, where i is the imaginary unit satisfying i² = -1.","For real numbers, x² ≥ 0, so x² + 1 ≥ 1 > 0. No real x satisfies x² + 1 = 0. In complex numbers, x = ±i where i² = -1.",False,needs_manual_review,95,8858.8,0.000352,
+MIX-M04,mixed_descriptive,medium,claude-sonnet,"I need to explain why x² + 1 = 0 has no real solutions but does have complex solutions.
+
+Let me solve this step by step.
+
+**Step 1: Attempt to solve for real solutions**
+Starting with x² + 1 = 0
+Subtr","For real numbers, x² ≥ 0, so x² + 1 ≥ 1 > 0. No real x satisfies x² + 1 = 0. In complex numbers, x = ±i where i² = -1.",False,model_error,0,9510.6,0.009948,Failed to parse JSON from model response
+MIX-M04,mixed_descriptive,medium,gpt-4o,The equation x² + 1 = 0 has no real solutions but has complex solutions x = i and x = -i.,"For real numbers, x² ≥ 0, so x² + 1 ≥ 1 > 0. No real x satisfies x² + 1 = 0. In complex numbers, x = ±i where i² = -1.",False,needs_manual_review,100,3144.4,0.002468,
+MIX-M04,mixed_descriptive,medium,o3-mini,"The equation has no real solutions because no real number squared gives -1, but it has complex solutions: x = i and x = -i.","For real numbers, x² ≥ 0, so x² + 1 ≥ 1 > 0. No real x satisfies x² + 1 = 0. In complex numbers, x = ±i where i² = -1.",False,needs_manual_review,100,4711.2,0.004367,
+MIX-M04,mixed_descriptive,medium,deepseek-r1,,"For real numbers, x² ≥ 0, so x² + 1 ≥ 1 > 0. No real x satisfies x² + 1 = 0. In complex numbers, x = ±i where i² = -1.",False,model_error,0,40.1,0.0,HTTP 400
+MIX-M04,mixed_descriptive,medium,qwen-2.5-72b,The equation x^2 + 1 = 0 has no real solutions but has complex solutions i and -i.,"For real numbers, x² ≥ 0, so x² + 1 ≥ 1 > 0. No real x satisfies x² + 1 = 0. In complex numbers, x = ±i where i² = -1.",False,needs_manual_review,100,4091.8,7.1e-05,
+MIX-M05,mixed_descriptive,medium,deepseek-v3,"Here's the solution to the problem:
+
+```json
+{
+  ""solution"": ""Let's denote the distance from the wall to the bottom of the ladder as \( x \) and the height of the ladder on the wall as \( y \). Accord",3/4 m/s (or 0.75 m/s),False,model_error,0,10616.5,0.000404,Failed to parse JSON from model response
+MIX-M05,mixed_descriptive,medium,claude-sonnet,"I need to solve this related rates problem involving a ladder sliding down a wall.
+
+Let me set up the problem:
+- Let x = horizontal distance from wall to bottom of ladder
+- Let y = vertical distance f",3/4 m/s (or 0.75 m/s),False,model_error,0,8016.9,0.009228,Failed to parse JSON from model response
+MIX-M05,mixed_descriptive,medium,gpt-4o,-3/4 m/s,3/4 m/s (or 0.75 m/s),False,sympy,100,4147.6,0.004545,
+MIX-M05,mixed_descriptive,medium,o3-mini,-0.75 m/s,3/4 m/s (or 0.75 m/s),False,sympy,100,3182.7,0.003002,
+MIX-M05,mixed_descriptive,medium,deepseek-r1,,3/4 m/s (or 0.75 m/s),False,model_error,0,36.5,0.0,HTTP 400
+MIX-M05,mixed_descriptive,medium,qwen-2.5-72b,-0.75,3/4 m/s (or 0.75 m/s),False,sympy,100,7249.0,8.6e-05,
+MIX-H01,mixed_descriptive,hard,deepseek-v3,"If ab is even, then a is even or b is even.","Proof by contrapositive: Assume a is odd and b is odd. Then a = 2m+1 and b = 2n+1. ab = (2m+1)(2n+1) = 4mn + 2m + 2n + 1 = 2(2mn+m+n) + 1, which is odd. So if ab is even, a or b must be even.",False,needs_manual_review,95,8368.1,0.000237,
+MIX-H01,mixed_descriptive,hard,claude-sonnet,"I need to prove that for any positive integers a and b, if ab is even, then a is even or b is even.
+
+I'll use proof by contrapositive, which is often effective for ""if-then"" statements involving ""or"" ","Proof by contrapositive: Assume a is odd and b is odd. Then a = 2m+1 and b = 2n+1. ab = (2m+1)(2n+1) = 4mn + 2m + 2n + 1 = 2(2mn+m+n) + 1, which is odd. So if ab is even, a or b must be even.",False,model_error,0,9197.9,0.010986,Failed to parse JSON from model response
+MIX-H01,mixed_descriptive,hard,gpt-4o,Proven,"Proof by contrapositive: Assume a is odd and b is odd. Then a = 2m+1 and b = 2n+1. ab = (2m+1)(2n+1) = 4mn + 2m + 2n + 1 = 2(2mn+m+n) + 1, which is odd. So if ab is even, a or b must be even.",False,needs_manual_review,100,3806.2,0.003647,
+MIX-H01,mixed_descriptive,hard,o3-mini,"If ab is even, then a is even or b is even.","Proof by contrapositive: Assume a is odd and b is odd. Then a = 2m+1 and b = 2n+1. ab = (2m+1)(2n+1) = 4mn + 2m + 2n + 1 = 2(2mn+m+n) + 1, which is odd. So if ab is even, a or b must be even.",False,needs_manual_review,100,5215.5,0.005542,
+MIX-H01,mixed_descriptive,hard,deepseek-r1,,"Proof by contrapositive: Assume a is odd and b is odd. Then a = 2m+1 and b = 2n+1. ab = (2m+1)(2n+1) = 4mn + 2m + 2n + 1 = 2(2mn+m+n) + 1, which is odd. So if ab is even, a or b must be even.",False,model_error,0,45.5,0.0,HTTP 400
+MIX-H01,mixed_descriptive,hard,qwen-2.5-72b,"Proven that if ab is even, then a is even or b is even.","Proof by contrapositive: Assume a is odd and b is odd. Then a = 2m+1 and b = 2n+1. ab = (2m+1)(2n+1) = 4mn + 2m + 2n + 1 = 2(2mn+m+n) + 1, which is odd. So if ab is even, a or b must be even.",False,needs_manual_review,100,9381.2,0.000124,
+MIX-H02,mixed_descriptive,hard,deepseek-v3,The dimensions that maximize the area are 100 meters parallel to the river and 50 meters perpendicular to the river.,"Width = 50 m, Length = 100 m, Max area = 5000 m²",False,string_match,95,23543.4,0.00094,
+MIX-H02,mixed_descriptive,hard,claude-sonnet,"I need to find the dimensions of a rectangle that maximizes area when one side is against a river (no fencing needed) and the total fencing available is 200 m.
+
+Let me define variables:
+- Let x = widt","Width = 50 m, Length = 100 m, Max area = 5000 m²",False,model_error,0,8141.4,0.008946,Failed to parse JSON from model response
+MIX-H02,mixed_descriptive,hard,gpt-4o,The dimensions that maximize the area are 100 m by 50 m.,"Width = 50 m, Length = 100 m, Max area = 5000 m²",False,string_match,95,6215.3,0.003958,
+MIX-H02,mixed_descriptive,hard,o3-mini,"The optimal dimensions are 50 m for the sides perpendicular to the river and 100 m for the side parallel to the river, giving a maximum area of 5000 m².","Width = 50 m, Length = 100 m, Max area = 5000 m²",False,string_match,100,4712.4,0.005991,
+MIX-H02,mixed_descriptive,hard,deepseek-r1,,"Width = 50 m, Length = 100 m, Max area = 5000 m²",False,model_error,0,37.0,0.0,HTTP 400
+MIX-H02,mixed_descriptive,hard,qwen-2.5-72b,"L = 100 m, W = 50 m","Width = 50 m, Length = 100 m, Max area = 5000 m²",False,string_match,100,6784.1,9.9e-05,
+MIX-H03,mixed_descriptive,hard,deepseek-v3,"```json
+{""solution"": ""To find the point on the curve \( y = x^3 \) where the tangent line has the smallest positive slope, follow these steps:\n\n1. **Find the derivative of the function:**\n   The sl","At x = 0, slope = 0 (not positive). The slope is 3x² which is positive for all x ≠ 0 and approaches 0 as x → 0. There is no smallest positive slope; the infimum is 0 but it is not achieved.",False,model_error,0,16486.1,0.000587,Failed to parse JSON from model response
+MIX-H03,mixed_descriptive,hard,claude-sonnet,"I need to find the point on the curve y = x³ where the tangent line has the smallest positive slope.
+
+First, let me find the slope of the tangent line at any point on the curve.
+
+The slope of the tang","At x = 0, slope = 0 (not positive). The slope is 3x² which is positive for all x ≠ 0 and approaches 0 as x → 0. There is no smallest positive slope; the infimum is 0 but it is not achieved.",False,model_error,0,12962.2,0.011886,Failed to parse JSON from model response
+MIX-H03,mixed_descriptive,hard,gpt-4o,"(0, 0)","At x = 0, slope = 0 (not positive). The slope is 3x² which is positive for all x ≠ 0 and approaches 0 as x → 0. There is no smallest positive slope; the infimum is 0 but it is not achieved.",False,needs_manual_review,95,2724.5,0.002375,
+MIX-H03,mixed_descriptive,hard,o3-mini,,"At x = 0, slope = 0 (not positive). The slope is 3x² which is positive for all x ≠ 0 and approaches 0 as x → 0. There is no smallest positive slope; the infimum is 0 but it is not achieved.",False,model_error,0,0.0,0.0,'NoneType' object has no attribute 'strip'
+MIX-H03,mixed_descriptive,hard,deepseek-r1,,"At x = 0, slope = 0 (not positive). The slope is 3x² which is positive for all x ≠ 0 and approaches 0 as x → 0. There is no smallest positive slope; the infimum is 0 but it is not achieved.",False,model_error,0,41.8,0.0,HTTP 400
+MIX-H03,mixed_descriptive,hard,qwen-2.5-72b,"(0, 0)","At x = 0, slope = 0 (not positive). The slope is 3x² which is positive for all x ≠ 0 and approaches 0 as x → 0. There is no smallest positive slope; the infimum is 0 but it is not achieved.",False,needs_manual_review,95,7792.4,0.000103,
+MIX-H04,mixed_descriptive,hard,deepseek-v3,n²,Proof by induction: Base case n=1: 1 = 1². Inductive step: Assume 1+3+...+(2k-1) = k². Then 1+3+...+(2k-1)+(2k+1) = k² + 2k + 1 = (k+1)². QED.,False,needs_manual_review,100,8560.3,0.00032,
+MIX-H04,mixed_descriptive,hard,claude-sonnet,"I need to prove that the sum of the first n odd numbers equals n².
+
+Let me start by identifying what the first n odd numbers are and then prove this statement.
+
+The first n odd numbers are: 1, 3, 5, 7",Proof by induction: Base case n=1: 1 = 1². Inductive step: Assume 1+3+...+(2k-1) = k². Then 1+3+...+(2k-1)+(2k+1) = k² + 2k + 1 = (k+1)². QED.,False,model_error,0,12126.3,0.014955,Failed to parse JSON from model response
+MIX-H04,mixed_descriptive,hard,gpt-4o,The sum of the first n odd numbers equals n².,Proof by induction: Base case n=1: 1 = 1². Inductive step: Assume 1+3+...+(2k-1) = k². Then 1+3+...+(2k-1)+(2k+1) = k² + 2k + 1 = (k+1)². QED.,False,needs_manual_review,100,3245.6,0.00405,
+MIX-H04,mixed_descriptive,hard,o3-mini,n²,Proof by induction: Base case n=1: 1 = 1². Inductive step: Assume 1+3+...+(2k-1) = k². Then 1+3+...+(2k-1)+(2k+1) = k² + 2k + 1 = (k+1)². QED.,False,needs_manual_review,100,3133.0,0.002934,
+MIX-H04,mixed_descriptive,hard,deepseek-r1,,Proof by induction: Base case n=1: 1 = 1². Inductive step: Assume 1+3+...+(2k-1) = k². Then 1+3+...+(2k-1)+(2k+1) = k² + 2k + 1 = (k+1)². QED.,False,model_error,0,40.5,0.0,HTTP 400
+MIX-H04,mixed_descriptive,hard,qwen-2.5-72b,The sum of the first n odd numbers is n^2.,Proof by induction: Base case n=1: 1 = 1². Inductive step: Assume 1+3+...+(2k-1) = k². Then 1+3+...+(2k-1)+(2k+1) = k² + 2k + 1 = (k+1)². QED.,False,needs_manual_review,100,5983.5,9.3e-05,
+MIX-H05,mixed_descriptive,hard,deepseek-v3,√3 - π/2,√3 - π/2 ≈ 0.1613,True,sympy,95,16260.5,0.000649,
+MIX-H05,mixed_descriptive,hard,claude-sonnet,"I need to find the area of the region enclosed between three mutually tangent circles of radius 1.
+
+Let me set up a coordinate system and find the positions of the circle centers.
+
+Since the circles a",√3 - π/2 ≈ 0.1613,False,model_error,0,11362.4,0.01317,Failed to parse JSON from model response
+MIX-H05,mixed_descriptive,hard,gpt-4o,The area of the region enclosed between the three circles is \( \frac{7\sqrt{3}}{4} - \frac{\pi}{2} \).,√3 - π/2 ≈ 0.1613,False,string_match,95,7930.9,0.010185,
+MIX-H05,mixed_descriptive,hard,o3-mini,"{
+  ""solution"": ""Let the centers of the three circles be A, B, and C. Because the circles",√3 - π/2 ≈ 0.1613,False,model_error,0,6181.7,0.008427,Failed to parse JSON from model response
+MIX-H05,mixed_descriptive,hard,deepseek-r1,,√3 - π/2 ≈ 0.1613,False,model_error,0,44.8,0.0,HTTP 400
+MIX-H05,mixed_descriptive,hard,qwen-2.5-72b,0.2284271247461903,√3 - π/2 ≈ 0.1613,True,sympy,100,6437.9,9.6e-05,

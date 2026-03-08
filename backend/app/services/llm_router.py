@@ -197,8 +197,18 @@ class LLMRouter:
         try:
             return json.loads(text)
         except json.JSONDecodeError:
-            logger.warning("Failed to parse JSON from LLM response: %s", text[:200])
-            return None
+            pass
+
+        # Last resort: find embedded JSON object in prose text
+        obj_match = re.search(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}", text, re.DOTALL)
+        if obj_match:
+            try:
+                return json.loads(obj_match.group(0))
+            except json.JSONDecodeError:
+                pass
+
+        logger.warning("Failed to parse JSON from LLM response: %s", text[:200])
+        return None
 
     @staticmethod
     def _normalize(text: str) -> str:
