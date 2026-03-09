@@ -29,6 +29,7 @@ export interface ProblemCreate {
   grading_hints?: string | null;
   unit_ids?: number[];
   concept_ids?: number[];
+  concept_weights?: Record<number, number> | null;
   auto_extract_concepts?: boolean;
 }
 
@@ -64,6 +65,8 @@ export interface ConceptExtractionResult {
   required_concept_names: string[];
   matched_evaluation_concept_ids: number[];
   matched_required_concept_ids: number[];
+  evaluation_concept_weights: Record<number, number>;
+  required_concept_weights: Record<number, number>;
   inferred_expected_form: ExpectedForm | null;
   inferred_grading_hints: string | null;
 }
@@ -97,6 +100,23 @@ export interface SimilarProblemResponse {
   details: SimilarProblemDetail[];
 }
 
+export interface ConceptWeightDetail {
+  id: number;
+  name: string;
+  weight: number;
+}
+
+export interface QuestionMetadataResponse {
+  question_id: number;
+  content: string;
+  correct_answer: string;
+  expected_form: string;
+  grading_hints: string | null;
+  evaluation_concepts: ConceptWeightDetail[];
+  required_concepts: ConceptWeightDetail[];
+  unit_ids: number[];
+}
+
 // Legacy type for backward compat with ProblemListItem component
 export interface RegisteredProblem {
   id: number;
@@ -106,6 +126,13 @@ export interface RegisteredProblem {
   targetGrade: string;
   gradingHints: string;
   concepts: string[];
+  conceptWeights?: Record<string, number>;
+}
+
+export interface ConceptOption {
+  id: number;
+  name: string;
+  category: string | null;
 }
 
 export interface DuplicateInfo {

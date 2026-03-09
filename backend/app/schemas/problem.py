@@ -13,6 +13,7 @@ class ProblemCreate(BaseModel):
     grading_hints: str | None = None
     unit_ids: list[int] = []
     concept_ids: list[int] = []
+    concept_weights: dict[int, float] | None = None
     auto_extract_concepts: bool = False
 
 
@@ -45,11 +46,30 @@ class DuplicateCheckResponse(BaseModel):
     similarity_score: float = 0.0
 
 
+class ConceptWeightDetail(BaseModel):
+    id: int
+    name: str
+    weight: float
+
+
+class QuestionMetadataResponse(BaseModel):
+    question_id: int
+    content: str
+    correct_answer: str
+    expected_form: str
+    grading_hints: str | None
+    evaluation_concepts: list[ConceptWeightDetail]
+    required_concepts: list[ConceptWeightDetail]
+    unit_ids: list[int]
+
+
 class ConceptExtractionResult(BaseModel):
     evaluation_concept_names: list[str] = []
     required_concept_names: list[str] = []
     matched_evaluation_concept_ids: list[int] = []
     matched_required_concept_ids: list[int] = []
+    evaluation_concept_weights: dict[int, float] = {}
+    required_concept_weights: dict[int, float] = {}
     inferred_expected_form: ExpectedForm | None = None
     inferred_grading_hints: str | None = None
 
@@ -81,3 +101,11 @@ class SimilarProblemResponse(BaseModel):
     problems: list[ProblemResponse]
     similarity_scores: list[float]
     details: list[SimilarProblemDetail] = []
+
+
+class ConceptResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    category: str | None = None

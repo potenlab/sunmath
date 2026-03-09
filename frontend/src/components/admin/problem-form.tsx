@@ -18,6 +18,11 @@ import {
 } from "@/components/ui/card";
 import { FileText } from "lucide-react";
 import { EXPECTED_FORMS } from "@/features/admin/types";
+import type { ConceptOption } from "@/features/admin/types";
+import {
+  ConceptWeightPicker,
+  type ConceptWeightEntry,
+} from "@/components/admin/concept-weight-picker";
 
 interface ProblemFormProps {
   problemContent: string;
@@ -30,6 +35,10 @@ interface ProblemFormProps {
   onTargetGradeChange: (value: string) => void;
   gradingHints: string;
   onGradingHintsChange: (value: string) => void;
+  conceptEntries: ConceptWeightEntry[];
+  onConceptEntriesChange: (entries: ConceptWeightEntry[]) => void;
+  availableConcepts: ConceptOption[];
+  conceptsLoading?: boolean;
   onRegister: () => void;
 }
 
@@ -44,6 +53,10 @@ export function ProblemForm({
   onTargetGradeChange,
   gradingHints,
   onGradingHintsChange,
+  conceptEntries,
+  onConceptEntriesChange,
+  availableConcepts,
+  conceptsLoading,
   onRegister,
 }: ProblemFormProps) {
   const t = useTranslations("admin");
@@ -112,6 +125,13 @@ export function ProblemForm({
             onChange={(e) => onGradingHintsChange(e.target.value)}
           />
         </div>
+
+        <ConceptWeightPicker
+          concepts={availableConcepts}
+          entries={conceptEntries}
+          onChange={onConceptEntriesChange}
+          isLoading={conceptsLoading}
+        />
 
         <Button
           onClick={onRegister}

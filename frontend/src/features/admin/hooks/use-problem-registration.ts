@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import type { RegisteredProblem, DuplicateInfo, ExpectedForm } from "../types";
+import type { ConceptWeightEntry } from "@/components/admin/concept-weight-picker";
 import { useCreateProblem } from "../api/use-problems";
 import { ApiError } from "@/lib/api";
 
@@ -9,6 +10,7 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
   const [expectedForm, setExpectedForm] = useState("");
   const [targetGrade, setTargetGrade] = useState("");
   const [gradingHints, setGradingHints] = useState("");
+  const [conceptEntries, setConceptEntries] = useState<ConceptWeightEntry[]>([]);
 
   const [problems, setProblems] = useState<RegisteredProblem[]>([]);
 
@@ -25,19 +27,28 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
     setExpectedForm("");
     setTargetGrade("");
     setGradingHints("");
+    setConceptEntries([]);
   }, []);
 
   const handleRegisterProblem = useCallback(async () => {
     if (!problemContent.trim()) return;
 
     try {
+      // Build concept_weights from picker entries if any
+      const hasManualConcepts = conceptEntries.length > 0;
+      const conceptWeightsPayload: Record<number, number> | undefined =
+        hasManualConcepts
+          ? Object.fromEntries(conceptEntries.map((e) => [e.conceptId, e.weight]))
+          : undefined;
+
       const response = await createProblem.mutateAsync({
         content: problemContent,
         correct_answer: correctAnswer,
         expected_form: (expectedForm as ExpectedForm) || undefined,
         target_grade: targetGrade ? parseInt(targetGrade, 10) : undefined,
         grading_hints: gradingHints || undefined,
-        auto_extract_concepts: true,
+        concept_weights: conceptWeightsPayload,
+        auto_extract_concepts: !hasManualConcepts,
       });
 
       // Handle duplicate detection
@@ -76,7 +87,32 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
 
       // Success — add to local list and reset
       if (response.problem) {
-        const concepts = response.concept_extraction?.evaluation_concept_names ?? [];
+        // Build concept names + weight map for display
+        let concepts: string[];
+        const displayWeights: Record<string, number> = {};
+
+        if (hasManualConcepts) {
+          // Use manually selected concepts
+          concepts = conceptEntries.map((e) => e.name);
+          conceptEntries.forEach((e) => {
+            displayWeights[e.name] = e.weight;
+          });
+        } else if (response.concept_extraction) {
+          // Use LLM-extracted concepts
+          concepts = response.concept_extraction.evaluation_concept_names ?? [];
+          const evalWeights = response.concept_extraction.evaluation_concept_weights ?? {};
+          const names = response.concept_extraction.evaluation_concept_names ?? [];
+          const ids = response.concept_extraction.matched_evaluation_concept_ids ?? [];
+          names.forEach((name, i) => {
+            const cid = ids[i];
+            if (cid !== undefined && evalWeights[cid] !== undefined) {
+              displayWeights[name] = evalWeights[cid];
+            }
+          });
+        } else {
+          concepts = [];
+        }
+
         const newProblem: RegisteredProblem = {
           id: response.problem.id,
           content: response.problem.content,
@@ -85,6 +121,7 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
           targetGrade: response.problem.target_grade?.toString() ?? "",
           gradingHints: response.problem.grading_hints ?? "",
           concepts,
+          conceptWeights: displayWeights,
         };
         setProblems((prev) => [...prev, newProblem]);
         resetForm();
@@ -139,6 +176,7 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
     expectedForm,
     targetGrade,
     gradingHints,
+    conceptEntries,
     duplicateMode,
     createProblem,
     resetForm,
@@ -169,6 +207,8 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
     setTargetGrade,
     gradingHints,
     setGradingHints,
+    conceptEntries,
+    setConceptEntries,
     problems,
     registrationMessage,
     duplicateDialogOpen,

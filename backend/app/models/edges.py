@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import Float, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base
@@ -35,6 +35,7 @@ class QuestionEvaluates(Base):
 
     question_id: Mapped[int] = mapped_column(ForeignKey("questions.id"), primary_key=True)
     concept_id: Mapped[int] = mapped_column(ForeignKey("concepts.id"), primary_key=True)
+    weight: Mapped[float] = mapped_column(Float, default=1.0, server_default="1.0")
 
 
 class QuestionUnits(Base):
@@ -49,3 +50,4 @@ class QuestionRequires(Base):
 
     question_id: Mapped[int] = mapped_column(ForeignKey("questions.id"), primary_key=True)
     concept_id: Mapped[int] = mapped_column(ForeignKey("concepts.id"), primary_key=True)
+    weight: Mapped[float] = mapped_column(Float, default=1.0, server_default="1.0")

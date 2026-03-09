@@ -170,6 +170,22 @@
     "probability": "Probability",
     "mixed": "Mixed"
   },
+  "problemDetail": {
+    "backToProblems": "Back to problems",
+    "problemInfo": "Problem Info",
+    "conceptWeights": "Concept Weights",
+    "evaluates": "Evaluates",
+    "requires": "Requires",
+    "similarProblems": "Similar Problems",
+    "sharedConcepts": "Shared",
+    "onlyInThis": "Only here",
+    "onlyInOther": "Only there",
+    "weightExplanation": "Weights indicate how strongly each concept contributes to this problem's identity. Higher weights mean greater emphasis in similarity matching.",
+    "whyWeightsMatter": "Problems with similar weighted concept distributions score higher in cosine similarity. Different weight emphasis on the same concepts produces different scores.",
+    "noConcepts": "No concepts assigned",
+    "noSimilar": "No similar problems found",
+    "notFound": "Problem not found"
+  },
   "lora": {
     "backToBenchmark": "\u2190 Back to benchmark",
     "title": "LoRA Fine-Tuning Results",

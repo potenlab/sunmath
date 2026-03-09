@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { ArrowLeft, Send, Loader2, Upload, Camera, X } from "lucide-react";
+import { ArrowLeft, Send, Loader2, Upload, Camera, X, TrendingUp, TrendingDown } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -19,6 +19,7 @@ import { useOCR } from "@/features/student/api/use-ocr";
 import { useSaveTrainingSample } from "@/features/student/api/use-training-sample";
 import { useAuth } from "@/features/auth/context/auth-context";
 import { GradingResultCard } from "@/components/grading/grading-result-card";
+import type { MasteryUpdate } from "@/features/student/types";
 
 export default function StudentProblemDetailPage() {
   const params = useParams();
@@ -38,6 +39,7 @@ export default function StudentProblemDetailPage() {
     is_correct: boolean;
     judged_by: string;
     reasoning: string;
+    mastery_updates: MasteryUpdate[];
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -256,6 +258,61 @@ export default function StudentProblemDetailPage() {
                 ocr_confidence: 1.0,
               }}
             />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Mastery Updates */}
+      {result && result.mastery_updates && result.mastery_updates.length > 0 && (
+        <Card className="shadow-sm animate-in fade-in slide-in-from-bottom-4 delay-150">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              {result.is_correct ? (
+                <TrendingUp className="size-4 text-green-500" />
+              ) : (
+                <TrendingDown className="size-4 text-red-500" />
+              )}
+              Mastery Updated
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {result.mastery_updates.map((mu) => (
+              <div key={mu.concept_id} className="space-y-1">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-medium truncate mr-2">
+                    {mu.concept_name}
+                  </span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-muted-foreground">
+                      {Math.round(mu.old_mastery * 100)}%
+                    </span>
+                    <span className="text-muted-foreground">&rarr;</span>
+                    <span className="font-medium">
+                      {Math.round(mu.new_mastery * 100)}%
+                    </span>
+                    <Badge
+                      variant={mu.delta > 0 ? "default" : "destructive"}
+                      className="text-xs px-1.5 py-0"
+                    >
+                      {mu.delta > 0 ? "+" : ""}
+                      {Math.round(mu.delta * 100)}%
+                    </Badge>
+                  </div>
+                </div>
+                <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.round(mu.new_mastery * 100)}%`,
+                      background:
+                        mu.delta > 0
+                          ? "linear-gradient(90deg, #22c55e, #4ade80)"
+                          : "linear-gradient(90deg, #ef4444, #f87171)",
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
       )}

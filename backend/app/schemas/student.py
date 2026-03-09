@@ -42,12 +42,25 @@ class WrongAnswerListResponse(BaseModel):
     total: int
 
 
+class ConceptFrequency(BaseModel):
+    concept_name: str
+    count: float
+    mastery: float
+
+
+class RecommendedProblem(BaseModel):
+    question_id: int
+    concept_name: str
+
+
 class DiagnosisResponse(BaseModel):
     student_id: int
     core_weaknesses: list[str]
     prerequisite_chains: list[list[str]]
     learning_path: list[str]
     recommended_problems: list[int]
+    concept_frequencies: list[ConceptFrequency] = []
+    recommended_problems_detail: list[RecommendedProblem] = []
     generated_at: datetime
 
 

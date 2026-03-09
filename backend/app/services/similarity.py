@@ -1,5 +1,6 @@
-"""Similarity service for finding similar/duplicate problems using concept-based Jaccard similarity."""
+"""Similarity service for finding similar/duplicate problems using weighted cosine similarity."""
 
+import math
 import re
 import unicodedata
 
@@ -12,7 +13,7 @@ from app.services.graphrag import GraphRAGService
 
 
 class SimilarityService:
-    """Computes concept-based Jaccard similarity between math problems."""
+    """Computes concept-based weighted cosine similarity between math problems."""
 
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -26,6 +27,23 @@ class SimilarityService:
         intersection = set_a & set_b
         union = set_a | set_b
         return len(intersection) / len(union)
+
+    @staticmethod
+    def weighted_cosine_similarity(
+        weights_a: dict[int, float], weights_b: dict[int, float],
+    ) -> float:
+        """Compute weighted cosine similarity between two concept weight vectors."""
+        if not weights_a or not weights_b:
+            return 0.0
+        shared_keys = set(weights_a) & set(weights_b)
+        if not shared_keys:
+            return 0.0
+        dot = sum(weights_a[k] * weights_b[k] for k in shared_keys)
+        norm_a = math.sqrt(sum(v * v for v in weights_a.values()))
+        norm_b = math.sqrt(sum(v * v for v in weights_b.values()))
+        if norm_a == 0.0 or norm_b == 0.0:
+            return 0.0
+        return dot / (norm_a * norm_b)
 
     @staticmethod
     def normalize_content(text: str) -> str:
@@ -56,23 +74,27 @@ class SimilarityService:
         return row if row else "warn"
 
     async def find_similar(
-        self, new_concept_ids: set[int], exclude_question_id: int | None = None
+        self,
+        new_concept_weights: dict[int, float],
+        exclude_question_id: int | None = None,
     ) -> list[dict]:
-        """Compare new concept set against all existing questions.
+        """Compare new concept weight vector against all existing questions.
 
         Returns sorted list of similar problems with scores and concept details.
         """
-        all_sets = await self.graphrag.get_all_questions_concept_sets()
+        all_weights = await self.graphrag.get_all_questions_concept_weights()
 
+        new_keys = set(new_concept_weights)
         results = []
-        for q_id, existing_concepts in all_sets.items():
+        for q_id, existing_weights in all_weights.items():
             if exclude_question_id and q_id == exclude_question_id:
                 continue
-            score = self.jaccard_similarity(new_concept_ids, existing_concepts)
+            score = self.weighted_cosine_similarity(new_concept_weights, existing_weights)
             if score > 0:
-                shared = new_concept_ids & existing_concepts
-                only_new = new_concept_ids - existing_concepts
-                only_existing = existing_concepts - new_concept_ids
+                existing_keys = set(existing_weights)
+                shared = new_keys & existing_keys
+                only_new = new_keys - existing_keys
+                only_existing = existing_keys - new_keys
                 results.append(
                     {
                         "question_id": q_id,
@@ -108,18 +130,18 @@ class SimilarityService:
         return duplicates
 
     async def check_duplicate(
-        self, new_concept_ids: set[int], content: str = ""
+        self, new_concept_weights: dict[int, float], content: str = "",
     ) -> dict:
-        """Check if a new problem's concept set is a duplicate.
+        """Check if a new problem's concept weights are a duplicate.
 
-        Uses concept-based Jaccard similarity first, then falls back to
+        Uses weighted cosine similarity first, then falls back to
         exact text content matching when concept sets are empty.
 
         Returns dict with is_duplicate, mode, threshold, and similar_problems.
         """
         threshold = await self.get_threshold()
         mode = await self.get_detection_mode()
-        similar = await self.find_similar(new_concept_ids)
+        similar = await self.find_similar(new_concept_weights)
 
         duplicates = [s for s in similar if s["similarity_score"] >= threshold]
 

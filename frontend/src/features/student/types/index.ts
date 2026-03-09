@@ -18,9 +18,18 @@ export interface ProblemListResponse {
   page_size: number;
 }
 
+export interface MasteryUpdate {
+  concept_id: number;
+  concept_name: string;
+  old_mastery: number;
+  new_mastery: number;
+  delta: number;
+}
+
 export interface GradeResponse {
   is_correct: boolean;
   judged_by: string;
   reasoning: string;
   cached: boolean;
+  mastery_updates: MasteryUpdate[];
 }

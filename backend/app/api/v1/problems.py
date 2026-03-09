@@ -8,16 +8,19 @@ from app.api.deps import get_db
 from app.api.deps_auth import require_role
 from app.models.edges import QuestionEvaluates, QuestionRequires, QuestionUnits
 from app.models.user import User, UserRole
-from app.models.nodes import ExpectedForm, Question
+from app.models.nodes import Concept, ExpectedForm, Question
 from sqlalchemy import func as sa_func
 from app.schemas.problem import (
     ConceptExtractionResult,
+    ConceptResponse,
+    ConceptWeightDetail,
     DuplicateCheckResponse,
     ProblemCreate,
     ProblemListResponse,
     ProblemRegistrationResponse,
     ProblemResponse,
     ProblemUpdate,
+    QuestionMetadataResponse,
     SimilarProblemDetail,
     SimilarProblemResponse,
 )
@@ -59,17 +62,31 @@ async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db)
     concept_extraction = None
     eval_concept_ids: list[int] = []
     req_concept_ids: list[int] = []
+    eval_weights: dict[int, float] = {}
+    req_weights: dict[int, float] = {}
 
     # Auto-extract concepts via LLM if requested and no concepts provided
-    if body.auto_extract_concepts and not body.concept_ids:
+    if body.auto_extract_concepts and not body.concept_ids and not body.concept_weights:
         llm = LLMRouter()
         extracted = await llm.extract_concepts(body.content)
         if extracted:
             graphrag = GraphRAGService(db)
-            eval_names = extracted.get("evaluation_concepts", [])
-            req_names = extracted.get("required_concepts", [])
-            eval_concept_ids = await graphrag.match_concept_names(eval_names)
-            req_concept_ids = await graphrag.match_concept_names(req_names)
+            eval_entries = extracted.get("evaluation_concepts", [])
+            req_entries = extracted.get("required_concepts", [])
+
+            # Use weighted matching (handles both list[str] and list[dict] formats)
+            eval_weights = await graphrag.match_concept_names_with_weights(eval_entries)
+            req_weights = await graphrag.match_concept_names_with_weights(req_entries)
+            eval_concept_ids = list(eval_weights.keys())
+            req_concept_ids = list(req_weights.keys())
+
+            # Extract display names (handle both old and new format)
+            eval_names = [
+                e["name"] if isinstance(e, dict) else e for e in eval_entries
+            ]
+            req_names = [
+                e["name"] if isinstance(e, dict) else e for e in req_entries
+            ]
 
             # Infer expected_form from LLM if not provided by user
             inferred_form = None
@@ -85,12 +102,20 @@ async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db)
                 required_concept_names=req_names,
                 matched_evaluation_concept_ids=eval_concept_ids,
                 matched_required_concept_ids=req_concept_ids,
+                evaluation_concept_weights=eval_weights,
+                required_concept_weights=req_weights,
                 inferred_expected_form=inferred_form,
                 inferred_grading_hints=extracted.get("grading_hints"),
             )
 
-    # Determine effective concept_ids for duplicate check
-    effective_concept_ids = set(body.concept_ids) if body.concept_ids else set(eval_concept_ids)
+    # Build effective concept weights for duplicate check
+    # Priority: concept_weights > concept_ids (as {id: 1.0}) > LLM-extracted weights
+    if body.concept_weights:
+        effective_weights = dict(body.concept_weights)
+    elif body.concept_ids:
+        effective_weights = {cid: 1.0 for cid in body.concept_ids}
+    else:
+        effective_weights = {**eval_weights, **req_weights}
 
     # Determine effective expected_form and grading_hints
     effective_form = body.expected_form
@@ -105,7 +130,7 @@ async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db)
         effective_form = ExpectedForm.simplified
 
     similarity_svc = SimilarityService(db)
-    dup_result = await similarity_svc.check_duplicate(effective_concept_ids, content=body.content)
+    dup_result = await similarity_svc.check_duplicate(effective_weights, content=body.content)
 
     similar_details = [
         SimilarProblemDetail(**s) for s in dup_result["similar_problems"]
@@ -149,19 +174,31 @@ async def create_problem(body: ProblemCreate, db: AsyncSession = Depends(get_db)
     db.add(question)
     await db.flush()
 
-    # Insert edge records — evaluation concepts
-    if body.concept_ids:
-        # User-provided concept_ids go to QuestionEvaluates (existing behavior)
+    # Insert edge records — evaluation concepts (with weights)
+    if body.concept_weights:
+        # User-provided concept_weights go to QuestionEvaluates
+        for concept_id, weight in body.concept_weights.items():
+            db.add(QuestionEvaluates(
+                question_id=question.id, concept_id=concept_id, weight=weight,
+            ))
+    elif body.concept_ids:
+        # User-provided concept_ids go to QuestionEvaluates (weight=1.0)
         for concept_id in body.concept_ids:
             db.add(QuestionEvaluates(question_id=question.id, concept_id=concept_id))
     elif eval_concept_ids:
-        # LLM-extracted evaluation concepts
+        # LLM-extracted evaluation concepts with weights
         for concept_id in eval_concept_ids:
-            db.add(QuestionEvaluates(question_id=question.id, concept_id=concept_id))
+            weight = eval_weights.get(concept_id, 1.0)
+            db.add(QuestionEvaluates(
+                question_id=question.id, concept_id=concept_id, weight=weight,
+            ))
 
-    # Insert required concept edges
+    # Insert required concept edges (with weights)
     for concept_id in req_concept_ids:
-        db.add(QuestionRequires(question_id=question.id, concept_id=concept_id))
+        weight = req_weights.get(concept_id, 1.0)
+        db.add(QuestionRequires(
+            question_id=question.id, concept_id=concept_id, weight=weight,
+        ))
 
     # Insert unit edges
     for unit_id in body.unit_ids:
@@ -208,27 +245,57 @@ async def update_problem(problem_id: int, body: ProblemUpdate, db: AsyncSession 
 
 @router.delete("/{problem_id}", status_code=204)
 async def delete_problem(problem_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
-    """Delete a problem by ID."""
+    """Delete a problem by ID, including all related edge records."""
     result = await db.execute(
         select(Question).where(Question.id == problem_id)
     )
     question = result.scalar_one_or_none()
     if not question:
         raise HTTPException(status_code=404, detail="Problem not found")
+
+    # Delete related edge records first (no FK cascade in DB)
+    from sqlalchemy import delete as sa_delete
+    await db.execute(sa_delete(QuestionEvaluates).where(QuestionEvaluates.question_id == problem_id))
+    await db.execute(sa_delete(QuestionRequires).where(QuestionRequires.question_id == problem_id))
+    await db.execute(sa_delete(QuestionUnits).where(QuestionUnits.question_id == problem_id))
+
     await db.delete(question)
     await db.flush()
+
+
+@router.get("/{problem_id}/metadata", response_model=QuestionMetadataResponse)
+async def get_problem_metadata(problem_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
+    """Get full metadata for a problem including concept weights and units."""
+    graphrag = GraphRAGService(db)
+    metadata = await graphrag.get_question_metadata(problem_id)
+    if not metadata:
+        raise HTTPException(status_code=404, detail="Problem not found")
+    return QuestionMetadataResponse(
+        question_id=metadata["question_id"],
+        content=metadata["content"],
+        correct_answer=metadata["correct_answer"],
+        expected_form=metadata["expected_form"],
+        grading_hints=metadata["grading_hints"],
+        evaluation_concepts=[
+            ConceptWeightDetail(**c) for c in metadata["evaluation_concepts"]
+        ],
+        required_concepts=[
+            ConceptWeightDetail(**c) for c in metadata["required_concepts"]
+        ],
+        unit_ids=metadata["unit_ids"],
+    )
 
 
 @router.get("/{problem_id}/similar", response_model=SimilarProblemResponse)
 async def get_similar_problems(problem_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
     """Find problems similar to the given problem."""
     graphrag = GraphRAGService(db)
-    concept_ids = await graphrag.get_concepts_for_question(problem_id)
-    if not concept_ids:
+    concept_weights = await graphrag.get_concept_weights_for_question(problem_id)
+    if not concept_weights:
         raise HTTPException(status_code=404, detail="Problem not found or has no concepts")
 
     similarity_svc = SimilarityService(db)
-    similar = await similarity_svc.find_similar(concept_ids, exclude_question_id=problem_id)
+    similar = await similarity_svc.find_similar(concept_weights, exclude_question_id=problem_id)
 
     # Fetch the actual Question records for similar problems
     similar_question_ids = [s["question_id"] for s in similar]
@@ -252,3 +319,15 @@ async def get_similar_problems(problem_id: int, db: AsyncSession = Depends(get_d
     return SimilarProblemResponse(
         problems=problems, similarity_scores=scores, details=details
     )
+
+
+@router.get("/concepts/all", response_model=list[ConceptResponse])
+async def list_concepts(
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(require_role(UserRole.admin)),
+):
+    """List all concepts for the concept picker."""
+    result = await db.execute(
+        select(Concept).order_by(Concept.name)
+    )
+    return [ConceptResponse.model_validate(c) for c in result.scalars().all()]

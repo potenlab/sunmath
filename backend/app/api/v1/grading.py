@@ -23,6 +23,7 @@ async def grade_answer(body: GradeRequest, db: AsyncSession = Depends(get_db), c
         judged_by=result["judged_by"],
         reasoning=result["reasoning"],
         cached=result["cached"],
+        mastery_updates=result.get("mastery_updates", []),
     )
 
 

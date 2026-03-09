@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { FileText } from "lucide-react";
 import { useProblemRegistration } from "../hooks/use-problem-registration";
+import { useConcepts } from "../api/use-problems";
 import { ProblemForm } from "@/components/admin/problem-form";
 import { ProblemListItem } from "@/components/admin/problem-list-item";
 import { DuplicateDialog } from "@/components/admin/duplicate-dialog";
@@ -26,6 +27,7 @@ export function ProblemManager({
   onProblemsCountChange,
 }: ProblemManagerProps) {
   const t = useTranslations("admin");
+  const { data: concepts = [], isLoading: conceptsLoading } = useConcepts();
   const {
     problemContent,
     setProblemContent,
@@ -37,6 +39,8 @@ export function ProblemManager({
     setTargetGrade,
     gradingHints,
     setGradingHints,
+    conceptEntries,
+    setConceptEntries,
     problems,
     registrationMessage,
     duplicateDialogOpen,
@@ -73,6 +77,10 @@ export function ProblemManager({
         onTargetGradeChange={setTargetGrade}
         gradingHints={gradingHints}
         onGradingHintsChange={setGradingHints}
+        conceptEntries={conceptEntries}
+        onConceptEntriesChange={setConceptEntries}
+        availableConcepts={concepts}
+        conceptsLoading={conceptsLoading}
         onRegister={handleRegisterProblem}
       />
 

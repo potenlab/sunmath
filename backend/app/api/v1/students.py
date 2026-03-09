@@ -101,6 +101,8 @@ async def get_diagnosis(student_id: int, db: AsyncSession = Depends(get_db), cur
         prerequisite_chains=diagnosis["prerequisite_chains"],
         learning_path=diagnosis["learning_path"],
         recommended_problems=diagnosis["recommended_problems"],
+        concept_frequencies=diagnosis.get("concept_frequencies", []),
+        recommended_problems_detail=diagnosis.get("recommended_problems_detail", []),
         generated_at=diagnosis["generated_at"],
     )
 

@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { post } from "@/lib/api";
 import type { GradeResponse } from "../types";
 
@@ -9,8 +9,13 @@ interface SubmitAnswerParams {
 }
 
 export function useSubmitAnswer() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (params: SubmitAnswerParams) =>
       post<GradeResponse>("/grading/grade", params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["student", "mastery"] });
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+    },
   });
 }

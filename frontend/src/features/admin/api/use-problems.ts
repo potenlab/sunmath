@@ -1,11 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { get, post, put, del } from "@/lib/api";
 import type {
+  ConceptOption,
   ProblemCreate,
   ProblemListResponse,
   ProblemRegistrationResponse,
   ProblemResponse,
   ProblemUpdate,
+  QuestionMetadataResponse,
   SimilarProblemResponse,
 } from "../types";
 
@@ -57,11 +59,28 @@ export function useProblem(problemId: number | null) {
   });
 }
 
+export function useProblemMetadata(problemId: number | null) {
+  return useQuery({
+    queryKey: ["problems", problemId, "metadata"],
+    queryFn: () =>
+      get<QuestionMetadataResponse>(`/problems/${problemId}/metadata`),
+    enabled: problemId !== null,
+  });
+}
+
 export function useSimilarProblems(problemId: number | null) {
   return useQuery({
     queryKey: ["problems", problemId, "similar"],
     queryFn: () =>
       get<SimilarProblemResponse>(`/problems/${problemId}/similar`),
     enabled: problemId !== null,
+  });
+}
+
+export function useConcepts() {
+  return useQuery({
+    queryKey: ["concepts", "all"],
+    queryFn: () => get<ConceptOption[]>("/problems/concepts/all"),
+    staleTime: 5 * 60 * 1000,
   });
 }
