@@ -37,11 +37,15 @@ export function StudentDetail({ id }: StudentDetailProps) {
   const activeCount = wrongAnswers.filter((a) => a.status === "active").length;
   const resolvedCount = wrongAnswers.filter((a) => a.status === "resolved").length;
 
-  // Convert mastery data to concept frequency format for the chart
-  const conceptsForChart = (masteryData?.masteries ?? []).map((m) => ({
-    name: m.concept_name,
-    count: 1,
-    pct: Math.round(m.mastery_level * 100),
+  // Convert diagnosis concept frequency data for the chart
+  const maxFreq = Math.max(
+    ...(diagnosis?.concept_frequencies ?? []).map((c) => c.count),
+    1,
+  );
+  const conceptsForChart = (diagnosis?.concept_frequencies ?? []).map((c) => ({
+    name: c.concept_name,
+    count: Math.round(c.count * 10) / 10,
+    pct: Math.round((c.count / maxFreq) * 100),
   }));
 
   // Convert diagnosis learning path to display format
@@ -52,11 +56,19 @@ export function StudentDetail({ id }: StudentDetailProps) {
   }));
 
   // Convert recommended problems to practice items
-  const practiceItems = (diagnosis?.recommended_problems ?? []).map((pid) => ({
-    problem: `Problem #${pid}`,
-    concept: diagnosis?.core_weaknesses[0] ?? "",
-    difficulty: "medium",
-  }));
+  // Prefer detailed data (has per-problem concept); fall back to bare IDs
+  const practiceItems =
+    diagnosis?.recommended_problems_detail?.length
+      ? diagnosis.recommended_problems_detail.map((p) => ({
+          problem: `Problem #${p.question_id}`,
+          concept: p.concept_name,
+          difficulty: "medium",
+        }))
+      : (diagnosis?.recommended_problems ?? []).map((pid) => ({
+          problem: `Problem #${pid}`,
+          concept: diagnosis?.core_weaknesses?.[0] ?? "",
+          difficulty: "medium",
+        }));
 
   return (
     <div className="space-y-8">

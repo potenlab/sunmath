@@ -28,12 +28,25 @@ export interface WrongAnswerListResponse {
   total: number;
 }
 
+export interface ConceptFrequency {
+  concept_name: string;
+  count: number;
+  mastery: number;
+}
+
+export interface RecommendedProblemDetail {
+  question_id: number;
+  concept_name: string;
+}
+
 export interface DiagnosisResponse {
   student_id: number;
   core_weaknesses: string[];
   prerequisite_chains: string[][];
   learning_path: string[];
   recommended_problems: number[];
+  concept_frequencies: ConceptFrequency[];
+  recommended_problems_detail: RecommendedProblemDetail[];
   generated_at: string;
 }
 

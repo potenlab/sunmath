@@ -123,12 +123,28 @@ class DiagnosisService:
         # 10. Generate learning path
         learning_path = await self._build_learning_path(root_causes, concept_names)
 
-        # 11. Find recommended problems
-        recommended = await self._find_recommended_problems(root_causes)
+        # 11. Find recommended problems (with concept names)
+        recommended, recommended_detail = await self._find_recommended_problems(root_causes)
 
         core_weaknesses = [
             concept_names.get(rc, f"concept_{rc}") for rc in root_causes
         ]
+
+        # 12. Build concept frequency list (sorted by frequency desc)
+        all_freq_ids = list(concept_freq.keys())
+        all_freq_names = await self.graphrag.get_concept_names(all_freq_ids)
+        concept_frequencies = sorted(
+            [
+                {
+                    "concept_name": all_freq_names.get(cid, f"concept_{cid}"),
+                    "count": freq,
+                    "mastery": mastery_map.get(cid, 0.0),
+                }
+                for cid, freq in concept_freq.items()
+            ],
+            key=lambda x: x["count"],
+            reverse=True,
+        )
 
         diagnosis_data = {
             "student_id": student_id,
@@ -136,6 +152,8 @@ class DiagnosisService:
             "prerequisite_chains": prereq_chains,
             "learning_path": learning_path,
             "recommended_problems": recommended,
+            "concept_frequencies": concept_frequencies,
+            "recommended_problems_detail": recommended_detail,
             "generated_at": datetime.now(timezone.utc).isoformat(),
         }
 
@@ -203,16 +221,31 @@ class DiagnosisService:
 
         return path if path else ["No specific learning path needed"]
 
-    async def _find_recommended_problems(self, concept_ids: list[int]) -> list[int]:
-        """Find problems that evaluate root cause concepts."""
+    async def _find_recommended_problems(
+        self, concept_ids: list[int],
+    ) -> tuple[list[int], list[dict]]:
+        """Find problems that evaluate root cause concepts.
+
+        Returns (list of question_ids, list of {question_id, concept_name} dicts).
+        """
         if not concept_ids:
-            return []
+            return [], []
+
+        from app.models.nodes import Concept
+
         result = await self.db.execute(
-            select(QuestionEvaluates.question_id)
+            select(QuestionEvaluates.question_id, Concept.name)
+            .join(Concept, Concept.id == QuestionEvaluates.concept_id)
             .where(QuestionEvaluates.concept_id.in_(concept_ids))
             .distinct()
         )
-        return [row.question_id for row in result.all()]
+        rows = result.all()
+        ids = [row.question_id for row in rows]
+        detail = [
+            {"question_id": row.question_id, "concept_name": row.name}
+            for row in rows
+        ]
+        return ids, detail
 
     async def _save_diagnosis(self, student_id: int, diagnosis_data: dict) -> None:
         """Save diagnosis to student_diagnoses table."""
