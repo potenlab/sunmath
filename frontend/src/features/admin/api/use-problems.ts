@@ -7,6 +7,7 @@ import type {
   ProblemRegistrationResponse,
   ProblemResponse,
   ProblemUpdate,
+  QuestionMetadataResponse,
   SimilarProblemResponse,
 } from "../types";
 
@@ -54,6 +55,15 @@ export function useProblem(problemId: number | null) {
   return useQuery({
     queryKey: ["problems", problemId],
     queryFn: () => get<ProblemResponse>(`/problems/${problemId}`),
+    enabled: problemId !== null,
+  });
+}
+
+export function useProblemMetadata(problemId: number | null) {
+  return useQuery({
+    queryKey: ["problems", problemId, "metadata"],
+    queryFn: () =>
+      get<QuestionMetadataResponse>(`/problems/${problemId}/metadata`),
     enabled: problemId !== null,
   });
 }

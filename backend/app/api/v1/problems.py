@@ -13,12 +13,14 @@ from sqlalchemy import func as sa_func
 from app.schemas.problem import (
     ConceptExtractionResult,
     ConceptResponse,
+    ConceptWeightDetail,
     DuplicateCheckResponse,
     ProblemCreate,
     ProblemListResponse,
     ProblemRegistrationResponse,
     ProblemResponse,
     ProblemUpdate,
+    QuestionMetadataResponse,
     SimilarProblemDetail,
     SimilarProblemResponse,
 )
@@ -259,6 +261,29 @@ async def delete_problem(problem_id: int, db: AsyncSession = Depends(get_db), _:
 
     await db.delete(question)
     await db.flush()
+
+
+@router.get("/{problem_id}/metadata", response_model=QuestionMetadataResponse)
+async def get_problem_metadata(problem_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
+    """Get full metadata for a problem including concept weights and units."""
+    graphrag = GraphRAGService(db)
+    metadata = await graphrag.get_question_metadata(problem_id)
+    if not metadata:
+        raise HTTPException(status_code=404, detail="Problem not found")
+    return QuestionMetadataResponse(
+        question_id=metadata["question_id"],
+        content=metadata["content"],
+        correct_answer=metadata["correct_answer"],
+        expected_form=metadata["expected_form"],
+        grading_hints=metadata["grading_hints"],
+        evaluation_concepts=[
+            ConceptWeightDetail(**c) for c in metadata["evaluation_concepts"]
+        ],
+        required_concepts=[
+            ConceptWeightDetail(**c) for c in metadata["required_concepts"]
+        ],
+        unit_ids=metadata["unit_ids"],
+    )
 
 
 @router.get("/{problem_id}/similar", response_model=SimilarProblemResponse)

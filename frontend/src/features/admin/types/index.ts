@@ -100,6 +100,23 @@ export interface SimilarProblemResponse {
   details: SimilarProblemDetail[];
 }
 
+export interface ConceptWeightDetail {
+  id: number;
+  name: string;
+  weight: number;
+}
+
+export interface QuestionMetadataResponse {
+  question_id: number;
+  content: string;
+  correct_answer: string;
+  expected_form: string;
+  grading_hints: string | null;
+  evaluation_concepts: ConceptWeightDetail[];
+  required_concepts: ConceptWeightDetail[];
+  unit_ids: number[];
+}
+
 // Legacy type for backward compat with ProblemListItem component
 export interface RegisteredProblem {
   id: number;

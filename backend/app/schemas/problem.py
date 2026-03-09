@@ -46,6 +46,23 @@ class DuplicateCheckResponse(BaseModel):
     similarity_score: float = 0.0
 
 
+class ConceptWeightDetail(BaseModel):
+    id: int
+    name: str
+    weight: float
+
+
+class QuestionMetadataResponse(BaseModel):
+    question_id: int
+    content: str
+    correct_answer: str
+    expected_form: str
+    grading_hints: str | None
+    evaluation_concepts: list[ConceptWeightDetail]
+    required_concepts: list[ConceptWeightDetail]
+    unit_ids: list[int]
+
+
 class ConceptExtractionResult(BaseModel):
     evaluation_concept_names: list[str] = []
     required_concept_names: list[str] = []

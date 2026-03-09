@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { FileText, Trash2 } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { ProblemManager } from "@/features/admin/components/problem-manager";
@@ -57,8 +58,9 @@ export default function AdminProblemsPage() {
           ) : (
             <div className="space-y-2">
               {problems.map((problem) => (
-                <div
+                <Link
                   key={problem.id}
+                  href={`/admin/problems/${problem.id}`}
                   className="flex items-center justify-between rounded-lg border p-3 hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex-1 min-w-0">
@@ -84,12 +86,16 @@ export default function AdminProblemsPage() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
-                      onClick={() => deleteMutation.mutate(problem.id)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deleteMutation.mutate(problem.id);
+                      }}
                     >
                       <Trash2 className="size-4" />
                     </Button>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
