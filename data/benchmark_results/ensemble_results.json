@@ -1,0 +1,78 @@
+{
+  "majority_vote_all": {
+    "correct": 42,
+    "total": 53,
+    "accuracy": 79.25,
+    "cost": 0.756568
+  },
+  "majority_vote_top3": {
+    "correct": 44,
+    "total": 53,
+    "accuracy": 83.02,
+    "cost": 0.381365
+  },
+  "confidence_weighted": {
+    "correct": 42,
+    "total": 53,
+    "accuracy": 79.25,
+    "cost": 0.756568
+  },
+  "accuracy_weighted": {
+    "correct": 44,
+    "total": 53,
+    "accuracy": 83.02,
+    "cost": 0.756568
+  },
+  "cascade_85": {
+    "correct": 39,
+    "total": 53,
+    "accuracy": 73.58,
+    "cost": 0.014151
+  },
+  "best_per_subject": {
+    "correct": 44,
+    "total": 53,
+    "accuracy": 83.02,
+    "cost": 0.205212
+  },
+  "model_baselines": {
+    "deepseek-v3": {
+      "correct": 38,
+      "total": 60,
+      "accuracy": 63.33
+    },
+    "claude-sonnet": {
+      "correct": 43,
+      "total": 60,
+      "accuracy": 71.67
+    },
+    "gpt-4o": {
+      "correct": 38,
+      "total": 60,
+      "accuracy": 63.33
+    },
+    "o3-mini": {
+      "correct": 37,
+      "total": 60,
+      "accuracy": 61.67
+    },
+    "deepseek-r1": {
+      "correct": 39,
+      "total": 60,
+      "accuracy": 65.0
+    },
+    "qwen-2.5-72b": {
+      "correct": 40,
+      "total": 60,
+      "accuracy": 66.67
+    }
+  },
+  "best_model_per_subject": {
+    "probability_statistics": "deepseek-v3",
+    "calculus": "claude-sonnet",
+    "mixed_descriptive": "claude-sonnet",
+    "factoring_expansion": "claude-sonnet",
+    "algebra": "deepseek-r1",
+    "geometry": "claude-sonnet"
+  }
+}

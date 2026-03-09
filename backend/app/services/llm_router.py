@@ -187,9 +187,81 @@ class LLMRouter:
         raise ValueError(f"Invalid grading response structure: {content[:200]}")
 
     @staticmethod
+    def _fix_latex_json_escapes(text: str) -> str:
+        """Fix invalid JSON escape sequences caused by LaTeX in string values.
+
+        Models (especially reasoning models) embed LaTeX like \\( \\geq \\sqrt
+        inside JSON strings without proper escaping.  This scanner tracks
+        whether it is inside a JSON string value; only within strings does it
+        double backslashes that aren't valid JSON escapes and escape raw
+        control characters.  Structural JSON whitespace is left untouched.
+        """
+        valid_after_backslash = set('"\\/bfnrt')
+        result: list[str] = []
+        in_string = False
+        i = 0
+        while i < len(text):
+            ch = text[i]
+            if not in_string:
+                # Outside a JSON string — pass through as-is
+                result.append(ch)
+                if ch == '"':
+                    in_string = True
+                i += 1
+            else:
+                # Inside a JSON string value
+                if ch == '\\':
+                    if i + 1 < len(text):
+                        nxt = text[i + 1]
+                        if nxt in valid_after_backslash:
+                            result.append('\\')
+                            result.append(nxt)
+                            i += 2
+                        elif nxt == 'u' and i + 5 < len(text) and all(
+                            c in '0123456789abcdefABCDEF' for c in text[i + 2:i + 6]
+                        ):
+                            result.append(text[i:i + 6])
+                            i += 6
+                        else:
+                            # Invalid escape — double the backslash
+                            result.append('\\\\')
+                            result.append(nxt)
+                            i += 2
+                    else:
+                        result.append('\\\\')
+                        i += 1
+                elif ch == '"':
+                    # Closing quote — exit string
+                    result.append(ch)
+                    in_string = False
+                    i += 1
+                elif ch == '\n':
+                    result.append('\\n')
+                    i += 1
+                elif ch == '\r':
+                    result.append('\\r')
+                    i += 1
+                elif ch == '\t':
+                    result.append('\\t')
+                    i += 1
+                elif ord(ch) < 0x20:
+                    result.append(f'\\u{ord(ch):04x}')
+                    i += 1
+                else:
+                    result.append(ch)
+                    i += 1
+        return ''.join(result)
+
+    @staticmethod
     def _parse_json_response(content: str) -> dict | None:
         """Parse JSON from LLM response, stripping markdown fences if present."""
         text = content.strip()
+
+        # Strip <think>...</think> reasoning blocks (DeepSeek-R1, etc.)
+        think_end = text.rfind("</think>")
+        if think_end != -1:
+            text = text[think_end + len("</think>"):].strip()
+
         # Strip markdown code fences
         match = re.search(r"```(?:json)?\s*(.*?)\s*```", text, re.DOTALL)
         if match:
@@ -199,11 +271,21 @@ class LLMRouter:
         except json.JSONDecodeError:
             pass
 
+        # Fix LaTeX backslash escapes (e.g. \( \geq \sqrt) and retry
+        try:
+            return json.loads(LLMRouter._fix_latex_json_escapes(text))
+        except json.JSONDecodeError:
+            pass
+
         # Last resort: find embedded JSON object in prose text
         obj_match = re.search(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}", text, re.DOTALL)
         if obj_match:
             try:
                 return json.loads(obj_match.group(0))
+            except json.JSONDecodeError:
+                pass
+            try:
+                return json.loads(LLMRouter._fix_latex_json_escapes(obj_match.group(0)))
             except json.JSONDecodeError:
                 pass
 

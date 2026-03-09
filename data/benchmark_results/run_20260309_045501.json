@@ -1,0 +1,1452 @@
+{
+  "run_id": "20260309_045501",
+  "timestamp": "2026-03-09T05:17:39.812739+00:00",
+  "models": [
+    "deepseek-r1"
+  ],
+  "problem_count": 60,
+  "results": [
+    {
+      "problem_id": "ALG-E01",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "5",
+        "answer_latex": "5",
+        "confidence": 100,
+        "solution": "To solve for x in the equation 3x + 7 = 22:\n1. Subtract 7 from both sides: 3x = 22 - 7 \u21d2 3x = 15.\n2. Divide both sides by 3: x = 15 \u00f7 3 \u21d2 x = 5.\nVerification: Substitute x = 5 back into the original equation: 3(5) + 7 = 15 + 7 = 22 \u2714\ufe0f",
+        "latency_ms": 13519.657749973703,
+        "input_tokens": 96,
+        "output_tokens": 500,
+        "cost": 0.0011478,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "x = 5",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-E02",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "8",
+        "answer_latex": "8",
+        "confidence": 100,
+        "solution": "Start with the equation: 2(x - 3) = 10.\nDivide both sides by 2: x - 3 = 5.\nAdd 3 to both sides: x = 8.",
+        "latency_ms": 9789.947415993083,
+        "input_tokens": 97,
+        "output_tokens": 382,
+        "cost": 0.0008899299999999999,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "x = 8",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-E03",
+      "subject": "algebra",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "16",
+        "answer_latex": "16",
+        "confidence": 95,
+        "solution": "x/4 + 3 = 7 \\\\ Subtract 3 from both sides: x/4 = 7 - 3 \\\\ x/4 = 4 \\\\ Multiply both sides by 4: x = 4 \\times 4 \\\\ x = 16",
+        "latency_ms": 6846.205540990923,
+        "input_tokens": 96,
+        "output_tokens": 246,
+        "cost": 0.00059154,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "x = 16",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-M01",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "x=3, y=1",
+        "answer_latex": "x = 3,\\ y = 1",
+        "confidence": 100,
+        "solution": "From the second equation, solve for x:\n\\[x = y + 2\\]\nSubstitute \\(x\\) into the first equation:\n\\[2(y + 2) + y = 7\n2y + 4 + y = 7\n3y + 4 = 7\n3y = 3\ny = 1\\]\nSubstitute \\(y = 1\\) back into \\(x = y + 2\\):\n\\[x = 1 + 2 = 3\\]\nVerification: \\(2(3) + 1 = 7\\) and \\(3 - 1 = 2\\).",
+        "latency_ms": 18178.52341599064,
+        "input_tokens": 102,
+        "output_tokens": 750,
+        "cost": 0.0016986,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "x = 3, y = 1",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-M02",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "7, -2",
+        "answer_latex": "7,\\ -2",
+        "confidence": 95,
+        "solution": "To solve |2x - 5| = 9, consider two cases:\n1. **Case 1**: 2x - 5 = 9\n   Add 5: 2x = 14\n   Divide by 2: x = 7\n2. **Case 2**: 2x - 5 = -9\n   Add 5: 2x = -4\n   Divide by 2: x = -2\n**Verify**:\n- For x=7: |2(7)-5| = |9| =9 \u2714\ufe0f\n- For x=-2: |2(-2)-5| = |-9| =9 \u2714\ufe0f",
+        "latency_ms": 14369.295250042342,
+        "input_tokens": 95,
+        "output_tokens": 572,
+        "cost": 0.0013049300000000002,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "x = 7 or x = -2",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-M03",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "x \u2265 -7",
+        "answer_latex": "x \\geq -7",
+        "confidence": 95,
+        "solution": "3x - 2 \u2264 4x + 5\nSubtract 4x from both sides: 3x - 4x - 2 \u2264 5 \u2192 -x - 2 \u2264 5\nAdd 2 to both sides: -x \u2264 7\nMultiply both sides by -1 (reverse inequality): x \u2265 -7",
+        "latency_ms": 10182.500124967191,
+        "input_tokens": 100,
+        "output_tokens": 793,
+        "cost": 0.0017916699999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "x \u2265 -7",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "ALG-M04",
+      "subject": "algebra",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "2, 3",
+        "answer_latex": "2, 3",
+        "confidence": 100,
+        "solution": "To solve the quadratic equation \\(x^2 - 5x + 6 = 0\\), we factor it by finding two numbers that multiply to 6 and add to -5. These numbers are -2 and -3. Thus, the equation factors as \\((x - 2)(x - 3) = 0\\). Setting each factor equal to zero gives the solutions \\(x = 2\\) and \\(x = 3\\). Verification using the quadratic formula \\(x = \frac{5 \\pm \\sqrt{25 - 24}}{2}\\) confirms the solutions.",
+        "latency_ms": 16777.191875036806,
+        "input_tokens": 97,
+        "output_tokens": 640,
+        "cost": 0.0014549499999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "x = 2, x = 3",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-H01",
+      "subject": "algebra",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "x = \u00b11, \u00b12",
+        "answer_latex": "x = \\pm 1, \\pm 2",
+        "confidence": 100,
+        "solution": "Let y = x\u00b2. Substitute into the equation: y\u00b2 - 5y + 4 = 0. Factor the quadratic: (y - 1)(y - 4) = 0. Thus, y = 1 or y = 4. Substitute back: x\u00b2 = 1 \u21d2 x = \u00b11; x\u00b2 = 4 \u21d2 x = \u00b12. All solutions are x = \u00b11, \u00b12.",
+        "latency_ms": 15791.406999982428,
+        "input_tokens": 99,
+        "output_tokens": 621,
+        "cost": 0.0014144399999999999,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "x = \u00b11, x = \u00b12",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "ALG-H02",
+      "subject": "algebra",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "(-\u221e, -2) \u222a (1, 3)",
+        "answer_latex": "\boxed{(-\\infty, -2) \\cup (1, 3)}",
+        "confidence": 100,
+        "solution": "1. Find the roots: \\( x = -2, 1, 3 \\).\n2. Test intervals divided by roots:\n   - \\( x < -2 \\): Choose \\( x = -3 \\), \n     \\( (-3-1)(-3+2)(-3-3) = (-4)(-1)(-6) = -24 < 0 \\) \u2192 Negative.\n   - \\( -2 < x < 1 \\): Choose \\( x = 0 \\), \n     \\( (0-1)(0+2)(0-3) = (-1)(2)(-3) = 6 > 0 \\) \u2192 Positive.\n   - \\( 1 < x < 3 \\): Choose \\( x = 2 \\), \n     \\( (2-1)(2+2)(2-3) = (1)(4)(-1) = -4 < 0 \\) \u2192 Negative.\n   - \\( x > 3 \\): Choose \\( x = 4 \\), \n     \\( (4-1)(4+2)(4-3) = (3)(6)(1) = 18 > 0 \\) \u2192 Positive.\n3. Solution where expression \\( < 0 \\): \\( (-\\infty, -2) \\cup (1, 3) \\).",
+        "latency_ms": 28186.140459030867,
+        "input_tokens": 103,
+        "output_tokens": 1168,
+        "cost": 0.00261457,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "x < -2 or 1 < x < 3",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "ALG-H03",
+      "subject": "algebra",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "13/4",
+        "answer_latex": "\\boxed{\\dfrac{13}{4}}",
+        "confidence": 95,
+        "solution": "Start with the equation \u221a(x+3) + \u221a(x\u22121) = 4. Isolate one radical: \u221a(x+3) = 4 \u2212 \u221a(x\u22121). Square both sides: x + 3 = 16 \u2212 8\u221a(x\u22121) + x \u2212 1. Simplify to 3 = 15 \u2212 8\u221a(x\u22121). Solve for \u221a(x\u22121): \u221a(x\u22121) = 12/8 = 3/2. Square again: x \u2212 1 = 9/4 \u2192 x = 13/4. Check x=13/4 in the original equation: \u221a(25/4) + \u221a(9/4) = 5/2 + 3/2 = 4, which is valid.",
+        "latency_ms": 24387.47241703095,
+        "input_tokens": 105,
+        "output_tokens": 1005,
+        "cost": 0.0022586999999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "x = 6",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "FAC-E01",
+      "subject": "factoring_expansion",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "x\u00b2 + 9x + 20",
+        "answer_latex": "x^2 + 9x + 20",
+        "confidence": 100,
+        "solution": "First, apply the FOIL method:\n1. **First terms**: \\(x \\cdot x = x^2\\)\n2. **Outer terms**: \\(x \\cdot 5 = 5x\\)\n3. **Inner terms**: \\(4 \\cdot x = 4x\\)\n4. **Last terms**: \\(4 \\cdot 5 = 20\\)\nCombine all terms: \\(x^2 + 5x + 4x + 20\\).\nCombine like terms: \\(x^2 + 9x + 20\\).",
+        "latency_ms": 11355.449458991643,
+        "input_tokens": 96,
+        "output_tokens": 440,
+        "cost": 0.0010164,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "x\u00b2 + 9x + 20",
+      "expected_form": "expanded"
+    },
+    {
+      "problem_id": "FAC-E02",
+      "subject": "factoring_expansion",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "(x+3)(x+4)",
+        "answer_latex": "(x+3)(x+4)",
+        "confidence": 100,
+        "solution": "We need to factor the quadratic expression \\(x^2 + 7x + 12\\).\nTo factor \\(x^2 + bx + c\\), find two numbers that multiply to \\(c = 12\\) and add to \\(b = 7\\).\nFactors of 12: \\(1 \times 12\\), \\(2 \times 6\\), \\(3 \times 4\\).\nThe pair \\(3\\) and \\(4\\) satisfies \\(3 \times 4 = 12\\) and \\(3 + 4 = 7\\).\nThus, the factored form is \\((x + 3)(x + 4)\\).\nVerification: \\((x + 3)(x + 4) = x^2 + 4x + 3x + 12 = x^2 + 7x + 12\\).",
+        "latency_ms": 12511.863042018376,
+        "input_tokens": 94,
+        "output_tokens": 484,
+        "cost": 0.00111166,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "(x + 3)(x + 4)",
+      "expected_form": "factored"
+    },
+    {
+      "problem_id": "FAC-E03",
+      "subject": "factoring_expansion",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "x\u00b2 - 4x + 4",
+        "answer_latex": "x^2 - 4x + 4",
+        "confidence": 100,
+        "solution": "Using the formula for the square of a binomial: $(a - b)^2 = a^2 - 2ab + b^2$.\nHere, $a = x$ and $b = 2$.\n1. Square the first term: $x^2$.\n2. Subtract twice the product: $-2(x)(2) = -4x$.\n3. Add the square of the second term: $+2^2 = 4$.\nCombined: $x^2 - 4x + 4$.",
+        "latency_ms": 11486.836666997988,
+        "input_tokens": 92,
+        "output_tokens": 465,
+        "cost": 0.0010689500000000002,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "x\u00b2 - 4x + 4",
+      "expected_form": "expanded"
+    },
+    {
+      "problem_id": "FAC-M01",
+      "subject": "factoring_expansion",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "2(x\u22123)(x\u22121)",
+        "answer_latex": "2(x-3)(x-1)",
+        "confidence": 100,
+        "solution": "First, factor out the greatest common factor (GCF) of 2: 2(x\u00b2 - 4x + 3). Next, factor the quadratic trinomial x\u00b2 - 4x + 3 by finding two numbers that multiply to 3 and add to -4, which are -3 and -1. Thus, it factors to (x - 3)(x - 1). Combining these results: 2(x - 3)(x - 1).",
+        "latency_ms": 19034.153791959397,
+        "input_tokens": 97,
+        "output_tokens": 753,
+        "cost": 0.0017024199999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "2(x - 1)(x - 3)",
+      "expected_form": "factored"
+    },
+    {
+      "problem_id": "FAC-M02",
+      "subject": "factoring_expansion",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "2x\u00b3 - x\u00b2 - 11x + 12",
+        "answer_latex": "2x^3 - x^2 - 11x + 12",
+        "confidence": 100,
+        "solution": "Distribute each term in the binomial (2x - 3) across the trinomial (x\u00b2 + x - 4):\n\n2x * x\u00b2 = 2x\u00b3\n2x * x = 2x\u00b2\n2x * (-4) = -8x\n-3 * x\u00b2 = -3x\u00b2\n-3 * x = -3x\n-3 * (-4) = 12\n\nCombine all terms: 2x\u00b3 + 2x\u00b2 - 8x - 3x\u00b2 - 3x + 12\n\nCombine like terms:\n2x\u00b3 + (2x\u00b2 - 3x\u00b2) + (-8x - 3x) + 12\n= 2x\u00b3 - x\u00b2 - 11x + 12",
+        "latency_ms": 21112.025874957908,
+        "input_tokens": 100,
+        "output_tokens": 748,
+        "cost": 0.0016931199999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "2x\u00b3 - x\u00b2 - 11x + 12",
+      "expected_form": "expanded"
+    },
+    {
+      "problem_id": "FAC-M03",
+      "subject": "factoring_expansion",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "(x - 2)(x\u00b2 + 2x + 4)",
+        "answer_latex": "\boxed{(x - 2)(x^2 + 2x + 4)}",
+        "confidence": 95,
+        "solution": "The expression \\( x^3 - 8 \\) is a difference of cubes. Recognizing that \\( 8 = 2^3 \\), we apply the difference of cubes formula \\( a^3 - b^3 = (a - b)(a^2 + ab + b^2) \\):\n\nLet \\( a = x \\) and \\( b = 2 \\).\n\\[x^3 - 2^3 = (x - 2)(x^2 + (x)(2) + 2^2) = (x - 2)(x^2 + 2x + 4)\\].\n\nThe quadratic \\( x^2 + 2x + 4 \\) has discriminant \\( (2)^2 - 4(1)(4) = -12 \\), so it does not factor further over real numbers.",
+        "latency_ms": 20764.12737503415,
+        "input_tokens": 90,
+        "output_tokens": 823,
+        "cost": 0.00185187,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "(x - 2)(x\u00b2 + 2x + 4)",
+      "expected_form": "factored"
+    },
+    {
+      "problem_id": "FAC-M04",
+      "subject": "factoring_expansion",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "(x + 4)^2 - 6",
+        "answer_latex": "\\boxed{(x + 4)^2 - 6}",
+        "confidence": 95,
+        "solution": "Start with the expression: x\u00b2 + 8x + 10.\n1. Group the quadratic and linear terms: (x\u00b2 + 8x) + 10.\n2. To complete the square, take half of 8 (coefficient of x) \u2192 4, square it \u2192 16.\n3. Add and subtract 16 inside the group: (x\u00b2 + 8x + 16 - 16) + 10.\n4. Rewrite the perfect square trinomial: (x + 4)\u00b2 - 16 + 10.\n5. Combine constants: (x + 4)\u00b2 - 6.",
+        "latency_ms": 18899.267291999422,
+        "input_tokens": 96,
+        "output_tokens": 760,
+        "cost": 0.0017171999999999999,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "(x + 4)\u00b2 - 6",
+      "expected_form": "factored"
+    },
+    {
+      "problem_id": "FAC-H01",
+      "subject": "factoring_expansion",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "(x\u22122)(x+2)(x\u00b2+4)",
+        "answer_latex": "\boxed{(x-2)(x+2)(x^2+4)}",
+        "confidence": 95,
+        "solution": "Recognize the expression as a difference of squares: \\(x^4 - 16 = (x^2)^2 - 4^2\\). Apply the difference of squares formula: \\((x^2 - 4)(x^2 + 4)\\). Factor \\(x^2 - 4\\) further as another difference of squares: \\((x - 2)(x + 2)\\). The term \\(x^2 + 4\\) is irreducible over real numbers. Thus, the complete factorization is \\((x - 2)(x + 2)(x^2 + 4)\\).",
+        "latency_ms": 16798.458333010785,
+        "input_tokens": 92,
+        "output_tokens": 658,
+        "cost": 0.00149162,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "(x\u00b2 + 4)(x + 2)(x - 2)",
+      "expected_form": "factored"
+    },
+    {
+      "problem_id": "FAC-H02",
+      "subject": "factoring_expansion",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "(x\u22122)(x+2)(x+3)",
+        "answer_latex": "(x - 2)(x + 2)(x + 3)",
+        "confidence": 100,
+        "solution": "First, use the Rational Root Theorem to test possible roots. Testing x=2: substitute into polynomial:\n2\u00b3 + 3(2)\u00b2 -4(2) -12 = 8 + 12 -8 -12 = 0. Thus, (x -2) is a factor.\nPerform synthetic division with x=2 on coefficients [1,3,-4,-12]:\n1 | 3 | -4 | -12\n   2 | 10 | 12\nResult: 1 | 5 | 6 | 0 \u2192 Quotient: x\u00b2 +5x +6\nFactor the quadratic: x\u00b2 +5x +6 = (x+2)(x+3).\nFinal factors: (x -2)(x +2)(x +3).\nCheck: (x -2)(x +2)(x +3) = (x\u00b2 -4)(x +3) = x\u00b3 +3x\u00b2 -4x -12.",
+        "latency_ms": 26121.887249988504,
+        "input_tokens": 99,
+        "output_tokens": 1086,
+        "cost": 0.00243279,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "(x + 3)(x + 2)(x - 2)",
+      "expected_form": "factored"
+    },
+    {
+      "problem_id": "FAC-H03",
+      "subject": "factoring_expansion",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "a\u00b2 + b\u00b2 + c\u00b2 + 2ab + 2ac + 2bc",
+        "answer_latex": "a^2 + b^2 + c^2 + 2ab + 2ac + 2bc",
+        "confidence": 100,
+        "solution": "To expand \\((a + b + c)^2\\), use the distributive property (FOIL) for trinomials:\n\n\\[( a + b + c )( a + b + c ) = a(a) + a(b) + a(c) + b(a) + b(b) + b(c) + c(a) + c(b) + c(c)\\]\n\nCombine like terms:\n\\[a^2 + b^2 + c^2 + 2ab + 2ac + 2bc\\]",
+        "latency_ms": 8150.562125025317,
+        "input_tokens": 93,
+        "output_tokens": 694,
+        "cost": 0.0015710099999999999,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "a\u00b2 + b\u00b2 + c\u00b2 + 2ab + 2ac + 2bc",
+      "expected_form": "expanded"
+    },
+    {
+      "problem_id": "GEO-E01",
+      "subject": "geometry",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "20",
+        "answer_latex": "20\\,\\text{cm}^2",
+        "confidence": 100,
+        "solution": "The formula for the area of a triangle is \\(\\frac{1}{2} \\times \\text{base} \\times \\text{height}\\). Given the base is 8 cm and the height is 5 cm:\n\n\\[\n\\text{Area} = \\frac{1}{2} \\times 8\\,\\text{cm} \\times 5\\,\\text{cm} = \\frac{40}{2}\\,\\text{cm}^2 = 20\\,\\text{cm}^2\n\\]",
+        "latency_ms": 12848.0086249765,
+        "input_tokens": 100,
+        "output_tokens": 465,
+        "cost": 0.00107335,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "20 cm\u00b2",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "GEO-E02",
+      "subject": "geometry",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "5",
+        "answer_latex": "5",
+        "confidence": 100,
+        "solution": "Use the distance formula: \\(d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}\\). For points (1, 2) and (4, 6):\n- Calculate differences: \\(4 - 1 = 3\\), \\(6 - 2 = 4\\).\n- Square them: \\(3^2 = 9\\), \\(4^2 = 16\\).\n- Sum: \\(9 + 16 = 25\\).\n- Square root: \\(\\sqrt{25} = 5\\).",
+        "latency_ms": 14375.83337497199,
+        "input_tokens": 101,
+        "output_tokens": 470,
+        "cost": 0.0010848499999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "5",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "GEO-E03",
+      "subject": "geometry",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "14\u03c0 cm",
+        "answer_latex": "14\\pi\\ \\text{cm}",
+        "confidence": 100,
+        "solution": "The formula for the circumference of a circle is \\( C = 2\\pi r \\). Given the radius \\( r = 7 \\) cm, substitute into the formula:\n\\[ C = 2\\pi \\times 7 = 14\\pi \\].",
+        "latency_ms": 10129.27358300658,
+        "input_tokens": 102,
+        "output_tokens": 366,
+        "cost": 0.00085764,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "14\u03c0 cm",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "GEO-M01",
+      "subject": "geometry",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "(x - 3)^2 + (y + 1)^2 = 25",
+        "answer_latex": "\\boxed{(x - 3)^2 + (y + 1)^2 = 25}",
+        "confidence": 100,
+        "solution": "The standard form of a circle's equation is \\((x - h)^2 + (y - k)^2 = r^2\\). Given center (3, -1), substitute \\(h = 3\\) and \\(k = -1\\): \\[(x - 3)^2 + (y + 1)^2 = r^2.\\] The radius \\(r\\) is the distance from the center to the point (6, 3). Using the distance formula: \\[r = \\sqrt{(6 - 3)^2 + (3 - (-1))^2} = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5.\\] Thus, \\(r^2 = 25\\). The equation is \\[(x - 3)^2 + (y + 1)^2 = 25.\\]",
+        "latency_ms": 19298.26775001129,
+        "input_tokens": 106,
+        "output_tokens": 713,
+        "cost": 0.0016197700000000002,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "(x-3)\u00b2 + (y+1)\u00b2 = 25",
+      "expected_form": "expanded"
+    },
+    {
+      "problem_id": "GEO-M02",
+      "subject": "geometry",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "equal in length",
+        "answer_latex": "\\text{equal in length}",
+        "confidence": 100,
+        "solution": "A rectangle has four right angles and opposite sides equal. Assign coordinates: A(0,0), B(l,0), C(l,w), D(0,w). Diagonal AC has length \u221a[(l\u22120)\u00b2 + (w\u22120)\u00b2] = \u221a(l\u00b2 + w\u00b2). Diagonal BD has length \u221a[(0\u2212l)\u00b2 + (w\u22120)\u00b2] = \u221a(l\u00b2 + w\u00b2). Both diagonals are equal since their lengths are the same.",
+        "latency_ms": 20730.726334033534,
+        "input_tokens": 97,
+        "output_tokens": 798,
+        "cost": 0.0018009699999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "needs_manual_review"
+      },
+      "correct_answer": "Place rectangle with vertices at (0,0), (a,0), (a,b), (0,b). Diagonal 1: \u221a(a\u00b2+b\u00b2). Diagonal 2: \u221a(a\u00b2+b\u00b2). Equal.",
+      "expected_form": "proof"
+    },
+    {
+      "problem_id": "GEO-M03",
+      "subject": "geometry",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "6",
+        "answer_latex": "6",
+        "confidence": 100,
+        "solution": "To find the area of triangle ABC with vertices A(1,1), B(4,1), and C(2,5):\n1. **Calculate base AB:** The horizontal distance between A and B is \\(4 - 1 = 3\\).\n2. **Determine height from C to AB:** Since AB is horizontal at \\(y=1\\), the vertical distance from C(2,5) is \\(5 - 1 = 4\\).\n3. **Apply area formula:** \\(\text{Area} = \frac{1}{2} \times \text{base} \times \text{height} = \frac{1}{2} \times 3 \times 4 = 6\\).\nVerification using the shoelace formula confirms the result.",
+        "latency_ms": 17977.24549996201,
+        "input_tokens": 109,
+        "output_tokens": 691,
+        "cost": 0.00157324,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "6",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "GEO-M04",
+      "subject": "geometry",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "Center: (-3, 1), Radius: 4",
+        "answer_latex": "\\text{Center: }(-3, 1), \\text{ Radius: }4",
+        "confidence": 95,
+        "solution": "Start with the equation: x\u00b2 + y\u00b2 + 6x - 2y - 6 = 0.\nGroup x and y terms: (x\u00b2 + 6x) + (y\u00b2 - 2y) = 6.\nComplete the square for x: x\u00b2 + 6x + 9 = (x + 3)\u00b2, add 9 to both sides.\nComplete the square for y: y\u00b2 - 2y + 1 = (y - 1)\u00b2, add 1 to both sides.\nRevised equation: (x + 3)\u00b2 + (y - 1)\u00b2 = 16.\nCenter (h, k) = (-3, 1), radius r = \u221a16 = 4.",
+        "latency_ms": 19799.51587499818,
+        "input_tokens": 111,
+        "output_tokens": 812,
+        "cost": 0.00183933,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "Center: (-3, 1), Radius: 4",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "GEO-H01",
+      "subject": "geometry",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "The medians are concurrent at the centroid.",
+        "answer_latex": "\\boxed{\\text{The medians are concurrent at the centroid}}",
+        "confidence": 95,
+        "solution": "To prove the medians of a triangle are concurrent:\n1. **Define coordinates**: Consider a triangle with vertices A(0,0), B(2,0), and C(0,2). Midpoints are M(1,1), N(0,1), and P(1,0).\n2. **Find equations of medians**:\n   - Median AM: Line from (0,0) to (1,1) has equation \\(y = x\\).\n   - Median BN: Line from (2,0) to (0,1) has slope \\(-1/2\\), equation \\(y = -\frac{1}{2}x + 1\\).\n   - Median CP: Line from (0,2) to (1,0) has slope \\(-2\\), equation \\(y = -2x + 2\\).\n3. **Intersection of AM and BN**: Solve \\(y = x\\) and \\(y = -\frac{1}{2}x + 1\\). Intersection at \\((\frac{2}{3}, \frac{2}{3})\\).\n4. **Verify CP passes through \\((\frac{2}{3}, \frac{2}{3})\\)**: Substitute into \\(y = -2x + 2\\): \\(\frac{2}{3} = -2(\frac{2}{3}) + 2\\), which holds.\n5. **Generalize via centroid**: For any triangle with vertices \\((x_1,y_1)\\), \\((x_2,y_2)\\), \\((x_3,y_3)\\), the centroid \\((\frac{x_1+x_2+x_3}{3}, \frac{y_1+y_2+y_3}{3})\\) lies on all medians. Parametric equations confirm this point divides each median in a 2:1 ratio.\n6. **Alternative via Ceva's Theorem**: For midpoints, \\(\frac{BD}{DC} \\cdot \frac{CE}{EA} \\cdot \frac{AF}{FB} = 1\\), satisfying concurrency.",
+        "latency_ms": 84992.2300420003,
+        "input_tokens": 102,
+        "output_tokens": 3560,
+        "cost": 0.0078525,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "needs_manual_review"
+      },
+      "correct_answer": "Using coordinate geometry: place triangle at A(0,0), B(2a,0), C(2b,2c). Medians from each vertex to opposite midpoint all pass through ((2a+2b)/3, 2c/3).",
+      "expected_form": "proof"
+    },
+    {
+      "problem_id": "GEO-H02",
+      "subject": "geometry",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "4x - 3y = 16",
+        "answer_latex": "\\boxed{4x - 3y = 16}",
+        "confidence": 95,
+        "solution": "The common chord of two intersecting circles is the line obtained by subtracting their equations. Subtracting the second circle's equation from the first:\n\n1. Original equations:\n   - First circle: \\(x^2 + y^2 = 25\\)\n   - Second circle: \\(x^2 + y^2 - 8x + 6y + 7 = 0\\)\n\n2. Subtract the second equation from the first:\n   \\((x^2 + y^2) - (x^2 + y^2 - 8x + 6y + 7) = 25 - 0\\)\n   Simplifies to: \\(8x - 6y - 7 = 25\\)\n\n3. Solve for the line:\n   \\(8x - 6y = 32\\)\n   Divide by 2: \\(4x - 3y = 16\\)\n\n4. Verify by checking perpendicularity to the line connecting centers \\((0,0)\\) and \\((4,-3)\\), confirming slopes multiply to -1.\n",
+        "latency_ms": 27391.574750014115,
+        "input_tokens": 123,
+        "output_tokens": 1117,
+        "cost": 0.00251388,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "8x - 6y - 32 = 0 or equivalently 4x - 3y - 16 = 0",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "GEO-H03",
+      "subject": "geometry",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "4",
+        "answer_latex": "4",
+        "confidence": 100,
+        "solution": "Rewrite the circle equation in standard form by completing the square:\n$x^2 + y^2 - 4x + 6y - 12 = 0$ becomes $(x-2)^2 + (y+3)^2 = 25$ with center (2, -3) and radius 5.\n\nUse the tangent length formula from point $(7,1)$:\n$\\sqrt{(7-2)^2 + (1+3)^2 - 5^2} = \\sqrt{25 + 16 - 25} = \\sqrt{16} = 4$.",
+        "latency_ms": 19698.69650003966,
+        "input_tokens": 121,
+        "output_tokens": 827,
+        "cost": 0.00187768,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "\u221a(49 + 1 - 28 + 6 - 12) = \u221a16 = 4",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "CAL-E01",
+      "subject": "calculus",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "",
+        "answer_latex": "",
+        "confidence": 0,
+        "solution": "",
+        "latency_ms": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost": 0.0,
+        "error": ""
+      },
+      "check": {
+        "is_correct": false,
+        "method": "needs_manual_review"
+      },
+      "correct_answer": "f'(x) = 15x\u00b2 - 2",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "CAL-E02",
+      "subject": "calculus",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "2x\u00b3 + 2x\u00b2 - 3x + C",
+        "answer_latex": "2x^{3} + 2x^{2} - 3x + C",
+        "confidence": 100,
+        "solution": "Integrate term by term:\n1. \u222b6x\u00b2 dx = 6*(x\u00b3/3) = 2x\u00b3\n2. \u222b4x dx = 4*(x\u00b2/2) = 2x\u00b2\n3. \u222b-3 dx = -3x\nCombine results and add constant C:",
+        "latency_ms": 20498.23916697642,
+        "input_tokens": 99,
+        "output_tokens": 799,
+        "cost": 0.0018042599999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "2x\u00b3 + 2x\u00b2 - 3x + C",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "CAL-E03",
+      "subject": "calculus",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "4",
+        "answer_latex": "4",
+        "confidence": 100,
+        "solution": "Factor the numerator:\n\\[\\frac{x^2 - 4}{x - 2} = \\frac{(x - 2)(x + 2)}{x - 2}\\]\nCancel the common factor (x \u2260 2):\n\\[x + 2\\]\nEvaluate the limit as x \u2192 2:\n\\[2 + 2 = 4\\]",
+        "latency_ms": 17411.804542003665,
+        "input_tokens": 102,
+        "output_tokens": 660,
+        "cost": 0.0015014999999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "4",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "CAL-M01",
+      "subject": "calculus",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "12(3x + 1)^3",
+        "answer_latex": "12(3x + 1)^3",
+        "confidence": 95,
+        "solution": "To find the derivative of \\( f(x) = (3x + 1)^4 \\), apply the chain rule. Let the outer function be \\( g(u) = u^4 \\) and the inner function be \\( h(x) = 3x + 1 \\).\n1. Differentiate the outer function: \\( g'(u) = 4u^3 \\).\n2. Evaluate at the inner function: \\( g'(h(x)) = 4(3x + 1)^3 \\).\n3. Differentiate the inner function: \\( h'(x) = 3 \\).\n4. Multiply the results: \\( f'(x) = 4(3x + 1)^3 \\cdot 3 = 12(3x + 1)^3 \\).",
+        "latency_ms": 15594.759790983517,
+        "input_tokens": 101,
+        "output_tokens": 651,
+        "cost": 0.00148124,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "f'(x) = 12(3x + 1)\u00b3",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "CAL-M02",
+      "subject": "calculus",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "9",
+        "answer_latex": "9",
+        "confidence": 100,
+        "solution": "To find the area under the curve y = x\u00b2 from x = 0 to x = 3, compute the definite integral:\n\n\u222b\u2080\u00b3 x\u00b2 dx = [x\u00b3/3]\u2080\u00b3 = (3\u00b3/3 - 0\u00b3/3) = (27/3 - 0) = 9",
+        "latency_ms": 12202.631333027966,
+        "input_tokens": 104,
+        "output_tokens": 495,
+        "cost": 0.0011412500000000001,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "9",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "CAL-M03",
+      "subject": "calculus",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "y = -x + 1",
+        "answer_latex": "y = -x + 1",
+        "confidence": 95,
+        "solution": "To find the equation of the tangent line at \\( x = 1 \\):\n1. Find the derivative of \\( y = x^2 - 3x + 2 \\): \\( y' = 2x - 3 \\).\n2. Evaluate the derivative at \\( x = 1 \\): \\( y'(1) = 2(1) - 3 = -1 \\). This is the slope \\( m \\).\n3. Find the point on the curve at \\( x = 1 \\): \\( y(1) = (1)^2 - 3(1) + 2 = 0 \\). The point is \\( (1, 0) \\).\n4. Use the point-slope form: \\( y - 0 = -1(x - 1) \\), simplifying to \\( y = -x + 1 \\).",
+        "latency_ms": 19173.25966595672,
+        "input_tokens": 108,
+        "output_tokens": 813,
+        "cost": 0.00183987,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "y = -x + 1",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "CAL-M04",
+      "subject": "calculus",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "Local maximum at (1, 5), local minimum at (3, 1)",
+        "answer_latex": "\\text{Local maximum at } (1, 5)\\text{ and local minimum at } (3, 1)",
+        "confidence": 95,
+        "solution": "To find the local maxima and minima of \\( f(x) = x^3 - 6x^2 + 9x + 1 \\):\n1. **First Derivative**: \\( f'(x) = 3x^2 - 12x + 9 \\).\n2. **Critical Points**: Solve \\( 3x^2 - 12x + 9 = 0 \\). Factoring gives \\( 3(x-1)(x-3) = 0 \\), so \\( x = 1 \\) and \\( x = 3 \\).\n3. **Second Derivative**: \\( f''(x) = 6x - 12 \\).\n   - At \\( x = 1 \\): \\( f''(1) = -6 < 0 \\) (local maximum).\n   - At \\( x = 3 \\): \\( f''(3) = 6 > 0 \\) (local minimum).\n4. **Evaluate \\( f(x) \\) at critical points**:\n   - \\( f(1) = 1 - 6 + 9 + 1 = 5 \\).\n   - \\( f(3) = 27 - 54 + 27 + 1 = 1 \\).\n**Conclusion**: Local maximum at \\( (1, 5) \\) and local minimum at \\( (3, 1) \\).",
+        "latency_ms": 43908.13875000458,
+        "input_tokens": 109,
+        "output_tokens": 1880,
+        "cost": 0.004177149999999999,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "Local max at x=1: f(1)=5. Local min at x=3: f(3)=1.",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "CAL-H01",
+      "subject": "calculus",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "1/2",
+        "answer_latex": "\boxed{\\dfrac{1}{2}}",
+        "confidence": 100,
+        "solution": "We can use substitution. Let \\( u = \\sin(x) \\), so \\( du = \\cos(x) dx \\). The integral becomes:\n\\[ \\int_{0}^{1} u \\, du = \\left[ \frac{1}{2}u^2 \right]_0^1 = \frac{1}{2}(1^2 - 0^2) = \frac{1}{2} \\]\nAlternatively, use the identity \\( \\sin(2x) = 2\\sin(x)\\cos(x) \\):\n\\[ \frac{1}{2} \\int_0^{\\pi/2} \\sin(2x) dx = \frac{1}{2} \\left[ -\frac{1}{2}\\cos(2x) \right]_0^{\\pi/2} = \frac{1}{4}(2) = \frac{1}{2} \\]",
+        "latency_ms": 22197.338457976002,
+        "input_tokens": 100,
+        "output_tokens": 917,
+        "cost": 0.00206323,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "1/2",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "CAL-H02",
+      "subject": "calculus",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "x^x (ln(x) + 1)",
+        "answer_latex": "\\( x^x (\\ln x + 1) \\)",
+        "confidence": 100,
+        "solution": "To find the derivative of \\( f(x) = x^x \\):\n1. Let \\( y = x^x \\).\n2. Take the natural logarithm of both sides: \\( \\ln(y) = x \\ln(x) \\).\n3. Differentiate implicitly with respect to \\( x \\):\n   - Left side: \\( \frac{1}{y} \frac{dy}{dx} \\).\n   - Right side (product rule): \\( \\ln(x) + 1 \\).\n4. Solve for \\( \frac{dy}{dx} \\): \\( \frac{dy}{dx} = y(\\ln(x) + 1) \\).\n5. Substitute \\( y = x^x \\): \\( \frac{dy}{dx} = x^x (\\ln(x) + 1) \\).\n\nAlternative approach using \\( x^x = e^{x \\ln(x)} \\):\n1. \\( f(x) = e^{x \\ln(x)} \\).\n2. Differentiate using the chain rule: \\( f'(x) = e^{x \\ln(x)} \\cdot (\\ln(x) + 1) \\).\n3. Simplify: \\( f'(x) = x^x (\\ln(x) + 1) \\).",
+        "latency_ms": 23735.730041982606,
+        "input_tokens": 99,
+        "output_tokens": 1015,
+        "cost": 0.0022773,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "f'(x) = x^x(ln(x) + 1)",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "CAL-H03",
+      "subject": "calculus",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "8\u03c0",
+        "answer_latex": "8\\pi",
+        "confidence": 100,
+        "solution": "To find the volume of the solid formed by rotating \\( y = \\sqrt{x} \\) around the x-axis from \\( x = 0 \\) to \\( x = 4 \\), we use the disk method. The volume \\( V \\) is given by the integral of \\( \\pi [f(x)]^2 \\) over the interval:\n\\[ V = \\pi \\int_{0}^{4} (\\sqrt{x})^2 \\, dx = \\pi \\int_{0}^{4} x \\, dx \\]\nComputing the integral:\n\\[ \\int_{0}^{4} x \\, dx = \\left[ \\frac{1}{2}x^2 \\right]_0^4 = \\frac{1}{2}(16) - 0 = 8 \\]\nThus, the volume is:\n\\[ V = 8\\pi \\]",
+        "latency_ms": 15571.412457968108,
+        "input_tokens": 111,
+        "output_tokens": 619,
+        "cost": 0.00141666,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "8\u03c0",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "PRB-E01",
+      "subject": "probability_statistics",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "3/8",
+        "answer_latex": "\\dfrac{3}{8}",
+        "confidence": 100,
+        "solution": "Total number of balls = 3 red + 5 blue = 8. Number of favorable outcomes (red) = 3. Probability = 3/8.",
+        "latency_ms": 11311.43341603456,
+        "input_tokens": 106,
+        "output_tokens": 412,
+        "cost": 0.0009605799999999999,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "3/8",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "PRB-E02",
+      "subject": "probability_statistics",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "10",
+        "answer_latex": "10",
+        "confidence": 100,
+        "solution": "To find the mean, sum all data points and divide by the number of points. The sum is 4 + 7 + 10 + 13 + 16 = 50. There are 5 numbers. Mean = 50 / 5 = 10.",
+        "latency_ms": 10720.008999982383,
+        "input_tokens": 106,
+        "output_tokens": 377,
+        "cost": 0.00088393,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "10",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "PRB-E03",
+      "subject": "probability_statistics",
+      "difficulty": "easy",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "8",
+        "answer_latex": "8",
+        "confidence": 100,
+        "solution": "Each coin flip has 2 possible outcomes (Heads or Tails). For 3 flips, the total number of outcomes is calculated by multiplying the number of possibilities for each flip: 2 \u00d7 2 \u00d7 2 = 2\u00b3 = 8.",
+        "latency_ms": 11245.373207959346,
+        "input_tokens": 98,
+        "output_tokens": 406,
+        "cost": 0.0009430399999999999,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "8",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "PRB-M01",
+      "subject": "probability_statistics",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "120",
+        "answer_latex": "120",
+        "confidence": 100,
+        "solution": "To determine the number of ways to arrange 5 students in a line, we calculate the number of permutations of 5 distinct items. This is given by \\(5!\\) (5 factorial):\n\\[5! = 5 \times 4 \times 3 \times 2 \times 1 = 120.\\]",
+        "latency_ms": 14416.349707986228,
+        "input_tokens": 97,
+        "output_tokens": 507,
+        "cost": 0.0011636799999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "120",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "PRB-M02",
+      "subject": "probability_statistics",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "1/6",
+        "answer_latex": "\\dfrac{1}{6}",
+        "confidence": 100,
+        "solution": "When two dice are rolled, there are 6 \u00d7 6 = 36 possible outcomes. The pairs that sum to 7 are (1,6), (2,5), (3,4), (4,3), (5,2), and (6,1), totaling 6 favorable outcomes. The probability is favorable/total = 6/36 = 1/6.",
+        "latency_ms": 20268.357583030593,
+        "input_tokens": 99,
+        "output_tokens": 728,
+        "cost": 0.00164877,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "value_extraction"
+      },
+      "correct_answer": "1/6",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "PRB-M03",
+      "subject": "probability_statistics",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "2",
+        "answer_latex": "2",
+        "confidence": 95,
+        "solution": "1. Find the mean (\u03bc): (2+4+4+4+5+5+7+9)/8 = 40/8 = 5\n2. Calculate each deviation from the mean, square them:\n   (2-5)\u00b2=9, (4-5)\u00b2=1 (3 times), (5-5)\u00b2=0 (2 times), (7-5)\u00b2=4, (9-5)\u00b2=16\n3. Sum of squared deviations: 9 + 3(1) + 2(0) + 4 + 16 = 32\n4. Variance (\u03c3\u00b2): 32/8 = 4\n5. Population standard deviation: \u221a4 = 2",
+        "latency_ms": 21645.04679199308,
+        "input_tokens": 118,
+        "output_tokens": 800,
+        "cost": 0.0018169000000000002,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "2",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "PRB-M04",
+      "subject": "probability_statistics",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "56",
+        "answer_latex": "56",
+        "confidence": 100,
+        "solution": "To determine the number of ways to select a committee of 3 from 8 people, we use combinations since order does not matter. The formula is:\n\n\\[ C(8, 3) = \frac{8!}{3!(8 - 3)!} = \frac{8 \times 7 \times 6}{3 \times 2 \times 1} = \frac{336}{6} = 56 \\]",
+        "latency_ms": 16861.142207984813,
+        "input_tokens": 103,
+        "output_tokens": 658,
+        "cost": 0.00149767,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "56",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "PRB-H01",
+      "subject": "probability_statistics",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "0.3241",
+        "answer_latex": "\\boxed{0.3241}",
+        "confidence": 95,
+        "solution": "Use the binomial probability formula: P(X = k) = C(n, k) * p^k * (1-p)^(n-k). Here, n=6, k=2, p=0.3.<br>C(6, 2) = 6! / (2! * 4!) = 15.<br>p^2 = 0.3^2 = 0.09.<br>(1-p)^(6-2) = 0.7^4 = 0.2401.<br>Multiply all terms: 15 * 0.09 * 0.2401 = 0.324135.",
+        "latency_ms": 38848.552124982234,
+        "input_tokens": 104,
+        "output_tokens": 1447,
+        "cost": 0.00322613,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "0.3241 (or 15 \u00d7 0.09 \u00d7 0.1681)",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "PRB-H02",
+      "subject": "probability_statistics",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "Var(X) + Var(Y)",
+        "answer_latex": "\\text{Var}(X) + \\text{Var}(Y)",
+        "confidence": 100,
+        "solution": "Let X and Y be independent random variables. The variance of their sum is:\nVar(X + Y) = E[(X + Y - E[X + Y])\u00b2]\nSince E[X + Y] = E[X] + E[Y], substitute:\n= E[(X - E[X] + Y - E[Y])\u00b2]\nExpand the square:\n= E[(X - E[X])\u00b2 + 2(X - E[X])(Y - E[Y]) + (Y - E[Y])\u00b2]\nLinearity of expectation:\n= E[(X - E[X])\u00b2] + 2E[(X - E[X])(Y - E[Y])] + E[(Y - E[Y])\u00b2]\nFirst and third terms are Var(X) and Var(Y). For the middle term, since X and Y are independent, their covariance is zero:\nCov(X, Y) = E[(X - E[X])(Y - E[Y])] = 0\nThus, Var(X + Y) = Var(X) + Var(Y).",
+        "latency_ms": 11616.328000032809,
+        "input_tokens": 103,
+        "output_tokens": 1118,
+        "cost": 0.0025050700000000003,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "needs_manual_review"
+      },
+      "correct_answer": "Var(X+Y) = E[(X+Y-\u03bc_X-\u03bc_Y)\u00b2] = E[(X-\u03bc_X)\u00b2] + 2E[(X-\u03bc_X)(Y-\u03bc_Y)] + E[(Y-\u03bc_Y)\u00b2]. Independence gives E[(X-\u03bc_X)(Y-\u03bc_Y)] = 0. So Var(X+Y) = Var(X) + Var(Y).",
+      "expected_form": "proof"
+    },
+    {
+      "problem_id": "PRB-H03",
+      "subject": "probability_statistics",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "436/1048576",
+        "answer_latex": "\boxed{\\dfrac{109}{262144}}",
+        "confidence": 95,
+        "solution": "The probability of getting at least 8 correct answers is the sum of probabilities for exactly 8, 9, and 10 correct. Using the binomial formula:\n\n- **Exactly 8 correct**: C(10,8) \u00d7 (1/4)\u2078 \u00d7 (3/4)\u00b2 = 45 \u00d7 (1/65536) \u00d7 (9/16) = 405/1048576\n- **Exactly 9 correct**: C(10,9) \u00d7 (1/4)\u2079 \u00d7 (3/4)\u00b9 = 10 \u00d7 (1/262144) \u00d7 (3/4) = 30/1048576\n- **Exactly 10 correct**: C(10,10) \u00d7 (1/4)\u00b9\u2070 = 1 \u00d7 (1/1048576) = 1/1048576\n\nSumming these: 405 + 30 + 1 = 436. Total probability = 436/1048576 \u2248 0.000416.",
+        "latency_ms": 55894.77312495001,
+        "input_tokens": 115,
+        "output_tokens": 2302,
+        "cost": 0.00510463,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "\u2248 0.0000416",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "MIX-M01",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "10 cm and 8 cm",
+        "answer_latex": "10\\ \\text{cm} \\times 8\\ \\text{cm}",
+        "confidence": 95,
+        "solution": "Let the length be \\( l \\) and the width be \\( w \\).\nPerimeter: \\( 2(l + w) = 36 \\) \u2192 \\( l + w = 18 \\).\nArea: \\( lw = 80 \\).\nSubstitute \\( l = 18 - w \\) into the area equation: \\( (18 - w)w = 80 \\).\nExpand: \\( 18w - w^2 = 80 \\) \u2192 \\( w^2 - 18w + 80 = 0 \\).\nFactor: \\( (w - 10)(w - 8) = 0 \\) \u2192 \\( w = 10 \\) or \\( w = 8 \\).\nThus, the dimensions are \\( 10 \\) cm and \\( 8 \\) cm.",
+        "latency_ms": 23235.06754200207,
+        "input_tokens": 105,
+        "output_tokens": 848,
+        "cost": 0.00191487,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "8 cm \u00d7 10 cm",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "MIX-M02",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "2 seconds, 20 meters",
+        "answer_latex": "2\\text{ seconds}, 20\\text{ meters}",
+        "confidence": 100,
+        "solution": "The height function is a quadratic: $h(t) = -5t^2 + 20t$. The vertex of a parabola $at^2 + bt + c$ occurs at $t = -\\frac{b}{2a}$. Here, $a = -5$ and $b = 20$, so $t = -\\frac{20}{2(-5)} = 2$ seconds. Substituting $t=2$ into $h(t)$: $h(2) = 20(2) -5(2)^2 = 40 - 20 = 20$ meters. Thus, maximum height is 20 m at 2 seconds.",
+        "latency_ms": 34310.64829201205,
+        "input_tokens": 124,
+        "output_tokens": 1353,
+        "cost": 0.0030312699999999995,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "t = 2s, h = 20m",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "MIX-M03",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "40",
+        "answer_latex": "40",
+        "confidence": 95,
+        "solution": "Let the original speed be \\( v \\) km/h. The time taken at speed \\( v \\) is \\( \\frac{120}{v} \\) hours. At \\( v + 20 \\) km/h, the time is \\( \\frac{120}{v + 20} \\). The difference in times is 1 hour:\n\\[ \\frac{120}{v} - \\frac{120}{v + 20} = 1 \\]\nMultiply through by \\( v(v + 20) \\):\n\\[ 120(v + 20) - 120v = v(v + 20) \\]\nSimplify:\n\\[ 2400 = v^2 + 20v \\]\nRearrange to quadratic form:\n\\[ v^2 + 20v - 2400 = 0 \\]\nFactor:\n\\[ (v + 60)(v - 40) = 0 \\]\nThus, \\( v = 40 \\) km/h (discarding negative speed). Verification: Original time \\( 120/40 = 3 \\) h, faster time \\( 120/60 = 2 \\) h, difference 1 h.",
+        "latency_ms": 10204.162957961671,
+        "input_tokens": 119,
+        "output_tokens": 1012,
+        "cost": 0.0022817299999999996,
+        "error": null
+      },
+      "check": {
+        "is_correct": true,
+        "method": "sympy"
+      },
+      "correct_answer": "40 km/h",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "MIX-M04",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "No real solutions; complex solutions are \\(i\\) and \\(-i\\)",
+        "answer_latex": "\text{No real solutions; complex solutions are } i \text{ and } -i",
+        "confidence": 100,
+        "solution": "To determine the solutions of the equation \\(x^2 + 1 = 0\\):\n1. **Real Solutions**: For real numbers, \\(x^2 \\geq 0\\). Thus, \\(x^2 + 1 \\geq 1\\), which cannot equal 0. No real solutions exist.\n2. **Complex Solutions**: In complex numbers, \\(i = \\sqrt{-1}\\) is defined. Substituting \\(x = i\\) or \\(x = -i\\) gives \\(i^2 + 1 = -1 + 1 = 0\\). The Fundamental Theorem of Algebra ensures two roots, and the discriminant \\(b^2 - 4ac = -4 < 0\\) confirms they are complex conjugates.",
+        "latency_ms": 8898.100041027647,
+        "input_tokens": 104,
+        "output_tokens": 703,
+        "cost": 0.00159677,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "needs_manual_review"
+      },
+      "correct_answer": "For real numbers, x\u00b2 \u2265 0, so x\u00b2 + 1 \u2265 1 > 0. No real x satisfies x\u00b2 + 1 = 0. In complex numbers, x = \u00b1i where i\u00b2 = -1.",
+      "expected_form": "proof"
+    },
+    {
+      "problem_id": "MIX-M05",
+      "subject": "mixed_descriptive",
+      "difficulty": "medium",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "3/4",
+        "answer_latex": "\boxed{\\dfrac{3}{4}}",
+        "confidence": 95,
+        "solution": "Let \\( x \\) be the horizontal distance from the wall to the ladder's bottom, and \\( y \\) be the vertical height of the ladder's top. Given \\( x^2 + y^2 = 10^2 \\) and \\( \frac{dx}{dt} = 1 \\, \text{m/s} \\). Differentiating implicitly with respect to time:\n\\[ 2x\frac{dx}{dt} + 2y\frac{dy}{dt} = 0 \\]\nSolving for \\( \frac{dy}{dt} \\):\n\\[ \frac{dy}{dt} = -\frac{x}{y}\frac{dx}{dt} \\]\nAt \\( x = 6 \\, \text{m} \\), \\( y = \\sqrt{10^2 - 6^2} = 8 \\, \text{m} \\). Substituting:\n\\[ \frac{dy}{dt} = -\frac{6}{8}(1) = -\frac{3}{4} \\, \text{m/s} \\]\nThe top slides down at \\( \frac{3}{4} \\, \text{m/s} \\).",
+        "latency_ms": 27152.730208996218,
+        "input_tokens": 122,
+        "output_tokens": 1092,
+        "cost": 0.00245858,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "3/4 m/s (or 0.75 m/s)",
+      "expected_form": "simplified"
+    },
+    {
+      "problem_id": "MIX-H01",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "True",
+        "answer_latex": "\\boxed{\\text{True}}",
+        "confidence": 100,
+        "solution": "We prove the contrapositive: If both a and b are odd, then ab is odd. Assume a = 2k + 1 and b = 2m + 1 for integers k, m. Then ab = (2k + 1)(2m + 1) = 4km + 2k + 2m + 1 = 2(2km + k + m) + 1, which is odd. Hence, if ab is even, at least one of a or b must be even.",
+        "latency_ms": 9004.339166975114,
+        "input_tokens": 108,
+        "output_tokens": 780,
+        "cost": 0.0017676,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "needs_manual_review"
+      },
+      "correct_answer": "Proof by contrapositive: Assume a is odd and b is odd. Then a = 2m+1 and b = 2n+1. ab = (2m+1)(2n+1) = 4mn + 2m + 2n + 1 = 2(2mn+m+n) + 1, which is odd. So if ab is even, a or b must be even.",
+      "expected_form": "proof"
+    },
+    {
+      "problem_id": "MIX-H02",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "100 m by 50 m",
+        "answer_latex": "100\\ \\text{m} \\times 50\\ \\text{m}",
+        "confidence": 95,
+        "solution": "Let the side parallel to the river be \\( x \\) and the other sides each be \\( y \\). The fencing constraint is \\( x + 2y = 200 \\). Express area \\( A = xy \\). Substitute \\( x = 200 - 2y \\) into area:\n\\[ A = (200 - 2y)y = 200y - 2y^2 \\]\nThis quadratic has maximum at \\( y = \frac{-b}{2a} = \frac{-200}{2(-2)} = 50 \\) m. Then \\( x = 200 - 2(50) = 100 \\) m.\nSecond derivative test confirms maximum.",
+        "latency_ms": 30142.365208012052,
+        "input_tokens": 116,
+        "output_tokens": 803,
+        "cost": 0.0018223699999999998,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "Width = 50 m, Length = 100 m, Max area = 5000 m\u00b2",
+      "expected_form": "numeric"
+    },
+    {
+      "problem_id": "MIX-H03",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "No such point exists",
+        "answer_latex": "\boxed{\text{No such point exists}}",
+        "confidence": 95,
+        "solution": "The slope of the tangent line to the curve \\( y = x^3 \\) at any point \\( x \\) is given by the derivative \\( \frac{dy}{dx} = 3x^2 \\). Since \\( 3x^2 \\) is non-negative for all real \\( x \\), the smallest non-negative slope is 0 at \\( x = 0 \\). However, the problem specifies the 'smallest positive slope,' which requires \\( 3x^2 > 0 \\). As \\( x \\) approaches 0, \\( 3x^2 \\) approaches 0 but never actually reaches 0 for \\( x \neq 0 \\). Therefore, there is no point on the curve where the tangent line has the smallest positive slope, as the infimum of the positive slopes is 0, which is not attained.",
+        "latency_ms": 99209.75641696714,
+        "input_tokens": 107,
+        "output_tokens": 4013,
+        "cost": 0.008847319999999999,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "needs_manual_review"
+      },
+      "correct_answer": "At x = 0, slope = 0 (not positive). The slope is 3x\u00b2 which is positive for all x \u2260 0 and approaches 0 as x \u2192 0. There is no smallest positive slope; the infimum is 0 but it is not achieved.",
+      "expected_form": "proof"
+    },
+    {
+      "problem_id": "MIX-H04",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "n\u00b2",
+        "answer_latex": "n^2",
+        "confidence": 100,
+        "solution": "The first n odd numbers are 1, 3, 5, ..., (2n\u22121).\n\n**Using induction:**\n- **Base case (n=1):** Sum = 1 = 1\u00b2.\n- **Inductive step:** Assume 1 + 3 + ... + (2k\u22121) = k\u00b2. Then for n=k+1, sum = k\u00b2 + (2k+1) = (k+1)\u00b2.\n\n**Arithmetic series formula:**\nSum = n/2 \u00d7 [2a\u2081 + (n\u22121)d] = n/2 \u00d7 [2(1) + (n\u22121)(2)] = n\u00b2.\n\n**Geometric interpretation:** Adding layers of odd numbers forms a square with size n\u00d7n.",
+        "latency_ms": 20602.70120797213,
+        "input_tokens": 97,
+        "output_tokens": 838,
+        "cost": 0.00188857,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "needs_manual_review"
+      },
+      "correct_answer": "Proof by induction: Base case n=1: 1 = 1\u00b2. Inductive step: Assume 1+3+...+(2k-1) = k\u00b2. Then 1+3+...+(2k-1)+(2k+1) = k\u00b2 + 2k + 1 = (k+1)\u00b2. QED.",
+      "expected_form": "proof"
+    },
+    {
+      "problem_id": "MIX-H05",
+      "subject": "mixed_descriptive",
+      "difficulty": "hard",
+      "model_key": "deepseek-r1",
+      "model_id": "deepseek/deepseek-r1",
+      "response": {
+        "answer": "sqrt(3) - pi/2",
+        "answer_latex": "\\sqrt{3} - \frac{\\pi}{2}",
+        "confidence": 95,
+        "solution": "The centers of the three circles form an equilateral triangle with side length 2 (since each radius is 1). The area of this triangle is $\frac{\\sqrt{3}}{4} \times 2^2 = \\sqrt{3}$. Each 60\u00b0 sector of a circle has area $\frac{60}{360}\\pi(1^2) = \frac{\\pi}{6}$. Subtracting the three sectors: $\\sqrt{3} - 3\\left(\frac{\\pi}{6}\right) = \\sqrt{3} - \frac{\\pi}{2}$.",
+        "latency_ms": 17283.337000000756,
+        "input_tokens": 103,
+        "output_tokens": 668,
+        "cost": 0.0015195700000000003,
+        "error": null
+      },
+      "check": {
+        "is_correct": false,
+        "method": "string_match"
+      },
+      "correct_answer": "\u221a3 - \u03c0/2 \u2248 0.1613",
+      "expected_form": "simplified"
+    }
+  ],
+  "total_cost": 0.11749889,
+  "total_duration_s": 1358.7
+}

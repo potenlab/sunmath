@@ -1,0 +1,84 @@
+================================================================================
+ENSEMBLE BENCHMARK SIMULATION REPORT
+================================================================================
+
+INDIVIDUAL MODEL BASELINES
+------------------------------------------------------------
+Model                 Correct  Total   Accuracy   Rank
+------------------------------------------------------------
+claude-sonnet              43     60      71.7%      1
+qwen-2.5-72b               40     60      66.7%      2
+deepseek-r1                39     60      65.0%      3
+deepseek-v3                38     60      63.3%      4
+gpt-4o                     38     60      63.3%      5
+o3-mini                    37     60      61.7%      6
+
+Best single model: claude-sonnet @ 71.7%
+
+ENSEMBLE STRATEGY COMPARISON
+--------------------------------------------------------------------------------
+Strategy                   Correct  Total   Accuracy  vs Best       Cost
+--------------------------------------------------------------------------------
+Majority Vote (all 6)           42     53      79.2%    +7.6% $   0.7566
+Majority Vote (top 3)           44     53      83.0%   +11.3% $   0.3814
+Confidence-Weighted             42     53      79.2%    +7.6% $   0.7566
+Accuracy-Weighted               44     53      83.0%   +11.3% $   0.7566
+Cascade (conf>=85)              39     53      73.6%    +1.9% $   0.0142
+Best-per-Subject *              44     53      83.0%   +11.3% $   0.2052
+
+* Best-per-Subject is an oracle upper bound (not a practical strategy)
+
+BEST MODEL PER SUBJECT (Oracle Selection)
+----------------------------------------
+  algebra                        deepseek-r1
+  calculus                       claude-sonnet
+  factoring_expansion            claude-sonnet
+  geometry                       claude-sonnet
+  mixed_descriptive              claude-sonnet
+  probability_statistics         deepseek-v3
+
+ACCURACY BY DIFFICULTY
+--------------------------------------------------------------------------------
+Strategy                        easy     medium       hard
+--------------------------------------------------------------------------------
+claude-sonnet                 100.0%      87.0%      53.3%
+qwen-2.5-72b                   93.3%      82.6%      46.7%
+deepseek-r1                    93.3%      78.3%      46.7%
+deepseek-v3                    86.7%      78.3%      46.7%
+gpt-4o                         93.3%      78.3%      40.0%
+o3-mini                        86.7%      78.3%      40.0%
+
+Majority Vote (all 6)          93.3%      87.0%      53.3%
+Majority Vote (top 3)         100.0%      91.3%      53.3%
+Confidence-Weighted            93.3%      87.0%      53.3%
+Accuracy-Weighted             100.0%      87.0%      60.0%
+Cascade (conf>=85)             93.3%      78.3%      46.7%
+Best-per-Subject *            100.0%      87.0%      60.0%
+
+ENSEMBLE vs BEST SINGLE MODEL — PROBLEM-LEVEL DETAIL
+--------------------------------------------------------------------------------
+
+Majority Vote (all 6) vs claude-sonnet:
+  Ensemble wins (correct where best model wrong): 1
+    MIX-M01
+  Ensemble losses (wrong where best model correct): 2
+    CAL-E01, MIX-M05
+
+CASCADE STRATEGY ANALYSIS
+------------------------------------------------------------
+  Confidence threshold: 85
+  Chain: deepseek-v3 → qwen-2.5-72b → claude-sonnet
+  Stopped at model 1: 52 problems (98%)
+  Stopped at model 2: 1 problems (2%)
+  Total cost: $0.0142 vs all-6 cost: $0.7566
+  Cost savings: 98%
+
+CONCLUSIONS
+------------------------------------------------------------
+  Best ensemble strategy: Majority Vote (top 3) at 83.0% (+11.3% over best single model)
+  Ensembles DO improve accuracy over the best individual model.
+
+  Cascade strategy: 73.6% accuracy at $0.0142
+  Best single model (claude-sonnet): 71.7%
+
+================================================================================

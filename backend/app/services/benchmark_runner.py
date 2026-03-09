@@ -120,10 +120,27 @@ def _values_match(model_answer: str, correct_answer: str) -> bool:
     return model_vals == correct_vals
 
 
+def _strip_think_blocks(content: str) -> str:
+    """Strip <think>...</think> reasoning blocks from model output.
+
+    Reasoning models like DeepSeek-R1 wrap their chain-of-thought in
+    <think> tags.  The actual JSON answer follows after </think>.
+    """
+    # If there's a closing </think> tag, keep only what comes after it
+    idx = content.rfind("</think>")
+    if idx != -1:
+        content = content[idx + len("</think>"):].strip()
+    elif "<think>" in content:
+        # Opening tag but no closing tag — thinking was truncated,
+        # remove the <think> block as best we can
+        content = re.sub(r"<think>[\s\S]*", "", content).strip()
+    return content
+
+
 def _get_client() -> httpx.AsyncClient:
     global _client
     if _client is None or _client.is_closed:
-        _client = httpx.AsyncClient(timeout=60.0)
+        _client = httpx.AsyncClient(timeout=120.0)
     return _client
 
 
@@ -182,7 +199,9 @@ async def call_model(
                 "model": model_id,
                 "messages": messages,
                 "temperature": 0.1,
-                "max_tokens": 2048,
+                # Reasoning models need more tokens: thinking consumes
+                # a large portion of the budget before the JSON answer.
+                "max_tokens": 16384 if is_reasoning else 2048,
             }
 
             # Standard models: request structured JSON output
@@ -212,6 +231,11 @@ async def call_model(
             data = resp.json()
             choice = data["choices"][0]
             content = choice["message"]["content"]
+
+            # Strip <think>...</think> reasoning blocks (DeepSeek-R1, etc.)
+            if is_reasoning and content:
+                content = _strip_think_blocks(content)
+
             usage = data.get("usage", {})
 
             input_tokens = usage.get("prompt_tokens", 0)
