@@ -243,13 +243,20 @@ async def update_problem(problem_id: int, body: ProblemUpdate, db: AsyncSession 
 
 @router.delete("/{problem_id}", status_code=204)
 async def delete_problem(problem_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(require_role(UserRole.admin))):
-    """Delete a problem by ID."""
+    """Delete a problem by ID, including all related edge records."""
     result = await db.execute(
         select(Question).where(Question.id == problem_id)
     )
     question = result.scalar_one_or_none()
     if not question:
         raise HTTPException(status_code=404, detail="Problem not found")
+
+    # Delete related edge records first (no FK cascade in DB)
+    from sqlalchemy import delete as sa_delete
+    await db.execute(sa_delete(QuestionEvaluates).where(QuestionEvaluates.question_id == problem_id))
+    await db.execute(sa_delete(QuestionRequires).where(QuestionRequires.question_id == problem_id))
+    await db.execute(sa_delete(QuestionUnits).where(QuestionUnits.question_id == problem_id))
+
     await db.delete(question)
     await db.flush()
 
