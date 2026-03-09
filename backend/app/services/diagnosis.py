@@ -47,28 +47,28 @@ class DiagnosisService:
             await self._save_diagnosis(student_id, diagnosis_data)
             return diagnosis_data
 
-        # 2. Count concept frequency across wrong answers (required concepts)
-        concept_freq: dict[int, int] = {}
+        # 2. Count weighted concept frequency across wrong answers (required concepts)
+        concept_freq: dict[int, float] = {}
         for wa in wrong_answers:
             question_id = wa["question_id"]
             result = await self.db.execute(
-                select(QuestionRequires.concept_id).where(
+                select(QuestionRequires.concept_id, QuestionRequires.weight).where(
                     QuestionRequires.question_id == question_id
                 )
             )
             for row in result.all():
-                concept_freq[row.concept_id] = concept_freq.get(row.concept_id, 0) + 1
+                concept_freq[row.concept_id] = concept_freq.get(row.concept_id, 0.0) + row.weight
 
         if not concept_freq:
             # Fall back to evaluation concepts
             for wa in wrong_answers:
                 result = await self.db.execute(
-                    select(QuestionEvaluates.concept_id).where(
+                    select(QuestionEvaluates.concept_id, QuestionEvaluates.weight).where(
                         QuestionEvaluates.question_id == wa["question_id"]
                     )
                 )
                 for row in result.all():
-                    concept_freq[row.concept_id] = concept_freq.get(row.concept_id, 0) + 1
+                    concept_freq[row.concept_id] = concept_freq.get(row.concept_id, 0.0) + row.weight
 
         # 3. Get mastery levels
         mastery_map = await self._get_mastery_map(student_id)

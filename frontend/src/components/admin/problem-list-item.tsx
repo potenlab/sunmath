@@ -39,14 +39,22 @@ export function ProblemListItem({ problem, onDelete }: ProblemListItemProps) {
           )}
         </div>
         <div className="flex flex-wrap gap-1">
-          {problem.concepts.map((concept) => (
-            <span
-              key={concept}
-              className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700"
-            >
-              {concept}
-            </span>
-          ))}
+          {problem.concepts.map((concept) => {
+            const weight = problem.conceptWeights?.[concept];
+            return (
+              <span
+                key={concept}
+                className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700"
+              >
+                {concept}
+                {weight !== undefined && weight < 1.0 && (
+                  <span className="ml-0.5 opacity-60">
+                    {weight.toFixed(1)}
+                  </span>
+                )}
+              </span>
+            );
+          })}
         </div>
       </div>
       <Button

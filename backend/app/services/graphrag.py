@@ -34,24 +34,26 @@ class GraphRAGService:
         if not question:
             return None
 
-        # Get evaluation concepts
+        # Get evaluation concepts (with weight)
         eval_result = await self.db.execute(
-            select(Concept.id, Concept.name)
+            select(Concept.id, Concept.name, QuestionEvaluates.weight)
             .join(QuestionEvaluates, QuestionEvaluates.concept_id == Concept.id)
             .where(QuestionEvaluates.question_id == question_id)
         )
         evaluation_concepts = [
-            {"id": row.id, "name": row.name} for row in eval_result.all()
+            {"id": row.id, "name": row.name, "weight": row.weight}
+            for row in eval_result.all()
         ]
 
-        # Get required concepts
+        # Get required concepts (with weight)
         req_result = await self.db.execute(
-            select(Concept.id, Concept.name)
+            select(Concept.id, Concept.name, QuestionRequires.weight)
             .join(QuestionRequires, QuestionRequires.concept_id == Concept.id)
             .where(QuestionRequires.question_id == question_id)
         )
         required_concepts = [
-            {"id": row.id, "name": row.name} for row in req_result.all()
+            {"id": row.id, "name": row.name, "weight": row.weight}
+            for row in req_result.all()
         ]
 
         # Get unit IDs
@@ -188,6 +190,99 @@ class GraphRAGService:
             select(Concept.id, Concept.name).where(Concept.id.in_(concept_ids))
         )
         return {row.id: row.name for row in result.all()}
+
+    async def get_concept_weights_for_question(self, question_id: int) -> dict[int, float]:
+        """Get concept weights for a question (union of evaluates + requires, max weight)."""
+        eval_result = await self.db.execute(
+            select(QuestionEvaluates.concept_id, QuestionEvaluates.weight)
+            .where(QuestionEvaluates.question_id == question_id)
+        )
+        weights: dict[int, float] = {}
+        for row in eval_result.all():
+            weights[row.concept_id] = row.weight
+
+        req_result = await self.db.execute(
+            select(QuestionRequires.concept_id, QuestionRequires.weight)
+            .where(QuestionRequires.question_id == question_id)
+        )
+        for row in req_result.all():
+            existing = weights.get(row.concept_id, 0.0)
+            weights[row.concept_id] = max(existing, row.weight)
+
+        return weights
+
+    async def get_all_questions_concept_weights(self) -> dict[int, dict[int, float]]:
+        """Concept weight maps for ALL questions (for similarity comparison)."""
+        eval_result = await self.db.execute(
+            select(
+                QuestionEvaluates.question_id,
+                QuestionEvaluates.concept_id,
+                QuestionEvaluates.weight,
+            )
+        )
+        concept_weights: dict[int, dict[int, float]] = {}
+        for row in eval_result.all():
+            concept_weights.setdefault(row.question_id, {})[row.concept_id] = row.weight
+
+        req_result = await self.db.execute(
+            select(
+                QuestionRequires.question_id,
+                QuestionRequires.concept_id,
+                QuestionRequires.weight,
+            )
+        )
+        for row in req_result.all():
+            qw = concept_weights.setdefault(row.question_id, {})
+            existing = qw.get(row.concept_id, 0.0)
+            qw[row.concept_id] = max(existing, row.weight)
+
+        return concept_weights
+
+    async def match_concept_names_with_weights(
+        self, concept_entries: list,
+    ) -> dict[int, float]:
+        """Match concept names to IDs, preserving weights.
+
+        Accepts both old format (list[str], weight=1.0) and new format
+        (list[dict] with 'name' and 'weight' keys).
+        Returns {concept_id: weight} after fuzzy matching against DB.
+        """
+        if not concept_entries:
+            return {}
+
+        # Normalize input to list of (name, weight) tuples
+        entries: list[tuple[str, float]] = []
+        for entry in concept_entries:
+            if isinstance(entry, str):
+                entries.append((entry, 1.0))
+            elif isinstance(entry, dict):
+                name = entry.get("name", "")
+                weight = float(entry.get("weight", 1.0))
+                weight = max(0.0, min(1.0, weight))
+                entries.append((name, weight))
+
+        result = await self.db.execute(select(Concept.id, Concept.name))
+        all_concepts = result.all()
+
+        lookup: dict[str, int] = {}
+        for row in all_concepts:
+            normalized = self._normalize_concept_name(row.name)
+            lookup[normalized] = row.id
+
+        matched: dict[int, float] = {}
+        for name, weight in entries:
+            normalized = self._normalize_concept_name(name)
+            concept_id = lookup.get(normalized)
+            if concept_id is not None:
+                existing = matched.get(concept_id, 0.0)
+                matched[concept_id] = max(existing, weight)
+            else:
+                logger.warning(
+                    "Concept name '%s' not found in DB (normalized: '%s')",
+                    name, normalized,
+                )
+
+        return matched
 
     async def match_concept_names(self, concept_names: list[str]) -> list[int]:
         """Match LLM-returned concept names against existing DB concepts.

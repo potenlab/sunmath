@@ -26,8 +26,8 @@ You are a math curriculum analyst. Given a math problem, extract the concepts it
 
 Respond with JSON only, no additional text:
 {
-  "evaluation_concepts": ["concept_name", ...],
-  "required_concepts": ["concept_name", ...],
+  "evaluation_concepts": [{"name": "concept_name", "weight": 0.0-1.0}, ...],
+  "required_concepts": [{"name": "concept_name", "weight": 0.0-1.0}, ...],
   "expected_form": "factored|expanded|simplified|numeric|proof",
   "grading_hints": "string or null"
 }
@@ -35,6 +35,7 @@ Respond with JSON only, no additional text:
 Definitions:
 - evaluation_concepts: the concepts this problem directly tests/evaluates.
 - required_concepts: prerequisite concepts the student needs to solve this problem.
+- weight: how central the concept is to the problem (1.0 = primary focus, 0.3-0.7 = supporting).
 - expected_form: the form the answer should be in.
 - grading_hints: any specific grading instructions (null if none)."""
 

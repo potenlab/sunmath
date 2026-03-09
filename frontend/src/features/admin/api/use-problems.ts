@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { get, post, put, del } from "@/lib/api";
 import type {
+  ConceptOption,
   ProblemCreate,
   ProblemListResponse,
   ProblemRegistrationResponse,
@@ -63,5 +64,13 @@ export function useSimilarProblems(problemId: number | null) {
     queryFn: () =>
       get<SimilarProblemResponse>(`/problems/${problemId}/similar`),
     enabled: problemId !== null,
+  });
+}
+
+export function useConcepts() {
+  return useQuery({
+    queryKey: ["concepts", "all"],
+    queryFn: () => get<ConceptOption[]>("/problems/concepts/all"),
+    staleTime: 5 * 60 * 1000,
   });
 }
