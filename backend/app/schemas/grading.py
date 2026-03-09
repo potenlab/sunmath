@@ -9,11 +9,20 @@ class GradeRequest(BaseModel):
     submitted_answer: str
 
 
+class MasteryUpdate(BaseModel):
+    concept_id: int
+    concept_name: str
+    old_mastery: float
+    new_mastery: float
+    delta: float
+
+
 class GradeResponse(BaseModel):
     is_correct: bool
     judged_by: JudgedBy
     reasoning: str
     cached: bool = False
+    mastery_updates: list[MasteryUpdate] = []
 
 
 class CacheStatsResponse(BaseModel):

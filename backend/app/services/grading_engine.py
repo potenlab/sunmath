@@ -15,6 +15,7 @@ from app.models.history import (
 from app.models.nodes import Question
 from app.services.graphrag import GraphRAGService
 from app.services.llm_router import LLMRouter
+from app.services.mastery_engine import MasteryEngine
 from app.services.sympy_engine import SympyEngine
 
 
@@ -51,11 +52,19 @@ class GradingEngine:
                 await self._add_to_wrong_answers(student_id, question_id, answer_id)
             else:
                 await self._resolve_wrong_answers(student_id, question_id)
+
+            # Update concept mastery
+            mastery_engine = MasteryEngine(self.db)
+            mastery_updates = await mastery_engine.update_mastery(
+                student_id, question_id, cached["is_correct"],
+            )
+
             return {
                 "is_correct": cached["is_correct"],
                 "judged_by": "cache",
                 "reasoning": cached["reasoning"],
                 "cached": True,
+                "mastery_updates": mastery_updates,
             }
 
         # 2. Fetch question metadata
@@ -98,11 +107,18 @@ class GradingEngine:
         else:
             await self._resolve_wrong_answers(student_id, question_id)
 
+        # 7. Update concept mastery
+        mastery_engine = MasteryEngine(self.db)
+        mastery_updates = await mastery_engine.update_mastery(
+            student_id, question_id, result["is_correct"],
+        )
+
         return {
             "is_correct": result["is_correct"],
             "judged_by": result["judged_by"],
             "reasoning": result["reasoning"],
             "cached": False,
+            "mastery_updates": mastery_updates,
         }
 
     async def _grade_mathematical(
