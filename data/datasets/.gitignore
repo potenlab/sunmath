@@ -1,0 +1,9 @@
+# Ignore all downloaded/generated data (reproducible via scripts)
+*
+
+# But track these:
+!.gitignore
+!scripts/
+!scripts/*.py
+!baseline/
+!baseline/*.csv
