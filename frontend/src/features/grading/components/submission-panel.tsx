@@ -20,6 +20,7 @@ interface SubmissionPanelProps {
 
 export function SubmissionPanel({ pipeline }: SubmissionPanelProps) {
   const t = useTranslations("grading");
+  const tg = useTranslations("gradingComponents");
 
   return (
     <Card className="shadow-sm">
@@ -57,8 +58,8 @@ export function SubmissionPanel({ pipeline }: SubmissionPanelProps) {
             <>
               <Loader2 className="size-4 animate-spin" />
               {pipeline.pipelineStep === "ocr"
-                ? "Running OCR..."
-                : "Grading..."}
+                ? tg("runningOCR")
+                : tg("gradingInProgress")}
             </>
           ) : (
             <>

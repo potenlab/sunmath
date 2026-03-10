@@ -5,7 +5,8 @@
     "aiPlatform": "AI Math Learning Platform",
     "mvpDemo": "MVP 1 Demo",
     "daechiDong": "SunMath Academy - Daechi-dong",
-    "language": "Language"
+    "language": "Language",
+    "grade": "Grade {grade}"
   },
   "nav": {
     "main": "Main",
@@ -20,6 +21,41 @@
     "benchmarkDesc": "LLM performance",
     "loraResults": "LoRA Results",
     "loraDesc": "Fine-tuning test"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signInToAccount": "Sign in to your account",
+    "signingIn": "Signing in...",
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "createAccount": "Create account",
+    "createYourAccount": "Create your account",
+    "creatingAccount": "Creating account...",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "passwordHint": "At least 6 characters",
+    "role": "Role",
+    "student": "Student",
+    "admin": "Admin",
+    "gradeLevel": "Grade Level",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginFailed": "Login failed",
+    "registrationFailed": "Registration failed"
+  },
+  "sidebar": {
+    "problems": "Problems",
+    "problemsDesc": "Manage math problems",
+    "settings": "Settings",
+    "settingsDesc": "Configure system settings",
+    "studentProblems": "Problems",
+    "studentProblemsDesc": "Browse and answer problems",
+    "myDiagnosis": "My Diagnosis",
+    "myDiagnosisDesc": "View your learning diagnosis",
+    "logout": "Logout"
   },
   "admin": {
     "title": "Admin Panel",
@@ -50,7 +86,112 @@
     "gradingHints": "Grading Hints",
     "gradingHintsPlaceholder": "Optional hints...",
     "registerProblem": "Register Problem",
-    "registering": "Registering..."
+    "registering": "Registering...",
+    "saveSettings": "Save Settings"
+  },
+  "problemsPage": {
+    "title": "Problems Management",
+    "description": "Create, edit, and manage math problems",
+    "allProblems": "All Problems",
+    "problemsRegistered": "{count} problems registered",
+    "noProblems": "No problems registered yet."
+  },
+  "analysisComparison": {
+    "naiveTitle": "Naive Analysis",
+    "naiveDesc": "Simple unit-level weakness listing",
+    "studentWeakIn": "\"Student is weak in:\"",
+    "naiveConclusion": "Naive analysis would say: \"Weak in {count} units\".",
+    "naiveNoRootCause": "No root cause identified. Student must study {count} separate units independently.",
+    "graphragTitle": "GraphRAG Analysis",
+    "graphragDesc": "Prerequisite graph backtracking",
+    "rootCauseIdentified": "\"Root cause identified:\"",
+    "sharedRootCause": "is the shared root cause",
+    "sharedRootCauses": "are the shared root causes",
+    "graphragConclusion": "GraphRAG analysis: Root causes are {rootCount} concepts — fix them to resolve all {affectedCount} affected units.",
+    "graphragBenefit": "Fix {rootCount} core concepts, resolve all {affectedCount} units. Efficient and targeted remediation."
+  },
+  "settingsPage": {
+    "title": "Settings",
+    "description": "Configure grading and duplicate detection settings"
+  },
+  "studentsPage": {
+    "addStudent": "Add Student",
+    "editStudent": "Edit Student",
+    "newStudent": "New Student",
+    "studentName": "Student name",
+    "gradeLevel": "Grade level",
+    "save": "Save",
+    "add": "Add",
+    "cancel": "Cancel",
+    "noStudents": "No students yet."
+  },
+  "studentProblems": {
+    "title": "Problems",
+    "description": "Browse available math problems and submit your answers",
+    "noProblems": "No problems available yet. Check back later!",
+    "problemId": "Problem #{id}"
+  },
+  "studentProblemDetail": {
+    "backToProblems": "Back to Problems",
+    "problemTitle": "Problem #{id}",
+    "hint": "Hint: {hint}",
+    "yourAnswer": "Your Answer",
+    "answerPlaceholder": "Type your answer here...",
+    "uploadLabel": "Or upload an image of your work",
+    "uploadImage": "Upload Image",
+    "recognizing": "Recognizing...",
+    "grading": "Grading...",
+    "submitAnswer": "Submit Answer",
+    "ocrFailed": "OCR failed. Please try again or type your answer manually.",
+    "submitFailed": "Failed to submit. Please try again.",
+    "problemNotFound": "Problem not found.",
+    "masteryUpdated": "Mastery Updated"
+  },
+  "studentDiagnosis": {
+    "title": "My Diagnosis",
+    "description": "View your learning analysis and recommendations",
+    "noProfile": "No student profile linked to your account. Contact your teacher.",
+    "loraTitle": "LoRA Handwriting Analysis",
+    "comingSoon": "Coming Soon",
+    "loraDescription": "AI-powered handwriting analysis to identify common mistakes in your written math work. This feature uses LoRA fine-tuned models to analyze your handwriting patterns.",
+    "underDevelopment": "This feature is under development"
+  },
+  "gradingComponents": {
+    "studentAnswerSheet": "Student Answer Sheet",
+    "uploadImage": "Upload Image",
+    "uploadFormats": "PNG, JPG, PDF",
+    "takePhoto": "Take Photo",
+    "useCamera": "Use camera",
+    "enterProblemId": "Enter problem ID...",
+    "expectedForm": "Expected form:",
+    "gradingHints": "Grading hints:",
+    "pipeline": "Pipeline",
+    "geminiVisionOCR": "Gemini Vision OCR",
+    "extracted": "Extracted:",
+    "intentBasedGrading": "Intent-Based Grading",
+    "judgedBy": "Judged by:",
+    "ocrOutput": "OCR Output",
+    "confidence": "Confidence: {value}%",
+    "reasoning": "Reasoning",
+    "problemMetadata": "Problem Metadata",
+    "targetGrade": "Target grade:",
+    "runningOCR": "Running OCR...",
+    "gradingInProgress": "Grading..."
+  },
+  "studentDetailExtra": {
+    "student": "Student {id}",
+    "noWrongAnswers": "No wrong answers found.",
+    "runAnalysis": "Run Cross-Unit Analysis",
+    "analyzing": "Analyzing wrong answers...",
+    "coreWeaknesses": "Core weaknesses: {weaknesses}"
+  },
+  "problemDetailExtra": {
+    "problemTitle": "Problem #{id}",
+    "conceptWeightAnalysis": "Concept weight analysis",
+    "content": "Content",
+    "correctAnswer": "Correct Answer",
+    "expectedForm": "Expected Form",
+    "gradingHints": "Grading Hints"
   },
   "grading": {
     "title": "Grading View",
@@ -112,7 +253,7 @@
     "studentId": "Student ID",
     "rootCauseIdentified": "Root Cause Identified",
     "rootCauseDesc": "<strong>Completing the square</strong> (mastery: 0.30) is the root cause behind failures in <strong>3 different units</strong>: Quadratic Inequalities, Quadratic Functions, and Circle Equations.",
-    "prerequisiteChain": "Prerequisite chain: Multiplication Formulas \u2192 Completing the Square \u2192 Affected Units",
+    "prerequisiteChain": "Prerequisite chain",
     "wrongAnswersTitle": "Wrong Answers",
     "active": "Active",
     "resolved": "Resolved",
@@ -151,7 +292,8 @@
     "practice1": "Expand (2x+3)\u00B2 using multiplication formula",
     "practice2": "Rewrite x\u00B2+6x+5 in (x+p)\u00B2+q form",
     "practice3": "Find vertex of y = x\u00B2 - 8x + 15",
-    "practice4": "Write x\u00B2+y\u00B2-4x+6y=3 in standard circle form"
+    "practice4": "Write x\u00B2+y\u00B2-4x+6y=3 in standard circle form",
+    "noConcepts": "No root cause data available"
   },
   "benchmark": {
     "title": "Benchmark Dashboard",

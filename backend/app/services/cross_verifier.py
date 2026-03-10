@@ -226,11 +226,12 @@ async def run_voting_benchmark(
     problem_ids: list[str] | None = None,
     thresholds: list[int] | None = None,
     progress_callback=None,
+    dataset: str = "original",
 ) -> VotingBenchmarkResult:
     """Run voting at multiple thresholds and compare to single-model baselines."""
     if thresholds is None:
         thresholds = [50, 60, 70, 80, 90]
-    problems = load_problems(problem_ids)
+    problems = load_problems(problem_ids, dataset=dataset)
 
     threshold_results: list[ThresholdResult] = []
     total_tasks = len(thresholds) * len(problems)
@@ -340,7 +341,7 @@ def run_sympy_verification(run: BenchmarkRun) -> SympyVerificationReport:
 
     # Try to load full problem data for correct_answer_latex
     try:
-        full_problems = load_problems()
+        full_problems = load_problems(dataset=run.dataset)
         for p in full_problems:
             if p["id"] in problems_map:
                 problems_map[p["id"]]["correct_answer_latex"] = p.get("correct_answer_latex", "")

@@ -1,11 +1,4 @@
 import { useTranslations } from "next-intl";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import type { ProblemResponse } from "@/features/grading/types";
 
@@ -21,6 +14,7 @@ export function ProblemSelector({
   onSelect,
 }: ProblemSelectorProps) {
   const t = useTranslations("grading");
+  const tg = useTranslations("gradingComponents");
 
   return (
     <>
@@ -29,7 +23,7 @@ export function ProblemSelector({
         <Input
           type="number"
           min={1}
-          placeholder="Enter problem ID..."
+          placeholder={tg("enterProblemId")}
           value={selectedProblemId}
           onChange={(e) => onSelect(e.target.value)}
         />
@@ -40,13 +34,13 @@ export function ProblemSelector({
           <p className="text-xs font-medium">{selectedProblem.content}</p>
           {selectedProblem.expected_form && (
             <p className="text-xs text-muted-foreground">
-              <span className="font-medium">Expected form:</span>{" "}
+              <span className="font-medium">{tg("expectedForm")}</span>{" "}
               {selectedProblem.expected_form}
             </p>
           )}
           {selectedProblem.grading_hints && (
             <p className="text-xs text-muted-foreground">
-              <span className="font-medium">Grading hints:</span>{" "}
+              <span className="font-medium">{tg("gradingHints")}</span>{" "}
               {selectedProblem.grading_hints}
             </p>
           )}

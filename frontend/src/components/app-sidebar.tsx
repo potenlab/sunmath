@@ -35,10 +35,10 @@ export function AppSidebar() {
 
   const adminNavItems = [
     {
-      title: "Problems",
+      title: t("sidebar.problems"),
       href: "/admin/problems" as const,
       icon: FileText,
-      description: "Manage math problems",
+      description: t("sidebar.problemsDesc"),
     },
     {
       title: t("nav.grading"),
@@ -53,25 +53,25 @@ export function AppSidebar() {
       description: t("nav.studentsDesc"),
     },
     {
-      title: "Settings",
+      title: t("sidebar.settings"),
       href: "/admin/settings" as const,
       icon: Settings,
-      description: "Configure system settings",
+      description: t("sidebar.settingsDesc"),
     },
   ];
 
   const studentNavItems = [
     {
-      title: "Problems",
+      title: t("sidebar.studentProblems"),
       href: "/student/problems" as const,
       icon: BookOpen,
-      description: "Browse and answer problems",
+      description: t("sidebar.studentProblemsDesc"),
     },
     {
-      title: "My Diagnosis",
+      title: t("sidebar.myDiagnosis"),
       href: "/student/diagnosis" as const,
       icon: Brain,
-      description: "View your learning diagnosis",
+      description: t("sidebar.myDiagnosisDesc"),
     },
   ];
 
@@ -139,7 +139,7 @@ export function AppSidebar() {
             <button
               onClick={logout}
               className="rounded-md p-1.5 hover:bg-sidebar-accent transition-colors"
-              title="Logout"
+              title={t("sidebar.logout")}
             >
               <LogOut className="size-4 text-sidebar-foreground/60" />
             </button>

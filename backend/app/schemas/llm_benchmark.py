@@ -36,6 +36,7 @@ class ProblemResult(BaseModel):
 
 class BenchmarkRun(BaseModel):
     run_id: str
+    dataset: str = "original"
     timestamp: str
     models: list[str]
     problem_count: int
@@ -164,11 +165,13 @@ class SympyVerificationReport(BaseModel):
 class BenchmarkRunRequest(BaseModel):
     models: list[str] | None = None  # None = all models
     problems: list[str] | None = None  # None = all problems
+    dataset: str = "original"  # "original" | "csat-2026"
 
 
 class VotingRunRequest(BaseModel):
     problems: list[str] | None = None
     thresholds: list[int] = [50, 60, 70, 80, 90]
+    dataset: str = "original"
 
 
 class RunStatusResponse(BaseModel):

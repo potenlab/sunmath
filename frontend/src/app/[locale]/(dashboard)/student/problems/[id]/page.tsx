@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowLeft, Send, Loader2, Upload, Camera, X, TrendingUp, TrendingDown } from "lucide-react";
 import {
@@ -25,6 +26,8 @@ export default function StudentProblemDetailPage() {
   const params = useParams();
   const problemId = parseInt(params.id as string, 10);
   const { user } = useAuth();
+  const t = useTranslations("studentProblemDetail");
+  const tc = useTranslations("common");
   const { data: problem, isLoading } = useStudentProblem(problemId);
   const submitMutation = useSubmitAnswer();
   const ocrMutation = useOCR();
@@ -114,7 +117,7 @@ export default function StudentProblemDetailPage() {
   if (!problem) {
     return (
       <div className="py-12 text-center">
-        <p className="text-muted-foreground">Problem not found.</p>
+        <p className="text-muted-foreground">{t("problemNotFound")}</p>
       </div>
     );
   }
@@ -126,7 +129,7 @@ export default function StudentProblemDetailPage() {
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="size-3.5" />
-        Back to Problems
+        {t("backToProblems")}
       </Link>
 
       <Card className="shadow-sm">
@@ -134,10 +137,10 @@ export default function StudentProblemDetailPage() {
           <div className="flex items-center gap-2 mb-2">
             <Badge variant="outline">{problem.expected_form}</Badge>
             {problem.target_grade && (
-              <Badge variant="secondary">Grade {problem.target_grade}</Badge>
+              <Badge variant="secondary">{tc("grade", { grade: problem.target_grade })}</Badge>
             )}
           </div>
-          <CardTitle className="text-xl">Problem #{problem.id}</CardTitle>
+          <CardTitle className="text-xl">{t("problemTitle", { id: problem.id })}</CardTitle>
           <CardDescription className="text-base mt-2 whitespace-pre-wrap">
             {problem.content}
           </CardDescription>
@@ -145,19 +148,19 @@ export default function StudentProblemDetailPage() {
         <CardContent className="space-y-4">
           {problem.grading_hints && (
             <div className="rounded-lg bg-blue-50 dark:bg-blue-950/30 p-3 text-sm text-blue-700 dark:text-blue-300">
-              Hint: {problem.grading_hints}
+              {t("hint", { hint: problem.grading_hints })}
             </div>
           )}
 
           {/* Text answer input */}
           <div>
             <label className="block text-sm font-medium mb-1.5">
-              Your Answer
+              {t("yourAnswer")}
             </label>
             <textarea
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Type your answer here..."
+              placeholder={t("answerPlaceholder")}
               rows={3}
               className="w-full rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 resize-none"
             />
@@ -166,7 +169,7 @@ export default function StudentProblemDetailPage() {
           {/* Image upload */}
           <div>
             <label className="block text-sm font-medium mb-1.5">
-              Or upload an image of your work
+              {t("uploadLabel")}
             </label>
             <input
               ref={fileInputRef}
@@ -199,7 +202,7 @@ export default function StudentProblemDetailPage() {
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <Upload className="size-4 mr-1" />
-                  Upload Image
+                  {t("uploadImage")}
                 </Button>
               </div>
             )}
@@ -215,30 +218,30 @@ export default function StudentProblemDetailPage() {
             {isRecognizing ? (
               <>
                 <Loader2 className="size-4 animate-spin mr-1" />
-                Recognizing...
+                {t("recognizing")}
               </>
             ) : submitMutation.isPending ? (
               <>
                 <Loader2 className="size-4 animate-spin mr-1" />
-                Grading...
+                {t("grading")}
               </>
             ) : (
               <>
                 <Send className="size-4 mr-1" />
-                Submit Answer
+                {t("submitAnswer")}
               </>
             )}
           </Button>
 
           {ocrMutation.isError && (
             <div className="rounded-lg bg-red-50 dark:bg-red-950/30 p-3 text-sm text-red-600 dark:text-red-400">
-              OCR failed. Please try again or type your answer manually.
+              {t("ocrFailed")}
             </div>
           )}
 
           {submitMutation.isError && (
             <div className="rounded-lg bg-red-50 dark:bg-red-950/30 p-3 text-sm text-red-600 dark:text-red-400">
-              Failed to submit. Please try again.
+              {t("submitFailed")}
             </div>
           )}
         </CardContent>
@@ -272,7 +275,7 @@ export default function StudentProblemDetailPage() {
               ) : (
                 <TrendingDown className="size-4 text-red-500" />
               )}
-              Mastery Updated
+              {t("masteryUpdated")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">

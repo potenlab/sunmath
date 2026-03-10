@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+import { useTranslations } from "next-intl";
 import { Upload, Camera, ImageIcon, X } from "lucide-react";
 
 interface ImageUploaderProps {
@@ -20,9 +21,11 @@ export function ImageUploader({
   onFileSelected,
   onClear,
 }: ImageUploaderProps) {
+  const t = useTranslations("gradingComponents");
+
   return (
     <div className="space-y-1.5">
-      <label className="text-sm font-medium">Student Answer Sheet</label>
+      <label className="text-sm font-medium">{t("studentAnswerSheet")}</label>
 
       <input
         ref={fileInputRef}
@@ -57,8 +60,8 @@ export function ImageUploader({
               <Upload className="size-5 text-emerald-600" />
             </div>
             <div className="text-center">
-              <p className="text-xs font-medium">Upload Image</p>
-              <p className="text-[10px] text-muted-foreground">PNG, JPG, PDF</p>
+              <p className="text-xs font-medium">{t("uploadImage")}</p>
+              <p className="text-[10px] text-muted-foreground">{t("uploadFormats")}</p>
             </div>
           </button>
           <button
@@ -70,8 +73,8 @@ export function ImageUploader({
               <Camera className="size-5 text-teal-600" />
             </div>
             <div className="text-center">
-              <p className="text-xs font-medium">Take Photo</p>
-              <p className="text-[10px] text-muted-foreground">Use camera</p>
+              <p className="text-xs font-medium">{t("takePhoto")}</p>
+              <p className="text-[10px] text-muted-foreground">{t("useCamera")}</p>
             </div>
           </button>
         </div>

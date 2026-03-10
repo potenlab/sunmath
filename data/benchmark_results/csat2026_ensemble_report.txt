@@ -1,0 +1,93 @@
+================================================================================
+CSAT 2026 ENSEMBLE BENCHMARK SIMULATION REPORT
+================================================================================
+
+INDIVIDUAL MODEL BASELINES
+------------------------------------------------------------
+Model                 Correct  Total   Accuracy   Rank
+------------------------------------------------------------
+o3-mini                    37     46      80.4%      1
+gpt-4o                     31     46      67.4%      2
+claude-sonnet              26     46      56.5%      3
+deepseek-v3                25     46      54.3%      4
+qwen-2.5-72b               25     46      54.3%      5
+deepseek-r1                23     46      50.0%      6
+
+Best single model: o3-mini @ 80.4%
+
+ENSEMBLE STRATEGY COMPARISON
+--------------------------------------------------------------------------------
+Strategy                      Correct  Total   Accuracy   vs Best       Cost
+--------------------------------------------------------------------------------
+Majority Vote (all 6)              37     46      80.4%     +0.0% $   2.1904
+Majority Vote (top 3)              38     46      82.6%     +2.2% $   2.0376
+Confidence-Weighted                36     46      78.3%     -2.2% $   2.1904
+Accuracy-Weighted                  41     46      89.1%     +8.7% $   2.1904
+Cascade (conf>=85)                 25     46      54.3%    -26.1% $   0.0092
+Best-per-Subject *                 36     46      78.3%     -2.2% $   0.6321
+
+* Best-per-Subject is an oracle upper bound (not a practical strategy)
+
+BEST MODEL PER SUBJECT (Oracle Selection)
+----------------------------------------
+  algebra                    o3-mini            100%
+  calculus                   gpt-4o             83%
+  functions                  o3-mini            62%
+  geometry                   deepseek-r1        75%
+  probability_statistics     o3-mini            100%
+
+ACCURACY BY DIFFICULTY
+--------------------------------------------------------------------------------
+Strategy                             easy       medium         hard
+--------------------------------------------------------------------------------
+o3-mini                            100.0%        77.3%        78.9%
+gpt-4o                             100.0%       100.0%        21.1%
+claude-sonnet                      100.0%        63.6%        36.8%
+deepseek-v3                        100.0%        68.2%        26.3%
+qwen-2.5-72b                       100.0%        81.8%        10.5%
+deepseek-r1                        100.0%        75.0%        42.9%
+
+Majority Vote (all 6)              100.0%        81.8%        73.7%
+Majority Vote (top 3)              100.0%        81.8%        78.9%
+Confidence-Weighted                100.0%        81.8%        68.4%
+Accuracy-Weighted                  100.0%       100.0%        73.7%
+Cascade (conf>=85)                 100.0%        81.8%        10.5%
+Best-per-Subject *                 100.0%        86.4%        63.2%
+
+ENSEMBLE vs BEST SINGLE MODEL (o3-mini) — PROBLEM-LEVEL DETAIL
+--------------------------------------------------------------------------------
+
+Majority Vote (all 6) vs o3-mini:
+  Wins  (ensemble correct, o3-mini wrong): 2
+    CSAT-CALC-Q26, CSAT-GEOM-Q25
+  Losses (ensemble wrong, o3-mini correct): 2
+    CSAT-COMMON-Q15, CSAT-GEOM-Q27
+
+Majority Vote (top 3) vs o3-mini:
+  Wins  (ensemble correct, o3-mini wrong): 1
+    CSAT-COMMON-Q08
+  Losses (ensemble wrong, o3-mini correct): 0
+
+Accuracy-Weighted vs o3-mini:
+  Wins  (ensemble correct, o3-mini wrong): 5
+    CSAT-CALC-Q26, CSAT-CALC-Q27, CSAT-COMMON-Q08, CSAT-GEOM-Q25, CSAT-GEOM-Q26
+  Losses (ensemble wrong, o3-mini correct): 1
+    CSAT-COMMON-Q15
+
+CASCADE STRATEGY ANALYSIS
+------------------------------------------------------------
+  Confidence threshold: 85
+  Chain: qwen-2.5-72b -> deepseek-v3 -> deepseek-r1 -> gpt-4o -> claude-sonnet -> o3-mini
+  Stopped at model 1 (qwen-2.5-72b): 46 problems (100%)
+  Total cost: $0.0092 vs all-6 cost: $2.1904
+  Cost savings: 100%
+
+CONCLUSIONS
+------------------------------------------------------------
+  Best ensemble: Accuracy-Weighted at 89.1% (+8.7% over o3-mini)
+  Ensembles DO improve accuracy over the best individual model.
+
+  Cascade: 54.3% accuracy at $0.0092
+  Best single model (o3-mini): 80.4% at $1.0122
+
+================================================================================

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { Sun } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -19,6 +20,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const params = useParams();
   const locale = params.locale as string;
+  const t = useTranslations("auth");
+  const tc = useTranslations("common");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,11 +38,11 @@ export default function RegisterPage() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.detail || "Registration failed");
+        throw new Error(data.detail || t("registrationFailed"));
       }
       router.push("/login");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed");
+      setError(err instanceof Error ? err.message : t("registrationFailed"));
     } finally {
       setLoading(false);
     }
@@ -53,7 +56,7 @@ export default function RegisterPage() {
             <Sun className="size-6 text-white" />
           </div>
           <h1 className="text-2xl font-bold">SunMath</h1>
-          <p className="text-sm text-muted-foreground mt-1">Create your account</p>
+          <p className="text-sm text-muted-foreground mt-1">{t("createYourAccount")}</p>
         </div>
 
         {error && (
@@ -64,29 +67,29 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5">Name</label>
+            <label className="block text-sm font-medium mb-1.5">{t("name")}</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
               className="w-full rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
-              placeholder="Your name"
+              placeholder={t("namePlaceholder")}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5">Email</label>
+            <label className="block text-sm font-medium mb-1.5">{t("email")}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5">Password</label>
+            <label className="block text-sm font-medium mb-1.5">{t("password")}</label>
             <input
               type="password"
               value={password}
@@ -94,11 +97,11 @@ export default function RegisterPage() {
               required
               minLength={6}
               className="w-full rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
-              placeholder="At least 6 characters"
+              placeholder={t("passwordHint")}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-3">Role</label>
+            <label className="block text-sm font-medium mb-3">{t("role")}</label>
             <div className="flex gap-3">
               <button
                 type="button"
@@ -109,7 +112,7 @@ export default function RegisterPage() {
                     : "hover:bg-muted"
                 }`}
               >
-                Student
+                {t("student")}
               </button>
               <button
                 type="button"
@@ -120,13 +123,13 @@ export default function RegisterPage() {
                     : "hover:bg-muted"
                 }`}
               >
-                Admin
+                {t("admin")}
               </button>
             </div>
           </div>
           {role === "student" && (
             <div>
-              <label className="block text-sm font-medium mb-1.5">Grade Level</label>
+              <label className="block text-sm font-medium mb-1.5">{t("gradeLevel")}</label>
               <select
                 value={gradeLevel}
                 onChange={(e) => setGradeLevel(Number(e.target.value))}
@@ -134,7 +137,7 @@ export default function RegisterPage() {
               >
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((g) => (
                   <option key={g} value={g}>
-                    Grade {g}
+                    {tc("grade", { grade: g })}
                   </option>
                 ))}
               </select>
@@ -145,14 +148,14 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2.5 text-sm font-medium text-white hover:from-amber-600 hover:to-orange-600 disabled:opacity-50 transition-all"
           >
-            {loading ? "Creating account..." : "Create account"}
+            {loading ? t("creatingAccount") : t("createAccount")}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
-          Already have an account?{" "}
+          {t("alreadyHaveAccount")}{" "}
           <Link href={`/${locale}/login`} className="text-amber-600 hover:text-amber-500 font-medium">
-            Sign in
+            {t("signIn")}
           </Link>
         </p>
       </div>

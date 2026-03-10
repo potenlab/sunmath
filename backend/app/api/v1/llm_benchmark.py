@@ -47,6 +47,7 @@ async def _run_benchmark_task(run_id: str, request: BenchmarkRunRequest):
             model_keys=request.models,
             problem_ids=request.problems,
             progress_callback=_progress_callback(run_id),
+            dataset=request.dataset,
         )
         _run_progress[run_id]["status"] = "completed"
         _run_progress[run_id]["message"] = "Done"
@@ -67,6 +68,7 @@ async def _run_voting_task(run_id: str, request: VotingRunRequest):
             problem_ids=request.problems,
             thresholds=request.thresholds,
             progress_callback=_progress_callback(run_id),
+            dataset=request.dataset,
         )
         # Save voting results
         out_dir = _project_root() / settings.benchmark_results_dir

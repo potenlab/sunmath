@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter, usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { AuthProvider, useAuth } from "@/features/auth/context/auth-context";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
@@ -47,6 +48,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 }
 
 function DashboardContent({ children }: { children: React.ReactNode }) {
+  const t = useTranslations("common");
   return (
     <AuthGuard>
       <TooltipProvider>
@@ -57,7 +59,7 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
               <SidebarTrigger className="-ml-1" />
               <Separator orientation="vertical" className="mr-2 h-4" />
               <span className="text-sm text-muted-foreground">
-                SunMath Academy
+                {t("sunmathAcademy")}
               </span>
               <div className="ml-auto">
                 <LanguageSwitcher />

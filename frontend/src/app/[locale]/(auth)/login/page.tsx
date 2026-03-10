@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/features/auth/context/auth-context";
 import { AuthProvider } from "@/features/auth/context/auth-context";
 import { Sun } from "lucide-react";
@@ -15,6 +16,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
+  const t = useTranslations("auth");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ function LoginForm() {
         router.replace("/student/problems");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(err instanceof Error ? err.message : t("loginFailed"));
     } finally {
       setLoading(false);
     }
@@ -45,7 +47,7 @@ function LoginForm() {
             <Sun className="size-6 text-white" />
           </div>
           <h1 className="text-2xl font-bold">SunMath</h1>
-          <p className="text-sm text-muted-foreground mt-1">Sign in to your account</p>
+          <p className="text-sm text-muted-foreground mt-1">{t("signInToAccount")}</p>
         </div>
 
         {error && (
@@ -56,25 +58,25 @@ function LoginForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5">Email</label>
+            <label className="block text-sm font-medium mb-1.5">{t("email")}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5">Password</label>
+            <label className="block text-sm font-medium mb-1.5">{t("password")}</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               className="w-full rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500"
-              placeholder="Enter your password"
+              placeholder={t("passwordPlaceholder")}
             />
           </div>
           <button
@@ -82,14 +84,14 @@ function LoginForm() {
             disabled={loading}
             className="w-full rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2.5 text-sm font-medium text-white hover:from-amber-600 hover:to-orange-600 disabled:opacity-50 transition-all"
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? t("signingIn") : t("signIn")}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
+          {t("noAccount")}{" "}
           <Link href={`/${locale}/register`} className="text-amber-600 hover:text-amber-500 font-medium">
-            Register
+            {t("register")}
           </Link>
         </p>
       </div>

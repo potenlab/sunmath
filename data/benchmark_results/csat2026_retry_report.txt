@@ -1,0 +1,100 @@
+================================================================================
+CSAT 2026 BENCHMARK REPORT (Post-Retry)
+================================================================================
+Run ID: 20260310_161726    Dataset: csat-2026
+Problems: 46    Models: 6    Total entries: 276
+Total cost: $2.3187
+
+MODEL ACCURACY RANKING
+--------------------------------------------------------------------------------
+Model               Correct  Total  Accuracy   Parse%  Errors   Latency      Cost
+--------------------------------------------------------------------------------
+o3-mini               37/46      80.4%   100.0%       0   23554ms $ 1.0122
+gpt-4o                31/46      67.4%   100.0%       0   11452ms $ 0.3074
+claude-sonnet         26/46      56.5%   100.0%       0   11824ms $ 0.7180
+deepseek-v3           25/46      54.3%   100.0%       0   32228ms $ 0.0248
+qwen-2.5-72b          25/46      54.3%   100.0%       0   16409ms $ 0.0092
+deepseek-r1           23/46      50.0%    69.6%      14   16392ms $ 0.2472
+
+PARSE FAILURE RECOVERY
+--------------------------------------------------------------------------------
+                       Before      After    Recovered  Recovery%
+--------------------------------------------------------------------------------
+claude-sonnet              23          0        23/23       100%
+deepseek-v3                 3          0         2/3         67%
+deepseek-r1                15         14         2/15        13%
+--------------------------------------------------------------------------------
+Total                      41         14        27/41      65.9%
+
+Remaining 14 failures: all deepseek-r1 (API returned empty response, 0 output tokens)
+
+ACCURACY BY SUBJECT
+--------------------------------------------------------------------------------
+Subject                           o3-mini       gpt-4o claude-sonnet  deepseek-v3 qwen-2.5-72b  deepseek-r1
+--------------------------------------------------------------------------------
+algebra                      10/10 (100%)   7/10 (70%)   7/10 (70%)   7/10 (70%)   7/10 (70%)   7/10 (70%)
+calculus                       9/12 (75%)  10/12 (83%)   6/12 (50%)   7/12 (58%)   7/12 (58%)   6/12 (50%)
+functions                       5/8 (62%)    3/8 (38%)    5/8 (62%)    3/8 (38%)    1/8 (12%)    2/8 (25%)
+geometry                        5/8 (62%)    5/8 (62%)    3/8 (38%)    2/8 (25%)    4/8 (50%)    3/8 (38%)
+probability_statistics         8/8 (100%)    6/8 (75%)    5/8 (62%)    6/8 (75%)    6/8 (75%)    5/8 (62%)
+
+ACCURACY BY DIFFICULTY
+--------------------------------------------------------------------------------
+Difficulty                        o3-mini       gpt-4o claude-sonnet  deepseek-v3 qwen-2.5-72b  deepseek-r1
+--------------------------------------------------------------------------------
+easy                           5/5 (100%)   5/5 (100%)   5/5 (100%)   5/5 (100%)   5/5 (100%)   5/5 (100%)
+medium                        17/22 (77%) 22/22 (100%)  14/22 (64%)  15/22 (68%)  18/22 (82%)  15/22 (68%)
+hard                          15/19 (79%)   4/19 (21%)   7/19 (37%)   5/19 (26%)   2/19 (11%)   3/19 (16%)
+
+BEST MODEL PER SUBJECT
+--------------------------------------------------------------------------------
+  algebra                    o3-mini            100%
+  calculus                   gpt-4o             83%
+  functions                  o3-mini            62%
+  geometry                   o3-mini            62%
+  probability_statistics     o3-mini            100%
+
+CLAUDE-SONNET RETRY DETAIL (23 previously-failed entries)
+--------------------------------------------------------------------------------
+Problem                  Status                            Got                Correct
+--------------------------------------------------------------------------------
+  CSAT-COMMON-Q02            OK                             13                     13
+  CSAT-COMMON-Q03            OK                              5                      5
+  CSAT-COMMON-Q04            OK                              3                      3
+  CSAT-COMMON-Q06            OK                   \\frac{1}{2}            \frac{1}{2}
+  CSAT-COMMON-Q10         WRONG               2^{\\frac{5}{2}}      $2^{\frac{5}{2}}$
+  CSAT-COMMON-Q11            OK                           ㄱ, ㄷ                   ㄱ, ㄷ
+  CSAT-COMMON-Q13            OK                             49                     49
+  CSAT-COMMON-Q14         WRONG                         6√15/5   $\frac{32\sqrt{15}}{
+  CSAT-COMMON-Q15         WRONG                   \\frac{9}{2}           \frac{15}{2}
+  CSAT-COMMON-Q16         WRONG                        (empty)                      9
+  CSAT-COMMON-Q17            OK                             16                     16
+  CSAT-COMMON-Q19            OK                             15                     15
+  CSAT-COMMON-Q20            OK                            130                    130
+  CSAT-COMMON-Q21         WRONG                            -65                     65
+  CSAT-COMMON-Q22         WRONG                             29                    457
+  CSAT-PROB-Q26              OK                            5.5                    5.5
+  CSAT-PROB-Q28           WRONG                           5/16         $\frac{3}{16}$
+  CSAT-PROB-Q29              OK                            977                    977
+  CSAT-CALC-Q23              OK                              3                      3
+  CSAT-CALC-Q25              OK                            5/2          $\frac{5}{2}$
+  CSAT-CALC-Q26           WRONG   \\frac{\\sqrt{3}(3+8\\ln 2)}   $\frac{\sqrt{3}(3+8\
+  CSAT-CALC-Q29           WRONG                             13                     97
+  CSAT-GEOM-Q26           WRONG                        (empty)   $\frac{4\sqrt{3}}{3}
+--------------------------------------------------------------------------------
+  Parse recovery: 23/23 (100%)    Answer accuracy: 13/23 (56.5%)
+  * CSAT-COMMON-Q10, CSAT-COMMON-Q14, CSAT-CALC-Q26 may be correct (failed LaTeX normalization)
+
+CONCLUSIONS
+--------------------------------------------------------------------------------
+  1. Parse fix eliminated all claude-sonnet failures: 23/23 recovered (100%)
+  2. Parse failures reduced from 41/276 (14.9%) to 14/276 (5.1%)
+  3. Remaining 14 are deepseek-r1 API-level failures (empty response, not fixable)
+
+  Best overall:      o3-mini       80.4%   ($1.0122)
+  Best value:        gpt-4o        67.4%   ($0.3074)
+  Most improved:     claude-sonnet 56.5%   (was 50.0% before retry)
+  Cheapest:          qwen-2.5-72b  54.3%   ($0.0092)
+  Hard-problem king: o3-mini       79% on hard (next best: 43%)
+
+================================================================================

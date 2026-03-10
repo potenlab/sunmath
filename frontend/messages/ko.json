@@ -5,7 +5,8 @@
     "aiPlatform": "AI 수학 학습 플랫폼",
     "mvpDemo": "MVP 1 데모",
     "daechiDong": "SunMath Academy - 대치동",
-    "language": "언어"
+    "language": "언어",
+    "grade": "{grade}학년"
   },
   "nav": {
     "main": "메인",
@@ -20,6 +21,41 @@
     "benchmarkDesc": "LLM 성능",
     "loraResults": "LoRA 결과",
     "loraDesc": "파인튜닝 테스트"
+  },
+  "auth": {
+    "signIn": "로그인",
+    "signInToAccount": "계정에 로그인하세요",
+    "signingIn": "로그인 중...",
+    "email": "이메일",
+    "emailPlaceholder": "you@example.com",
+    "password": "비밀번호",
+    "passwordPlaceholder": "비밀번호를 입력하세요",
+    "noAccount": "계정이 없으신가요?",
+    "register": "회원가입",
+    "createAccount": "계정 만들기",
+    "createYourAccount": "계정을 만드세요",
+    "creatingAccount": "계정 생성 중...",
+    "name": "이름",
+    "namePlaceholder": "이름을 입력하세요",
+    "passwordHint": "6자 이상",
+    "role": "역할",
+    "student": "학생",
+    "admin": "관리자",
+    "gradeLevel": "학년",
+    "alreadyHaveAccount": "이미 계정이 있으신가요?",
+    "loginFailed": "로그인 실패",
+    "registrationFailed": "회원가입 실패"
+  },
+  "sidebar": {
+    "problems": "문제",
+    "problemsDesc": "수학 문제 관리",
+    "settings": "설정",
+    "settingsDesc": "시스템 설정 구성",
+    "studentProblems": "문제",
+    "studentProblemsDesc": "문제 풀기",
+    "myDiagnosis": "내 진단",
+    "myDiagnosisDesc": "학습 진단 보기",
+    "logout": "로그아웃"
   },
   "admin": {
     "title": "관리자 패널",
@@ -50,7 +86,112 @@
     "gradingHints": "채점 힌트",
     "gradingHintsPlaceholder": "선택 힌트...",
     "registerProblem": "문제 등록",
-    "registering": "등록 중..."
+    "registering": "등록 중...",
+    "saveSettings": "설정 저장"
+  },
+  "problemsPage": {
+    "title": "문제 관리",
+    "description": "수학 문제를 생성, 편집, 관리합니다",
+    "allProblems": "전체 문제",
+    "problemsRegistered": "{count}개의 문제가 등록됨",
+    "noProblems": "등록된 문제가 없습니다."
+  },
+  "analysisComparison": {
+    "naiveTitle": "단순 분석",
+    "naiveDesc": "단원별 약점 나열",
+    "studentWeakIn": "\"학생의 약점:\"",
+    "naiveConclusion": "단순 분석: \"{count}개 단원에서 약함\".",
+    "naiveNoRootCause": "근본 원인 미파악. 학생이 {count}개 단원을 각각 독립적으로 공부해야 합니다.",
+    "graphragTitle": "GraphRAG 분석",
+    "graphragDesc": "선수 학습 그래프 역추적",
+    "rootCauseIdentified": "\"근본 원인 파악:\"",
+    "sharedRootCause": "공통 근본 원인",
+    "sharedRootCauses": "공통 근본 원인들",
+    "graphragConclusion": "GraphRAG 분석: 근본 원인은 {rootCount}개 개념 — {rootCount}개 개념을 해결하면 {affectedCount}개 단원 모두 해결됩니다.",
+    "graphragBenefit": "{rootCount}개 개념을 해결하면 {affectedCount}개 단원 모두 해결됩니다. 효율적이고 집중적인 학습."
+  },
+  "settingsPage": {
+    "title": "설정",
+    "description": "채점 및 중복 감지 설정을 구성합니다"
+  },
+  "studentsPage": {
+    "addStudent": "학생 추가",
+    "editStudent": "학생 편집",
+    "newStudent": "새 학생",
+    "studentName": "학생 이름",
+    "gradeLevel": "학년",
+    "save": "저장",
+    "add": "추가",
+    "cancel": "취소",
+    "noStudents": "등록된 학생이 없습니다."
+  },
+  "studentProblems": {
+    "title": "문제",
+    "description": "풀 수 있는 수학 문제를 찾아 답안을 제출하세요",
+    "noProblems": "아직 문제가 없습니다. 나중에 다시 확인하세요!",
+    "problemId": "문제 #{id}"
+  },
+  "studentProblemDetail": {
+    "backToProblems": "문제 목록으로 돌아가기",
+    "problemTitle": "문제 #{id}",
+    "hint": "힌트: {hint}",
+    "yourAnswer": "내 답안",
+    "answerPlaceholder": "여기에 답안을 입력하세요...",
+    "uploadLabel": "또는 풀이 이미지를 업로드하세요",
+    "uploadImage": "이미지 업로드",
+    "recognizing": "인식 중...",
+    "grading": "채점 중...",
+    "submitAnswer": "답안 제출",
+    "ocrFailed": "OCR 실패. 다시 시도하거나 답안을 직접 입력하세요.",
+    "submitFailed": "제출 실패. 다시 시도하세요.",
+    "problemNotFound": "문제를 찾을 수 없습니다.",
+    "masteryUpdated": "숙련도 업데이트됨"
+  },
+  "studentDiagnosis": {
+    "title": "내 진단",
+    "description": "학습 분석 및 추천을 확인하세요",
+    "noProfile": "계정에 연결된 학생 프로필이 없습니다. 선생님에게 문의하세요.",
+    "loraTitle": "LoRA 손글씨 분석",
+    "comingSoon": "출시 예정",
+    "loraDescription": "AI 기반 손글씨 분석으로 수학 필기에서 자주 발생하는 실수를 파악합니다. LoRA 파인튜닝 모델을 사용하여 손글씨 패턴을 분석합니다.",
+    "underDevelopment": "이 기능은 개발 중입니다"
+  },
+  "gradingComponents": {
+    "studentAnswerSheet": "학생 답안지",
+    "uploadImage": "이미지 업로드",
+    "uploadFormats": "PNG, JPG, PDF",
+    "takePhoto": "사진 촬영",
+    "useCamera": "카메라 사용",
+    "enterProblemId": "문제 ID를 입력하세요...",
+    "expectedForm": "예상 형태:",
+    "gradingHints": "채점 힌트:",
+    "pipeline": "파이프라인",
+    "geminiVisionOCR": "Gemini Vision OCR",
+    "extracted": "추출:",
+    "intentBasedGrading": "의도 기반 채점",
+    "judgedBy": "판정 기준:",
+    "ocrOutput": "OCR 출력",
+    "confidence": "신뢰도: {value}%",
+    "reasoning": "추론",
+    "problemMetadata": "문제 메타데이터",
+    "targetGrade": "대상 학년:",
+    "runningOCR": "OCR 실행 중...",
+    "gradingInProgress": "채점 중..."
+  },
+  "studentDetailExtra": {
+    "student": "학생 {id}",
+    "noWrongAnswers": "오답이 없습니다.",
+    "runAnalysis": "교차 단원 분석 실행",
+    "analyzing": "오답 분석 중...",
+    "coreWeaknesses": "핵심 약점: {weaknesses}"
+  },
+  "problemDetailExtra": {
+    "problemTitle": "문제 #{id}",
+    "conceptWeightAnalysis": "개념 가중치 분석",
+    "content": "내용",
+    "correctAnswer": "정답",
+    "expectedForm": "예상 형태",
+    "gradingHints": "채점 힌트"
   },
   "grading": {
     "title": "채점 보기",
@@ -112,7 +253,7 @@
     "studentId": "학생 ID",
     "rootCauseIdentified": "근본 원인 파악",
     "rootCauseDesc": "<strong>완전제곱식</strong> (숙련도: 0.30)이 <strong>3개 단원</strong>에서 실패의 근본 원인입니다: 이차부등식, 이차함수, 원의 방정식.",
-    "prerequisiteChain": "선수 학습 경로: 곱셈 공식 \u2192 완전제곱식 \u2192 영향받는 단원",
+    "prerequisiteChain": "선수 학습 경로",
     "wrongAnswersTitle": "오답",
     "active": "활성",
     "resolved": "해결",
@@ -151,7 +292,8 @@
     "practice1": "곱셈 공식을 사용하여 (2x+3)\u00B2 전개",
     "practice2": "x\u00B2+6x+5를 (x+p)\u00B2+q 형태로 변환",
     "practice3": "y = x\u00B2 - 8x + 15의 꼭짓점 찾기",
-    "practice4": "x\u00B2+y\u00B2-4x+6y=3을 원의 표준형으로 변환"
+    "practice4": "x\u00B2+y\u00B2-4x+6y=3을 원의 표준형으로 변환",
+    "noConcepts": "근본 원인 데이터 없음"
   },
   "benchmark": {
     "title": "벤치마크 대시보드",
