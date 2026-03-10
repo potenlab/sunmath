@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Check } from "lucide-react";
 import type { PipelineStep, GradingResult } from "@/features/grading/types";
@@ -15,12 +16,14 @@ export function PipelineProgress({
   ocrConfidence,
   result,
 }: PipelineProgressProps) {
+  const t = useTranslations("gradingComponents");
+
   if (pipelineStep === "idle") return null;
 
   return (
     <div className="rounded-lg border bg-muted/20 p-3 space-y-2.5">
       <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-        Pipeline
+        {t("pipeline")}
       </p>
 
       {/* Step 1: OCR */}
@@ -35,7 +38,7 @@ export function PipelineProgress({
         <span
           className={`text-xs font-medium ${pipelineStep === "ocr" ? "text-sky-700" : "text-emerald-700"}`}
         >
-          Gemini Vision OCR
+          {t("geminiVisionOCR")}
         </span>
         {ocrConfidence !== null && (
           <Badge
@@ -57,7 +60,7 @@ export function PipelineProgress({
       {ocrText && (
         <div className="ml-6 rounded-md border bg-white/80 px-2.5 py-1.5">
           <p className="text-[10px] text-muted-foreground mb-0.5">
-            Extracted:
+            {t("extracted")}
           </p>
           <p className="text-xs font-mono font-medium truncate">{ocrText}</p>
         </div>
@@ -76,7 +79,7 @@ export function PipelineProgress({
           <span
             className={`text-xs font-medium ${pipelineStep === "grading" ? "text-violet-700" : "text-emerald-700"}`}
           >
-            Intent-Based Grading
+            {t("intentBasedGrading")}
           </span>
           {result && (
             <Badge

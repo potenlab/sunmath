@@ -19,6 +19,8 @@ import { Button } from "@/components/ui/button";
 
 export default function AdminProblemsPage() {
   const t = useTranslations("admin");
+  const tp = useTranslations("problemsPage");
+  const tc = useTranslations("common");
   const { duplicateMode } = useAdminSettings();
   const { data: problemsData, isLoading } = useProblems();
   const deleteMutation = useDeleteProblem();
@@ -30,8 +32,8 @@ export default function AdminProblemsPage() {
       <PageHeader
         icon={FileText}
         iconGradient="from-amber-400 to-orange-500"
-        title="Problems Management"
-        description="Create, edit, and manage math problems"
+        title={tp("title")}
+        description={tp("description")}
       />
 
       <ProblemManager
@@ -41,9 +43,9 @@ export default function AdminProblemsPage() {
 
       <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg">All Problems</CardTitle>
+          <CardTitle className="text-lg">{tp("allProblems")}</CardTitle>
           <CardDescription>
-            {problemsData?.total ?? 0} problems registered
+            {tp("problemsRegistered", { count: problemsData?.total ?? 0 })}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -53,7 +55,7 @@ export default function AdminProblemsPage() {
             </div>
           ) : problems.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              No problems registered yet.
+              {tp("noProblems")}
             </p>
           ) : (
             <div className="space-y-2">
@@ -73,7 +75,7 @@ export default function AdminProblemsPage() {
                       </Badge>
                       {problem.target_grade && (
                         <Badge variant="secondary" className="text-xs">
-                          Grade {problem.target_grade}
+                          {tc("grade", { grade: problem.target_grade })}
                         </Badge>
                       )}
                       <span className="text-xs text-muted-foreground">

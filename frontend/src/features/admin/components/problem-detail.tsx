@@ -26,6 +26,7 @@ interface ProblemDetailProps {
 
 export function ProblemDetail({ id }: ProblemDetailProps) {
   const t = useTranslations("problemDetail");
+  const te = useTranslations("problemDetailExtra");
   const problemId = Number(id);
   const isValid = !isNaN(problemId);
 
@@ -82,8 +83,8 @@ export function ProblemDetail({ id }: ProblemDetailProps) {
       <PageHeader
         icon={FileText}
         iconGradient="from-amber-400 to-orange-500"
-        title={`Problem #${metadata.question_id}`}
-        description="Concept weight analysis"
+        title={te("problemTitle", { id: metadata.question_id })}
+        description={te("conceptWeightAnalysis")}
       />
 
       <Card className="shadow-sm">
@@ -93,20 +94,20 @@ export function ProblemDetail({ id }: ProblemDetailProps) {
         <CardContent className="space-y-3">
           <div>
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Content
+              {te("content")}
             </span>
             <p className="mt-1 text-sm">{metadata.content}</p>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div>
               <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Correct Answer
+                {te("correctAnswer")}
               </span>
               <p className="mt-1 text-sm font-mono">{metadata.correct_answer}</p>
             </div>
             <div>
               <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Expected Form
+                {te("expectedForm")}
               </span>
               <div className="mt-1">
                 <Badge variant="outline">{metadata.expected_form}</Badge>
@@ -115,7 +116,7 @@ export function ProblemDetail({ id }: ProblemDetailProps) {
             {metadata.grading_hints && (
               <div>
                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                  Grading Hints
+                  {te("gradingHints")}
                 </span>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {metadata.grading_hints}

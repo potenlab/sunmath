@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { BookOpen } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
@@ -12,6 +13,8 @@ import { useStudentProblems } from "@/features/student/api/use-problems";
 
 export default function StudentProblemsPage() {
   const router = useRouter();
+  const t = useTranslations("studentProblems");
+  const tc = useTranslations("common");
   const { data: problemsData, isLoading } = useStudentProblems();
   const problems = problemsData?.problems ?? [];
 
@@ -20,8 +23,8 @@ export default function StudentProblemsPage() {
       <PageHeader
         icon={BookOpen}
         iconGradient="from-blue-400 to-cyan-500"
-        title="Problems"
-        description="Browse available math problems and submit your answers"
+        title={t("title")}
+        description={t("description")}
       />
 
       {isLoading ? (
@@ -32,7 +35,7 @@ export default function StudentProblemsPage() {
         <Card className="shadow-sm">
           <CardContent className="py-12">
             <p className="text-center text-muted-foreground">
-              No problems available yet. Check back later!
+              {t("noProblems")}
             </p>
           </CardContent>
         </Card>
@@ -55,12 +58,12 @@ export default function StudentProblemsPage() {
                     </Badge>
                     {problem.target_grade && (
                       <Badge variant="secondary" className="text-xs">
-                        Grade {problem.target_grade}
+                        {tc("grade", { grade: problem.target_grade })}
                       </Badge>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Problem #{problem.id}
+                    {t("problemId", { id: problem.id })}
                   </p>
                 </div>
               </CardContent>

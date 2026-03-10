@@ -27,6 +27,7 @@ interface StudentDetailProps {
 
 export function StudentDetail({ id }: StudentDetailProps) {
   const t = useTranslations("studentDetail");
+  const te = useTranslations("studentDetailExtra");
   const studentId = parseInt(id, 10);
   const { analysisState, diagnosis, handleRunAnalysis } = useDiagnosis(studentId);
 
@@ -87,7 +88,7 @@ export function StudentDetail({ id }: StudentDetailProps) {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold tracking-tight">Student {id}</h1>
+              <h1 className="text-2xl font-bold tracking-tight">{te("student", { id })}</h1>
               <Badge className="bg-red-100 text-red-700 hover:bg-red-100">
                 {t("active")}
               </Badge>
@@ -118,7 +119,7 @@ export function StudentDetail({ id }: StudentDetailProps) {
             </div>
           ) : wrongAnswers.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              No wrong answers found.
+              {te("noWrongAnswers")}
             </p>
           ) : (
             wrongAnswers.map((answer) => (
@@ -142,7 +143,7 @@ export function StudentDetail({ id }: StudentDetailProps) {
                 className="w-full bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white font-semibold shadow-md"
               >
                 <Play className="size-4" />
-                Run Cross-Unit Analysis
+                {te("runAnalysis")}
               </Button>
             </div>
           )}
@@ -155,7 +156,7 @@ export function StudentDetail({ id }: StudentDetailProps) {
                 className="w-full bg-gradient-to-r from-violet-500 to-purple-600 text-white font-semibold shadow-md"
               >
                 <Loader2 className="size-4 animate-spin" />
-                Analyzing wrong answers...
+                {te("analyzing")}
               </Button>
             </div>
           )}
@@ -165,7 +166,11 @@ export function StudentDetail({ id }: StudentDetailProps) {
       {/* Diagnosis Section */}
       {analysisState === "done" && diagnosis && (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <AnalysisComparison />
+          <AnalysisComparison
+            conceptFrequencies={diagnosis.concept_frequencies}
+            coreWeaknesses={diagnosis.core_weaknesses}
+            affectedCount={diagnosis.concept_frequencies.length}
+          />
 
           {/* Root Cause Banner */}
           {diagnosis.core_weaknesses.length > 0 && (
@@ -180,7 +185,7 @@ export function StudentDetail({ id }: StudentDetailProps) {
                       {t("rootCauseIdentified")}
                     </h3>
                     <p className="mt-1 text-sm text-amber-800">
-                      Core weaknesses: {diagnosis.core_weaknesses.join(", ")}
+                      {te("coreWeaknesses", { weaknesses: diagnosis.core_weaknesses.join(", ") })}
                     </p>
                     {diagnosis.prerequisite_chains.length > 0 && (
                       <p className="mt-2 text-xs text-amber-700/70">
@@ -196,7 +201,11 @@ export function StudentDetail({ id }: StudentDetailProps) {
 
           <div className="grid gap-6 lg:grid-cols-2">
             <ConceptFrequencyChart concepts={conceptsForChart} />
-            <RootCauseGraph />
+            <RootCauseGraph
+              coreWeaknesses={diagnosis.core_weaknesses}
+              prerequisiteChains={diagnosis.prerequisite_chains}
+              conceptFrequencies={diagnosis.concept_frequencies}
+            />
           </div>
 
           <div className="grid gap-6 lg:grid-cols-2">

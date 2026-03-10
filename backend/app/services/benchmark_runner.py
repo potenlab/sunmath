@@ -24,6 +24,12 @@ from app.services.sympy_engine import SympyEngine
 
 logger = logging.getLogger(__name__)
 
+# Dataset registry: name -> relative path from project root
+BENCHMARK_DATASETS: dict[str, str] = {
+    "original": "data/benchmark_problems.json",
+    "csat-2026": "data/benchmark_csat_2026.json",
+}
+
 BENCHMARK_MODELS: dict[str, dict] = {
     "deepseek-v3": {
         "id": "deepseek/deepseek-chat",
@@ -67,7 +73,95 @@ SOLVER_SYSTEM_PROMPT = """\
 You are a math problem solver. Solve the given problem step by step.
 You MUST respond with a single JSON object and nothing else.
 Do NOT include any text before or after the JSON.
+For multiple-choice problems, put the actual answer VALUE (not the choice number) in "answer".
 {"solution": "step-by-step work", "answer": "final answer value only", "answer_latex": "answer in LaTeX", "confidence": 0-100}"""
+
+def _clean_extracted_answer(answer: str) -> str:
+    """Strip markdown/LaTeX formatting from an extracted answer."""
+    s = answer.strip()
+    # Strip markdown bold/italic
+    s = s.replace("**", "").replace("__", "")
+    # Strip LaTeX dollar wrappers: $...$
+    s = re.sub(r"^\$(.+)\$$", r"\1", s)
+    # Strip \boxed{...}
+    s = re.sub(r"\\boxed\{(.+)\}", r"\1", s)
+    # Trim trailing punctuation (periods, Korean endings)
+    s = re.sub(r"[.。]+$", "", s)
+    return s.strip()
+
+
+def _extract_answer_from_text(text: str) -> dict | None:
+    """Extract answer from plain text when JSON parsing fails.
+
+    Tries regex patterns in priority order to recover the final answer
+    from model responses that ignored the JSON format instruction.
+    """
+    if not text or not text.strip():
+        return None
+
+    text = text.strip()
+
+    # 1. Partial JSON: "answer": "..." or "answer": 42
+    m = re.search(r'"answer"\s*:\s*"([^"]+)"', text)
+    if not m:
+        m = re.search(r'"answer"\s*:\s*(\d+(?:\.\d+)?)', text)
+    if m:
+        return {"answer": _clean_extracted_answer(m.group(1)), "confidence": 40}
+
+    # 2. Korean answer patterns: 답은 3입니다, 답: 3, 정답은 5
+    m = re.search(r'(?:정답|답)은\s+(.+?)(?:입니다|이다|이에요|$)', text)
+    if not m:
+        m = re.search(r'(?:정답|답)\s*[:：]\s*(.+)', text)
+    if m:
+        answer = re.sub(r'[.。]|입니다|이다|이에요', '', m.group(1)).strip()
+        answer = _clean_extracted_answer(answer)
+        if answer:
+            return {"answer": answer, "confidence": 35}
+
+    # 3. English answer patterns (find LAST occurrence — answer is at the end)
+    # Search from the last "answer" keyword backwards
+    lower_text = text.lower()
+    ans_pos = lower_text.rfind("answer")
+    if ans_pos >= 0:
+        tail = text[ans_pos:]
+        m = re.match(
+            r'answer\s*(?:is|=|:)\s*(.+)',
+            tail, re.IGNORECASE,
+        )
+        if m:
+            answer = _clean_extracted_answer(m.group(1))
+            if answer:
+                return {"answer": answer, "confidence": 35}
+
+    # 4. Math conclusion: ∴ x = 7
+    m = re.search(r'∴\s*(.+)', text)
+    if m:
+        answer = _clean_extracted_answer(m.group(1))
+        if answer:
+            return {"answer": answer, "confidence": 30}
+
+    # 5. Last "= X" on any line (common math conclusion pattern)
+    equals_matches = list(re.finditer(
+        r'=\s*(-?[\d./]+(?:\\frac\{[^}]+\}\{[^}]+\})?)\s*[.。]?\s*$',
+        text, re.MULTILINE,
+    ))
+    if equals_matches:
+        answer = _clean_extracted_answer(equals_matches[-1].group(1))
+        if answer:
+            return {"answer": answer, "confidence": 25}
+
+    # 6. Last numeric value on final non-empty line
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    if lines:
+        last_line = lines[-1]
+        # Match trailing number (possibly negative, decimals, fractions)
+        # Allow trailing punctuation/Korean chars after the number
+        m = re.search(r'(-?\d+(?:[./]\d+)?)\s*[.。)]*\s*$', last_line)
+        if m:
+            return {"answer": m.group(1), "confidence": 20}
+
+    return None
+
 
 _client: httpx.AsyncClient | None = None
 
@@ -152,9 +246,22 @@ def _project_root() -> Path:
     return backend.parent                   # project root
 
 
-def load_problems(filter_ids: list[str] | None = None) -> list[dict]:
-    """Load benchmark problems from data/benchmark_problems.json."""
-    path = _project_root() / "data" / "benchmark_problems.json"
+def load_problems(
+    filter_ids: list[str] | None = None,
+    dataset: str = "original",
+) -> list[dict]:
+    """Load benchmark problems from the specified dataset.
+
+    Args:
+        filter_ids: Optional list of problem IDs to include.
+        dataset: Dataset key from BENCHMARK_DATASETS (default: "original").
+    """
+    if dataset not in BENCHMARK_DATASETS:
+        raise ValueError(
+            f"Unknown dataset '{dataset}'. "
+            f"Available: {', '.join(BENCHMARK_DATASETS)}"
+        )
+    path = _project_root() / BENCHMARK_DATASETS[dataset]
     with open(path) as f:
         data = json.load(f)
     problems = data["problems"]
@@ -162,6 +269,31 @@ def load_problems(filter_ids: list[str] | None = None) -> list[dict]:
         id_set = set(filter_ids)
         problems = [p for p in problems if p["id"] in id_set]
     return problems
+
+
+def _format_problem_content(problem: dict) -> str:
+    """Build the prompt content string for a problem.
+
+    For multiple-choice problems (CSAT style), appends numbered choices.
+    For image-dependent problems, appends the image description.
+    """
+    content = problem["content"]
+
+    # Append choices for multiple-choice problems
+    choices = problem.get("choices")
+    if choices:
+        choice_lines = "\n".join(
+            f"  {i}) {c}" for i, c in enumerate(choices, 1)
+        )
+        content += f"\n\nChoices:\n{choice_lines}"
+
+    # Append image description for problems with figures
+    if problem.get("has_image") and problem.get("image_description"):
+        content += (
+            f"\n\n[Figure description: {problem['image_description']}]"
+        )
+
+    return content
 
 
 async def call_model(
@@ -201,7 +333,7 @@ async def call_model(
                 "temperature": 0.1,
                 # Reasoning models need more tokens: thinking consumes
                 # a large portion of the budget before the JSON answer.
-                "max_tokens": 16384 if is_reasoning else 2048,
+                "max_tokens": 32768 if is_reasoning else 4096,
             }
 
             # Standard models: request structured JSON output
@@ -230,7 +362,7 @@ async def call_model(
             resp.raise_for_status()
             data = resp.json()
             choice = data["choices"][0]
-            content = choice["message"]["content"]
+            content = choice["message"]["content"] or ""
 
             # Strip <think>...</think> reasoning blocks (DeepSeek-R1, etc.)
             if is_reasoning and content:
@@ -258,8 +390,22 @@ async def call_model(
                     cost=cost,
                 )
 
+            # Try fallback text extraction before giving up
+            extracted = _extract_answer_from_text(content)
+            if extracted:
+                return ModelResponse(
+                    answer=extracted["answer"],
+                    answer_latex=extracted.get("answer_latex", ""),
+                    confidence=extracted.get("confidence", 30),
+                    solution=content.strip()[:2000],
+                    latency_ms=latency_ms,
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
+                    cost=cost,
+                )
+
             return ModelResponse(
-                answer=content.strip()[:200],
+                answer=content.strip()[:500],
                 latency_ms=latency_ms,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
@@ -324,10 +470,11 @@ async def run_full_benchmark(
     model_keys: list[str] | None = None,
     problem_ids: list[str] | None = None,
     progress_callback: Callable[[int, int, str], None] | None = None,
+    dataset: str = "original",
 ) -> BenchmarkRun:
     """Run benchmark iterating problem-by-problem to spread rate limit pressure."""
     models = model_keys or list(BENCHMARK_MODELS.keys())
-    problems = load_problems(problem_ids)
+    problems = load_problems(problem_ids, dataset=dataset)
 
     run_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     total_tasks = len(problems) * len(models)
@@ -346,7 +493,8 @@ async def run_full_benchmark(
                     f"{problem['id']} x {model_key}",
                 )
 
-            response = await call_model(model_key, problem["content"])
+            prompt_content = _format_problem_content(problem)
+            response = await call_model(model_key, prompt_content)
 
             check = check_answer(
                 model_answer=response.answer,
@@ -375,6 +523,7 @@ async def run_full_benchmark(
 
     run = BenchmarkRun(
         run_id=run_id,
+        dataset=dataset,
         timestamp=datetime.now(timezone.utc).isoformat(),
         models=models,
         problem_count=len(problems),

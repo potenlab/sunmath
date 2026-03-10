@@ -9,6 +9,7 @@ import { useAdminSettings } from "@/features/admin/hooks/use-admin-settings";
 
 export default function AdminSettingsPage() {
   const t = useTranslations("admin");
+  const ts = useTranslations("settingsPage");
   const { similarityThreshold, duplicateMode } = useAdminSettings();
 
   return (
@@ -16,8 +17,8 @@ export default function AdminSettingsPage() {
       <PageHeader
         icon={Settings}
         iconGradient="from-amber-400 to-orange-500"
-        title="Settings"
-        description="Configure grading and duplicate detection settings"
+        title={ts("title")}
+        description={ts("description")}
       />
 
       <div className="grid gap-4 md:grid-cols-2">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Brain, Sparkles } from "lucide-react";
 import {
   Card,
@@ -15,6 +16,7 @@ import { StudentDetail } from "@/features/students/components/detail.students";
 
 export default function StudentDiagnosisPage() {
   const { user } = useAuth();
+  const t = useTranslations("studentDiagnosis");
 
   if (!user?.student_id) {
     return (
@@ -22,13 +24,13 @@ export default function StudentDiagnosisPage() {
         <PageHeader
           icon={Brain}
           iconGradient="from-violet-400 to-purple-500"
-          title="My Diagnosis"
-          description="View your learning analysis and recommendations"
+          title={t("title")}
+          description={t("description")}
         />
         <Card className="shadow-sm">
           <CardContent className="py-12">
             <p className="text-center text-muted-foreground">
-              No student profile linked to your account. Contact your teacher.
+              {t("noProfile")}
             </p>
           </CardContent>
         </Card>
@@ -41,8 +43,8 @@ export default function StudentDiagnosisPage() {
       <PageHeader
         icon={Brain}
         iconGradient="from-violet-400 to-purple-500"
-        title="My Diagnosis"
-        description="View your learning analysis and recommendations"
+        title={t("title")}
+        description={t("description")}
       />
 
       <StudentDetail id={String(user.student_id)} />
@@ -52,15 +54,13 @@ export default function StudentDiagnosisPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
             <Sparkles className="size-5 text-amber-500" />
-            LoRA Handwriting Analysis
+            {t("loraTitle")}
             <Badge variant="secondary" className="text-xs">
-              Coming Soon
+              {t("comingSoon")}
             </Badge>
           </CardTitle>
           <CardDescription>
-            AI-powered handwriting analysis to identify common mistakes in your
-            written math work. This feature uses LoRA fine-tuned models to
-            analyze your handwriting patterns.
+            {t("loraDescription")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -68,7 +68,7 @@ export default function StudentDiagnosisPage() {
             <div className="text-center space-y-2">
               <Sparkles className="size-10 text-amber-400 mx-auto" />
               <p className="text-sm text-muted-foreground">
-                This feature is under development
+                {t("underDevelopment")}
               </p>
             </div>
           </div>

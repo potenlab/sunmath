@@ -16,6 +16,7 @@ interface GradingResultCardProps {
 
 export function GradingResultCard({ result }: GradingResultCardProps) {
   const t = useTranslations("grading");
+  const tg = useTranslations("gradingComponents");
 
   return (
     <Card className="shadow-sm">
@@ -48,7 +49,7 @@ export function GradingResultCard({ result }: GradingResultCardProps) {
                 </p>
                 <div className="flex items-center gap-2 mt-0.5">
                   <span className="text-xs text-muted-foreground">
-                    Judged by:
+                    {tg("judgedBy")}
                   </span>
                   <Badge
                     variant="outline"
@@ -69,16 +70,16 @@ export function GradingResultCard({ result }: GradingResultCardProps) {
             <div className="rounded-lg border bg-sky-50/50 p-3 space-y-1">
               <p className="text-xs font-semibold text-sky-700 flex items-center gap-1.5">
                 <ScanLine className="size-3.5" />
-                OCR Output
+                {tg("ocrOutput")}
               </p>
               <p className="text-sm font-mono">{result.ocr_text}</p>
               <p className="text-[11px] text-muted-foreground">
-                Confidence: {(result.ocr_confidence * 100).toFixed(0)}%
+                {tg("confidence", { value: (result.ocr_confidence * 100).toFixed(0) })}
               </p>
             </div>
 
             <div className="space-y-2">
-              <p className="text-sm font-medium">Reasoning</p>
+              <p className="text-sm font-medium">{tg("reasoning")}</p>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {result.reasoning}
               </p>
@@ -86,17 +87,17 @@ export function GradingResultCard({ result }: GradingResultCardProps) {
 
             <div className="space-y-2 rounded-lg border bg-muted/30 p-3">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Problem Metadata
+                {tg("problemMetadata")}
               </p>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <span className="text-muted-foreground">Expected form:</span>
+                  <span className="text-muted-foreground">{tg("expectedForm")}</span>
                   <p className="font-medium">
                     {result.problem.expected_form ?? "None"}
                   </p>
                 </div>
                 <div>
-                  <span className="text-muted-foreground">Grading hints:</span>
+                  <span className="text-muted-foreground">{tg("gradingHints")}</span>
                   <p className="font-medium">
                     {result.problem.grading_hints ?? "None"}
                   </p>
@@ -104,7 +105,7 @@ export function GradingResultCard({ result }: GradingResultCardProps) {
               </div>
               {result.problem.target_grade && (
                 <div>
-                  <span className="text-muted-foreground">Target grade:</span>
+                  <span className="text-muted-foreground">{tg("targetGrade")}</span>
                   <p className="font-medium">{result.problem.target_grade}</p>
                 </div>
               )}

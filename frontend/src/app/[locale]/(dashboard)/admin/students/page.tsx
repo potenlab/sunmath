@@ -24,6 +24,8 @@ import {
 
 export default function AdminStudentsPage() {
   const t = useTranslations("students");
+  const ts = useTranslations("studentsPage");
+  const tc = useTranslations("common");
   const router = useRouter();
   const { data: studentsData, isLoading } = useStudents();
   const createMutation = useCreateStudent();
@@ -107,7 +109,7 @@ export default function AdminStudentsPage() {
             className="bg-gradient-to-r from-violet-500 to-purple-600 text-white"
           >
             <Plus className="size-4 mr-1" />
-            Add Student
+            {ts("addStudent")}
           </Button>
         </CardHeader>
         <CardContent>
@@ -115,19 +117,19 @@ export default function AdminStudentsPage() {
           {(showAddDialog || editingId !== null) && (
             <div className="mb-4 rounded-lg border bg-muted/30 p-4 space-y-3">
               <h3 className="text-sm font-semibold">
-                {editingId !== null ? "Edit Student" : "New Student"}
+                {editingId !== null ? ts("editStudent") : ts("newStudent")}
               </h3>
               <div className="grid gap-3 sm:grid-cols-2">
                 <input
                   type="text"
-                  placeholder="Student name"
+                  placeholder={ts("studentName")}
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   className="rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500"
                 />
                 <input
                   type="number"
-                  placeholder="Grade level"
+                  placeholder={ts("gradeLevel")}
                   value={formGrade}
                   onChange={(e) => setFormGrade(e.target.value)}
                   className="rounded-lg border bg-transparent px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500"
@@ -139,10 +141,10 @@ export default function AdminStudentsPage() {
                   onClick={editingId !== null ? handleUpdate : handleAdd}
                   disabled={!formName.trim()}
                 >
-                  {editingId !== null ? "Save" : "Add"}
+                  {editingId !== null ? ts("save") : ts("add")}
                 </Button>
                 <Button size="sm" variant="outline" onClick={cancelForm}>
-                  Cancel
+                  {ts("cancel")}
                 </Button>
               </div>
             </div>
@@ -154,7 +156,7 @@ export default function AdminStudentsPage() {
             </div>
           ) : students.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              No students yet.
+              {ts("noStudents")}
             </p>
           ) : (
             <div className="space-y-2">
@@ -173,7 +175,7 @@ export default function AdminStudentsPage() {
                       <div className="flex items-center gap-2 mt-0.5">
                         {student.grade_level && (
                           <Badge variant="secondary" className="text-xs">
-                            Grade {student.grade_level}
+                            {tc("grade", { grade: student.grade_level })}
                           </Badge>
                         )}
                         <span className="text-xs text-muted-foreground">

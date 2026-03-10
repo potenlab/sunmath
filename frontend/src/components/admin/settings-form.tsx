@@ -135,7 +135,7 @@ export function SettingsForm({
           onClick={onSave}
           className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:opacity-90"
         >
-          Save Settings
+          {t("saveSettings")}
         </Button>
       </CardContent>
     </Card>
