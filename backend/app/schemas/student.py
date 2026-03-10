@@ -83,3 +83,20 @@ class StudentUpdate(BaseModel):
 class StudentListResponse(BaseModel):
     students: list[StudentResponse]
     total: int
+
+
+class StudentSummaryResponse(BaseModel):
+    id: int
+    name: str
+    grade_level: int | None
+    wrong_answers: int
+    root_cause: str | None
+    mastery: float
+    status: str
+
+
+class StudentSummaryListResponse(BaseModel):
+    students: list[StudentSummaryResponse]
+    total: int
+    needs_attention: int
+    total_wrong_answers: int

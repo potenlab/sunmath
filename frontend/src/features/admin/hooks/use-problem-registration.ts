@@ -216,6 +216,7 @@ export function useProblemRegistration(duplicateMode: "warn" | "block") {
     duplicateInfo,
     setDuplicateInfo,
     duplicateBlocked,
+    isRegistering: createProblem.isPending,
     handleRegisterProblem,
     handleRegisterAnyway,
     handleDeleteProblem,

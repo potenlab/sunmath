@@ -142,3 +142,20 @@ class StudentLoraModel(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     completed_at: Mapped[datetime | None] = mapped_column(nullable=True)
+
+
+class BaselineModel(Base):
+    __tablename__ = "baseline_models"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    tuning_job_id: Mapped[str] = mapped_column(String(500), nullable=False)
+    model_endpoint: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    model_name: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    status: Mapped[LoraModelStatus] = mapped_column(
+        Enum(LoraModelStatus), default=LoraModelStatus.pending
+    )
+    training_samples_count: Mapped[int] = mapped_column(Integer, default=0)
+    dataset_info: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
+    completed_at: Mapped[datetime | None] = mapped_column(nullable=True)

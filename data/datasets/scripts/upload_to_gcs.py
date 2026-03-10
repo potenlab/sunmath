@@ -9,6 +9,8 @@ Uploads images to gs://{bucket}/baseline/images/{dataset}/{filename}
 Generates JSONL in the same format as lora_training.py
 """
 
+from __future__ import annotations
+
 import argparse
 import csv
 import json

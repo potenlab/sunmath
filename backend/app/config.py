@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     gcp_project_id: str = ""
     gcp_location: str = "us-central1"
     gcs_bucket_name: str = "express-auth-414411-sunmath-ocr"
+    baseline_model_endpoint: str = ""
     jwt_secret: str = "change-me-in-production"
     access_token_expire: int = 30       # minutes
     refresh_token_expire: int = 10080   # 7 days

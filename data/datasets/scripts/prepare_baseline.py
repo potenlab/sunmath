@@ -7,6 +7,8 @@ Reads manifests from hme100k/ and crohme/, normalizes LaTeX,
 creates 90/10 train/val split, outputs to data/datasets/baseline/
 """
 
+from __future__ import annotations
+
 import csv
 import random
 import re
