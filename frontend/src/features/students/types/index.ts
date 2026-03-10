@@ -81,6 +81,23 @@ export interface PracticeItem {
   difficulty: string;
 }
 
+export interface StudentSummaryResponse {
+  id: number;
+  name: string;
+  grade_level: number | null;
+  wrong_answers: number;
+  root_cause: string | null;
+  mastery: number;
+  status: "needs-attention" | "improving" | "on-track";
+}
+
+export interface StudentSummaryListResponse {
+  students: StudentSummaryResponse[];
+  total: number;
+  needs_attention: number;
+  total_wrong_answers: number;
+}
+
 export interface StudentSummary {
   id: string;
   name: string;

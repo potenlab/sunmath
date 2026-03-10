@@ -45,23 +45,72 @@ def _ensure_init():
         _initialized = True
 
 
+def _load_baseline_model() -> GenerativeModel | None:
+    """Load the active baseline model endpoint, if available."""
+    # Config override takes priority
+    if settings.baseline_model_endpoint:
+        return GenerativeModel(settings.baseline_model_endpoint)
+    return None
+
+
 class OCRService:
     def __init__(self, db: AsyncSession | None = None):
         _ensure_init()
-        self.model = GenerativeModel(MODEL_NAME)
+        self.raw_model = GenerativeModel(MODEL_NAME)
+        self.baseline_model = _load_baseline_model()
         self.db = db
+
+    async def _try_load_baseline_from_db(self) -> GenerativeModel | None:
+        """Lazily load baseline model from DB if not set via config."""
+        if self.baseline_model is not None:
+            return self.baseline_model
+        if not self.db:
+            return None
+        try:
+            from sqlalchemy import text
+
+            # Check if the baseline_models table exists before querying
+            result = await self.db.execute(
+                text(
+                    "SELECT EXISTS ("
+                    "  SELECT FROM information_schema.tables"
+                    "  WHERE table_name = 'baseline_models'"
+                    ")"
+                )
+            )
+            table_exists = result.scalar()
+            if not table_exists:
+                return None
+
+            from app.services.baseline_training import get_active_baseline_model
+
+            active = await get_active_baseline_model(self.db)
+            if active and active.model_endpoint:
+                self.baseline_model = GenerativeModel(active.model_endpoint)
+                logger.info("Loaded baseline model: %s", active.model_endpoint)
+                return self.baseline_model
+        except Exception as e:
+            logger.warning("Failed to load baseline model from DB: %s", e)
+        return None
 
     async def recognize(
         self, image_bytes: bytes, content_type: str, student_id: int | None = None
     ) -> dict:
         """Run OCR on image bytes and return extracted text.
 
+        Fallback chain: LoRA -> baseline-tuned -> baseline-raw (raw Gemini).
         Returns dict with 'text', 'confidence', and 'model_used' keys.
         """
-        model_used = "baseline"
-        model = self.model
+        model_used = "baseline-raw"
+        model = self.raw_model
 
-        # Try to use student's LoRA-tuned model if available
+        # Try to load baseline-tuned model
+        baseline = await self._try_load_baseline_from_db()
+        if baseline:
+            model = baseline
+            model_used = "baseline-tuned"
+
+        # Try to use student's LoRA-tuned model if available (highest priority)
         if student_id and self.db:
             try:
                 from app.services.lora_training import get_active_lora_model
@@ -77,8 +126,9 @@ class OCRService:
                     )
             except Exception as e:
                 logger.warning(
-                    "Failed to load LoRA model for student %d, using baseline: %s",
+                    "Failed to load LoRA model for student %d, using %s: %s",
                     student_id,
+                    model_used,
                     e,
                 )
 
@@ -91,21 +141,30 @@ class OCRService:
             text = response.text.strip()
             return {"text": text, "confidence": 1.0, "model_used": model_used}
         except Exception as e:
-            # If tuned model fails, fall back to baseline
+            # Fallback chain: lora -> baseline-tuned -> baseline-raw
+            fallback_chain = []
             if model_used == "lora":
+                if baseline:
+                    fallback_chain.append(("baseline-tuned", baseline))
+                fallback_chain.append(("baseline-raw", self.raw_model))
+            elif model_used == "baseline-tuned":
+                fallback_chain.append(("baseline-raw", self.raw_model))
+
+            for fallback_label, fallback_model in fallback_chain:
                 logger.warning(
-                    "LoRA model failed for student %d, falling back to baseline: %s",
-                    student_id,
+                    "%s model failed, falling back to %s: %s",
+                    model_used,
+                    fallback_label,
                     e,
                 )
                 try:
-                    response = await self.model.generate_content_async(
+                    response = await fallback_model.generate_content_async(
                         [OCR_PROMPT, image_part]
                     )
                     text = response.text.strip()
-                    return {"text": text, "confidence": 1.0, "model_used": "baseline"}
+                    return {"text": text, "confidence": 1.0, "model_used": fallback_label}
                 except Exception as fallback_err:
-                    e = fallback_err  # report the fallback error
+                    e = fallback_err
 
             if "429" in str(e):
                 logger.warning("Gemini rate limit hit during OCR")

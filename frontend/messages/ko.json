@@ -49,7 +49,8 @@
     "correctAnswerPlaceholder": "LaTeX 정답...",
     "gradingHints": "채점 힌트",
     "gradingHintsPlaceholder": "선택 힌트...",
-    "registerProblem": "문제 등록"
+    "registerProblem": "문제 등록",
+    "registering": "등록 중..."
   },
   "grading": {
     "title": "채점 보기",
@@ -96,11 +97,15 @@
     "studentA": "학생 A",
     "studentB": "학생 B",
     "studentC": "학생 C",
-    "highSchool2": "고등학교 2학년",
-    "highSchool1": "고등학교 1학년",
+    "middleSchool1": "중학교 1학년",
+    "middleSchool2": "중학교 2학년",
     "middleSchool3": "중학교 3학년",
+    "highSchool1": "고등학교 1학년",
+    "highSchool2": "고등학교 2학년",
+    "highSchool3": "고등학교 3학년",
     "completingTheSquare": "완전제곱식",
-    "radianMeasure": "호도법"
+    "radianMeasure": "호도법",
+    "loading": "로딩 중..."
   },
   "studentDetail": {
     "backToStudents": "학생 목록으로 돌아가기",

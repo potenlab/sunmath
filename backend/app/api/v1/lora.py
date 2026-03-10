@@ -19,6 +19,7 @@ from app.schemas.lora import (
     LoraTrainResponse,
     TrainingSampleCountResponse,
 )
+from app.config import settings
 from app.services import lora_training
 
 logger = logging.getLogger(__name__)

@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FileText } from "lucide-react";
+import { FileText, Loader2 } from "lucide-react";
 import { EXPECTED_FORMS } from "@/features/admin/types";
 import type { ConceptOption } from "@/features/admin/types";
 import {
@@ -39,6 +39,7 @@ interface ProblemFormProps {
   onConceptEntriesChange: (entries: ConceptWeightEntry[]) => void;
   availableConcepts: ConceptOption[];
   conceptsLoading?: boolean;
+  isRegistering?: boolean;
   onRegister: () => void;
 }
 
@@ -57,6 +58,7 @@ export function ProblemForm({
   onConceptEntriesChange,
   availableConcepts,
   conceptsLoading,
+  isRegistering,
   onRegister,
 }: ProblemFormProps) {
   const t = useTranslations("admin");
@@ -135,10 +137,17 @@ export function ProblemForm({
 
         <Button
           onClick={onRegister}
-          disabled={!problemContent.trim()}
+          disabled={!problemContent.trim() || isRegistering}
           className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:opacity-90"
         >
-          {t("registerProblem")}
+          {isRegistering ? (
+            <>
+              <Loader2 className="size-4 animate-spin" />
+              {t("registering")}
+            </>
+          ) : (
+            t("registerProblem")
+          )}
         </Button>
       </CardContent>
     </Card>

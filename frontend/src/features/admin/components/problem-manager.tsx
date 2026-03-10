@@ -47,6 +47,7 @@ export function ProblemManager({
     setDuplicateDialogOpen,
     duplicateInfo,
     setDuplicateInfo,
+    isRegistering,
     handleRegisterProblem,
     handleRegisterAnyway,
     handleDeleteProblem,
@@ -81,6 +82,7 @@ export function ProblemManager({
         onConceptEntriesChange={setConceptEntries}
         availableConcepts={concepts}
         conceptsLoading={conceptsLoading}
+        isRegistering={isRegistering}
         onRegister={handleRegisterProblem}
       />
 

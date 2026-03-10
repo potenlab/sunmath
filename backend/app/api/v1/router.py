@@ -10,6 +10,7 @@ from app.api.v1.auth import router as auth_router
 from app.api.v1.ocr import router as ocr_router
 from app.api.v1.lora import student_router as lora_student_router
 from app.api.v1.lora import admin_router as lora_admin_router
+from app.api.v1.baseline import router as baseline_router
 
 v1_router = APIRouter(prefix="/api/v1")
 
@@ -23,3 +24,4 @@ v1_router.include_router(auth_router)
 v1_router.include_router(ocr_router)
 v1_router.include_router(lora_student_router)
 v1_router.include_router(lora_admin_router)
+v1_router.include_router(baseline_router)

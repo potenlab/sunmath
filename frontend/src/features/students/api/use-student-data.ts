@@ -5,7 +5,15 @@ import type {
   WrongAnswerListResponse,
   MasteryListResponse,
   LearningPathResponse,
+  StudentSummaryListResponse,
 } from "../types";
+
+export function useStudentSummaries() {
+  return useQuery({
+    queryKey: ["students", "summary"],
+    queryFn: () => get<StudentSummaryListResponse>("/students/summary"),
+  });
+}
 
 export function useDiagnosisQuery(studentId: number) {
   return useQuery({

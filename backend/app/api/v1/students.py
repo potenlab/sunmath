@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select, func as sa_func
+from sqlalchemy import select, func as sa_func, Float
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
 from app.api.deps import get_db
 from app.api.deps_auth import require_role
@@ -19,6 +20,8 @@ from app.schemas.student import (
     StudentCreate,
     StudentListResponse,
     StudentResponse,
+    StudentSummaryListResponse,
+    StudentSummaryResponse,
     StudentUpdate,
     WrongAnswerListResponse,
     WrongAnswerResponse,
@@ -58,6 +61,105 @@ async def create_student(body: StudentCreate, db: AsyncSession = Depends(get_db)
     await db.flush()
     await db.refresh(student)
     return StudentResponse.model_validate(student)
+
+
+@router.get("/summary", response_model=StudentSummaryListResponse)
+async def get_student_summaries(
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(require_role(UserRole.admin)),
+):
+    """Get student summaries with mastery and wrong answer data."""
+    # Subquery: average mastery per student
+    avg_mastery_sq = (
+        select(
+            StudentConceptMastery.student_id,
+            sa_func.avg(StudentConceptMastery.mastery_level).label("avg_mastery"),
+        )
+        .group_by(StudentConceptMastery.student_id)
+        .subquery()
+    )
+
+    # Subquery: wrong answer count per student (active only)
+    wrong_count_sq = (
+        select(
+            WrongAnswerWarehouse.student_id,
+            sa_func.count().label("wrong_count"),
+        )
+        .where(WrongAnswerWarehouse.status == "active")
+        .group_by(WrongAnswerWarehouse.student_id)
+        .subquery()
+    )
+
+    # Subquery: lowest mastery concept per student using row_number
+    ranked = (
+        select(
+            StudentConceptMastery.student_id,
+            Concept.name.label("concept_name"),
+            sa_func.row_number()
+            .over(
+                partition_by=StudentConceptMastery.student_id,
+                order_by=StudentConceptMastery.mastery_level.asc(),
+            )
+            .label("rn"),
+        )
+        .join(Concept, Concept.id == StudentConceptMastery.concept_id)
+        .subquery()
+    )
+    root_cause_sq = (
+        select(ranked.c.student_id, ranked.c.concept_name)
+        .where(ranked.c.rn == 1)
+        .subquery()
+    )
+
+    # Main query
+    result = await db.execute(
+        select(
+            Student.id,
+            Student.name,
+            Student.grade_level,
+            sa_func.coalesce(avg_mastery_sq.c.avg_mastery, 0.0).label("mastery"),
+            sa_func.coalesce(wrong_count_sq.c.wrong_count, 0).label("wrong_answers"),
+            root_cause_sq.c.concept_name.label("root_cause"),
+        )
+        .outerjoin(avg_mastery_sq, avg_mastery_sq.c.student_id == Student.id)
+        .outerjoin(wrong_count_sq, wrong_count_sq.c.student_id == Student.id)
+        .outerjoin(root_cause_sq, root_cause_sq.c.student_id == Student.id)
+        .order_by(Student.created_at.desc())
+    )
+    rows = result.all()
+
+    students = []
+    needs_attention = 0
+    total_wrong = 0
+    for row in rows:
+        mastery = float(row.mastery)
+        wrong = int(row.wrong_answers)
+        total_wrong += wrong
+        if mastery < 0.4:
+            status = "needs-attention"
+            needs_attention += 1
+        elif mastery < 0.7:
+            status = "improving"
+        else:
+            status = "on-track"
+        students.append(
+            StudentSummaryResponse(
+                id=row.id,
+                name=row.name,
+                grade_level=row.grade_level,
+                wrong_answers=wrong,
+                root_cause=row.root_cause,
+                mastery=mastery,
+                status=status,
+            )
+        )
+
+    return StudentSummaryListResponse(
+        students=students,
+        total=len(students),
+        needs_attention=needs_attention,
+        total_wrong_answers=total_wrong,
+    )
 
 
 @router.put("/{student_id}", response_model=StudentResponse)
