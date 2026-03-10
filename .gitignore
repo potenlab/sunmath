@@ -35,6 +35,7 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+tmp/
 
 # Alembic
 alembic/versions/__pycache__/
